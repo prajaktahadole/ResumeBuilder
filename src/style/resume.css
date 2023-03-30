@@ -1,0 +1,74 @@
+.container {
+  width: 100%;
+  border: 1px solid #fff;
+  display: flex;
+  justify-content: center;
+}
+
+.main {
+  /* border: 1px solid #fff; */
+  width: 70%;
+  align-self: start;
+}
+
+.header {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.header::-webkit-scrollbar {
+  height: 7px;
+}
+
+.header::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background-color: #c7c7c7;
+}
+
+.header .section {
+  padding: 10px;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+  font-size: 1rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.header .active {
+  border-bottom: 2px solid #239ce2;
+  color: #239ce2;
+}
+
+.body {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 0;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: space-between;
+
+}
+
+.detail .row {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.detail .column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail .row>div {
+  flex: 1;
+}

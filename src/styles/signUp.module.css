@@ -1,0 +1,64 @@
+
+
+.paperContainer {
+    background-image: url(/src/assets/images/signUp.illustration.svg);
+    background-size: cover;
+    width: inherit;
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-position: center;
+    position: relative;
+    /* right: 25px; */
+}
+
+.button {
+    width: 100px;
+}
+
+
+.box {
+    /* height: 100vh; */
+    padding: 22px 96px;
+    /* overflow-y: scroll; */
+}
+
+.stepper {
+    width: fit-content;
+    position: absolute;
+    right: -2.7rem;
+    height: inherit;
+    display: flex;
+    align-items: center;
+}
+
+
+@media screen and (max-width: 900px) {
+    .box {
+        margin-top: 20px;
+    }
+
+    .stepper {
+        right: unset;
+        bottom: -2.3rem;
+        justify-content: center;
+        align-items: flex-end;
+        width: -webkit-fill-available;
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+    .box {
+        padding: 56px 26px;
+        margin-top: 8px;
+    }
+
+    .stepper {
+        bottom: -1.3rem;
+    }
+}
+
+.error {
+    margin-top: 4px;
+    color: red;
+}
