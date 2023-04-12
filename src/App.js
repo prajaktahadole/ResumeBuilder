@@ -6,28 +6,26 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Dashboard from './component/dashboard/Drawer';
 import AppRoutes from './AppRoutes';
 import MiniDrawer from './component/dashboard/Drawer';
+import { useState } from 'react';
 
 
 function App() {
-  return (
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path="/" element={<Login />}></Route>
-    //     <Route path="/signup" element={<SignUp />}></Route>
-    //     <Route path="/resume" element={<Resume />}></Route>
-    //     <Route path="/dashboard" element={<Dashboard />}></Route>
-    //   </Routes>
-    // </BrowserRouter>
-    <BrowserRouter>
-    <div>
-   {
-        true ? (<>
-          <MiniDrawer />
-        </>) : (<AppRoutes />)
-      }
-    </div>
+  const [loginStatus, setLoginStatus] = useState(false);
 
-      </BrowserRouter>
+  const handleLoginStatus = (data) => {
+    setLoginStatus(data)
+  }
+  return (
+    <BrowserRouter>
+      <div>
+        {
+          loginStatus ? (<>
+            <MiniDrawer handleLoginStatus={handleLoginStatus} />
+          </>) : (<AppRoutes loginStatus={loginStatus} handleLoginStatus={handleLoginStatus} />)
+        }
+      </div>
+
+    </BrowserRouter>
   );
 }
 

@@ -1,14 +1,14 @@
 .container {
   width: 100%;
-  border: 1px solid #fff;
   display: flex;
   justify-content: center;
 }
 
 .main {
-  /* border: 1px solid #fff; */
-  width: 70%;
-  align-self: start;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  padding: 25px;
+  width: 90%;
+  margin: auto;
 }
 
 .header {
@@ -71,4 +71,15 @@
 
 .detail .row>div {
   flex: 1;
+}
+.subprojectcls{
+  padding: 5px;
+  margin-bottom: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+
+.subContainer{
+  padding: 35px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+
 }

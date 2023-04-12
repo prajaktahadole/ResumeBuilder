@@ -28,8 +28,9 @@ const Feedback = () => {
             style={{
               maxWidth: 850,
               margin: "10px auto",
-              padding: "20px 20px",
-              background: "#bbdefb",
+              padding: "25px",
+              boxShadow: "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
+              background: "rgb(245,245,245)"
             }}
           >
             <Typography

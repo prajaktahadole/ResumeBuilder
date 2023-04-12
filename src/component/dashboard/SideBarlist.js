@@ -9,13 +9,13 @@ const SideBarlist = () => {
     return (
 
         <React.Fragment >
-            <ListItemButton onClick={() => navigate('/dashboard')}>
+            <ListItemButton onClick={() => navigate('/resumemakerui/dashboard')}>
                 <ListItemIcon>
                     <DashboardIcon />
                 </ListItemIcon>
                 <ListItemText primary="Resume" />
             </ListItemButton>
-            <ListItemButton onClick={() => navigate('/feedback')}>
+            <ListItemButton onClick={() => navigate('/resumemakerui/feedback')}>
                 <ListItemIcon>
                     <AssignmentIcon />
                 </ListItemIcon>

@@ -1,7 +1,7 @@
 import { Button, FormControl, Grid, InputAdornment, Paper, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useState } from "react";
-import  { InputTextfield } from "../component/theme";
+import { InputTextfield } from "../component/theme";
 import styles from "../styles/signUp.module.css";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
@@ -10,17 +10,12 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { signUp } from "../services/resumemaker-services";
+import { toast } from 'react-toastify';
+import { BASE_URL } from "../services/helper";
 
-// function validatePassword(data) {
-//     const validPassRegex =
-//         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
-//     if (data.match(validPassRegex)) {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
+
 function checkForSpecialCharNumber(data) {
     var char = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\s [a-zA-Z]*$]/;
     var number = "[0-9]";
@@ -60,11 +55,7 @@ const schema = yup.object({
         .email("Please enter a valid email address")
         .required("Company email is required"),
 
-    phNo: yup
-        .number()
-        .typeError("Please enter numbers only")
-        .required("Phone Number is required")
-        .test("Check for length", "Plese enter only 10 digit", checkLength),
+
 
     password: yup.string().required("Password is required"),
     confirmPassword: yup
@@ -87,8 +78,6 @@ function SignUp(formData) {
     const {
         register,
         handleSubmit,
-        getValues,
-        setValue,
         formState: { errors },
     } = useForm({
         defaultValues: formData.user,
@@ -97,6 +86,28 @@ function SignUp(formData) {
     });
 
     const submit = (data) => {
+        console.log("Coming to submit data")
+        console.log("BASE_URL", BASE_URL)
+        const singupdata = {
+            fullName: data.firstName + " " + data.lastName,
+            email: data.email,
+            password: data.password,
+            role: "USER"
+        }
+
+        signUp(singupdata).then((res) => {
+            console.log(res);
+            if (res.code == 200) {
+                toast.success(res.message)
+                navigate('/');
+            }
+            else {
+                toast.error(res.message)
+            }
+        })
+            .catch(error => {
+                console.log(error);
+            });
 
     }
 
@@ -122,9 +133,9 @@ function SignUp(formData) {
 
 
     return (
-        <Grid 
-        tabIndex="0" container width={"80%"}
-        className={styles.mainpaperContainer}
+        <Grid
+            tabIndex="0" container width={"80%"}
+            className={styles.mainpaperContainer}
         >
 
             <Grid item xs={12} sm={12} md={6} lg={6}>
@@ -134,7 +145,7 @@ function SignUp(formData) {
             </Grid>
             <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Box className={styles.box}>
-                    <h3 > Create Your Accout</h3>
+                    <h3 > Create Your Account</h3>
                     <FormControl sx={{ py: 2 }}>
                         <Grid container rowSpacing={2}>
                             <Grid item xs={12} sm={12} md={12} lg={9}>
@@ -340,11 +351,16 @@ function SignUp(formData) {
                                     {/* </Link> */}
                                 </Typography>
                                 <Button
-                                    className={styles.button}
+                                    // className={styles.button}
+                                    // variant="contained"
+                                    // component="span"
+                                    // onClick={() => handleSubmit(submit)()}
+                                    id="signUPButton"
+                                    sx={{ width: "100px" }}
                                     variant="contained"
-                                    component="span"
+                                    fullWidth
                                     onClick={handleSubmit(submit)}
-                                    type="submit"
+                                //type="submit"
                                 >
                                     Save
                                 </Button>

@@ -86,7 +86,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DrawerCustome() {
+function DrawerCustome({ handleLoginStatus }) {
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -165,7 +165,7 @@ function DrawerCustome() {
                 >
                     <Toolbar />
                     <Container >
-                        <AppRoutes />
+                        <AppRoutes handleLoginStatus={handleLoginStatus} />
                     </Container>
                 </Box>
             </Box>
@@ -173,6 +173,6 @@ function DrawerCustome() {
     );
 }
 
-export default function MiniDrawer() {
-    return <DrawerCustome />;
+export default function MiniDrawer({ handleLoginStatus }) {
+    return <DrawerCustome handleLoginStatus={handleLoginStatus} />;
 }

@@ -5,12 +5,36 @@ import { useForm } from 'react-hook-form';
 import styles from "../styles/login.module.css"
 import * as yup from "yup";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { axiosMethod } from '../services/helper';
 
-function Login() {
+
+function Login({ handleLoginStatus }) {
     let navigate = useNavigate();
-    const routerChange = () => {
-        let path = `/dashboard`;
-        navigate(path)
+    const routerChange = (data) => {
+        const loginData = {
+            email: data.email,
+            password: data.password
+        }
+        console.log("Login data: ", data)
+        axiosMethod.post('/thor/login', loginData)
+            .then(response => {
+                console.log(response.data);
+                if (response?.status === 200) {
+                    //alert(response.data.message)
+                    localStorage.setItem("token", response.data.token)
+                    let path = `/resumemakerui/dashboard`;
+                    handleLoginStatus(true)
+                    navigate(path)
+                }
+                else {
+                    toast.error("Invaid Email Id or Password");
+                }
+
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     const handleSignUpOpen = () => {
@@ -124,9 +148,7 @@ function Login() {
                                     sx={{ width: "100px" }}
                                     variant="contained"
                                     fullWidth
-                                    //   disabled={isDisable}
-                                    //   onClick={handleSubmit(submit)}
-                                    onClick={routerChange}
+                                    onClick={() => handleSubmit(routerChange)()}
                                 >
                                     Login
                                 </Button>

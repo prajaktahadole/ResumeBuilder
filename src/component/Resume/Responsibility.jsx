@@ -1,8 +1,6 @@
 import { Button, Grid, TextField } from '@mui/material'
 import React, { useState } from 'react';
-import "../../style/responsibility.css";
-
-
+import "../../styles/responsibility.css";
 
 function Responsibility() {
 
@@ -10,7 +8,6 @@ function Responsibility() {
     const [responsibilityList, setResponsibilityList] = useState([]);
 
     const handleOpenResponsibilities = () => {
-
         setResponsibilityList([...responsibilityList, { val: responsibility }]);
     };
 
@@ -25,17 +22,17 @@ function Responsibility() {
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={2}></Grid>
-                <Grid item xs={10}>
+                <Grid item xs={4}></Grid>
+                <Grid item xs={8}>
                     {Array.isArray(responsibilityList)
                         && responsibilityList.length ? <ul className='ultag'>{responsibilityList.map((ele, index) =>
                             <li>{ele.val}<Button onClick={() => removeItem(ele)}>X</Button></li>)}</ul> : " "}
                 </Grid>
             </Grid>
-            <Grid container spacing={3} sx={{ paddingBottom: '20px' }}>
-                <Grid item xs={2}>
+            <Grid container spacing={2} sx={{ paddingBottom: '20px' }}>
+                <Grid item xs={4.1}>
                 </Grid>
-                <Grid item lg={9} sx={9}>
+                <Grid item lg={6.9} sx={6.9}>
                     <TextField
                         style={{ width: '100%' }}
                         Responsibilities
@@ -44,10 +41,12 @@ function Responsibility() {
                         label="Project Responsibilities"
                         placeholder="Enter your project responsibilities "
                         onChange={(e) => setResponsibility(e.target.value)}
+                        required
+                        name='proResponsibilities'
                     />
                 </Grid>
-                <Grid item lg={1} sx={1}>
-                    <Button variant="contained" onClick={handleOpenResponsibilities} sx={{ marginTop: '10px' }}>+</Button>
+                <Grid item lg={1} sx={1} >
+                    <Button variant="contained" onClick={handleOpenResponsibilities} style={{ padding: "12px 3px 15px 0px" }}>ADD</Button>
                 </Grid>
             </Grid>
         </>

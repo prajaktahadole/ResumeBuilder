@@ -26,7 +26,7 @@ const Dashboard = () => {
                     </IconButton>
 
                 </Paper>
-                <Button variant='contained' onClick={() => navigate('/resume')}>Create Resume +</Button>
+                <Button variant='contained' onClick={() => navigate('/resumemakerui/resume')}>Create Resume +</Button>
             </Grid>
             <Grid item xs={12} paddingTop={'30px'}>
                 <CustomizedTables />

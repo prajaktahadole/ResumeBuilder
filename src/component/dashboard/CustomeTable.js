@@ -7,6 +7,23 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { Link } from "react-router-dom"
+import "../../styles/resume.css"
+import PreviewRoundedIcon from '@mui/icons-material/PreviewRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { getResumeAllData } from '../../services/resumemaker-services'
+
+const token = localStorage.getItem("token")
+
+const config = {
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  }
+};
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -28,42 +45,49 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(name, email, designation, resumeid) {
+  return { name, email, designation, resumeid };
 }
 
-const rows = [
-  createData('Frozen yoghurt', "abc@gmail.com", 6.0, "View", "Delete"),
-  createData('Ice cream sandwich', "abc@gmail.com", 237, "View", "Delete"),
-  createData('Eclair', "abc@gmail.com", 16.0, "View", "Delete"),
-  createData('Cupcake', "abc@gmail.com", 3.7, "View", "Delete"),
-  createData('Gingerbread', "abc@gmail.com", 16.0, "View", "Delete"),
-];
-
 export default function CustomizedTables() {
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function fetchdata() {
+      const res = await getResumeAllData(config);
+      setData(res)
+    }
+    fetchdata()
+    console.log("Data received: ", data);
+  }, []);
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
-          <TableRow>
+          <TableRow style={{ margin: "auto", alignContent: "center", textAlign: "center" }} >
+
             <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Email</StyledTableCell>
-            <StyledTableCell align="right">ResumeId</StyledTableCell>
-            <StyledTableCell align="right">view</StyledTableCell>
-            <StyledTableCell align="right">Delete</StyledTableCell>
+            <StyledTableCell >Email</StyledTableCell>
+            <StyledTableCell >Designation</StyledTableCell>
+            <StyledTableCell >Resume UUID</StyledTableCell>
+            <StyledTableCell >View</StyledTableCell>
+            <StyledTableCell >Delete</StyledTableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+        <TableBody
+          style={{ margin: "auto", alignContent: "center", textAlign: "center" }}>
+          {data && Array.isArray(data) && data.length && data.map((row) => (
+            <StyledTableRow key={row.id}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                {row.personalDetails.empName}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              <StyledTableCell >{row.personalDetails.email}</StyledTableCell>
+              <StyledTableCell >{row.personalDetails.designation}</StyledTableCell>
+              <StyledTableCell ><Link to={`/resumemakerui/resume/${row.id}`} style={{ textDecoration: "none" }}>{row.id}</Link></StyledTableCell>
+              <StyledTableCell ><Link to={`/resumemakerui/resume/${row.id}`}><PreviewRoundedIcon /></Link></StyledTableCell>
+              <StyledTableCell ><Link><DeleteRoundedIcon /></Link></StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
