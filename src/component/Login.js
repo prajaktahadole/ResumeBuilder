@@ -106,11 +106,11 @@ function Login({ handleLoginStatus }) {
                                         <Link>
                                             <Typography
                                                 id="logInForgot"
-                                                //   onClick={() => router.push("/forgotPassword")}
+                                                onClick={() => navigate('/resumemakerui/passwordreset')}
                                                 sx={{ ":hover": { cursor: "pointer" } }}
                                                 variant="h7"
                                             >
-                                                {/* Forgot Password? */}
+                                                Forgot Password?
                                             </Typography>
                                         </Link>
                                     </Typography>
@@ -127,11 +127,7 @@ function Login({ handleLoginStatus }) {
                                         >
                                             Sign Up
                                         </Button>
-                                        {/* <RegisterOptions
-                  anchorEl={anchorEl}
-                  open={open}
-                  setAnchorEl={setAnchorEl}
-                /> */}
+                                      
                                     </Typography>
                                 </Grid>
                             </Grid>

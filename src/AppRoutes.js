@@ -6,6 +6,8 @@ import Resume from "./component/Resume/Resume"
 import SignUp from "./component/SignUp"
 import ResumePreview from "./component/Resume/ResumePreview"
 import ResumeDetails from "./component/Resume/ResumeDetails"
+import PasswordReset from "./component/ForgotPass"
+
 import { useState } from "react"
 
 const AppRoutes = ({ handleLoginStatus }) => {
@@ -19,7 +21,8 @@ const AppRoutes = ({ handleLoginStatus }) => {
         { path: '/resumemakerui/signup', element: <SignUp /> },
         { path: '/resumemakerui/resume', element: <Resume /> },
         { path: '/resumemakerui/resume/:id', element: <ResumeDetails /> },
-        { path: '/resumemakerui/preview', element: <ResumePreview /> }
+        { path: '/resumemakerui/preview', element: <ResumePreview /> },
+        { path: '/resumemakerui/passwordreset', element: <PasswordReset/> }
     ]
     const routes = useRoutes(testRoutes)
     return routes
