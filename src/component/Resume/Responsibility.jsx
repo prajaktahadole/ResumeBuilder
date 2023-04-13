@@ -2,13 +2,14 @@ import { Button, Grid, TextField } from '@mui/material'
 import React, { useState } from 'react';
 import "../../styles/responsibility.css";
 
-function Responsibility() {
+function Responsibility(props) {
 
     const [responsibility, setResponsibility] = useState('');
     const [responsibilityList, setResponsibilityList] = useState([]);
 
     const handleOpenResponsibilities = () => {
         setResponsibilityList([...responsibilityList, { val: responsibility }]);
+        props.onResponsibilityListChange(responsibilityList);
     };
 
     const removeItem = (ele) => {
@@ -16,6 +17,7 @@ function Responsibility() {
             console.log("first", ele)
             const newItems = responsibilityList.filter((i) => i !== ele);
             setResponsibilityList(newItems);
+            props.onResponsibilityListChange(newItems);
             console.log(newItems)
         }
     };

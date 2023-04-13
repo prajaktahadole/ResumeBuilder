@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Grid, TextField, Button } from '@mui/material'
+import Responsibility from './Responsibility';
 
 const Company = () => {
   const initialProject = {
     projectName: '',
-    description: '',
+    proDescription: '',
     proTechnologies: '',
     responsibilities: []
   }
@@ -19,7 +20,14 @@ const Company = () => {
   const [companydata, setCompanydata] = useState([initialCompany]);
   const [project, setProject] = useState([initialProject]);
 
+  const [responsibilityList, setResponsibilityList] = useState([]);
+
+    const handleResponsibilityListChange = (newList) => {
+        setResponsibilityList(newList);
+    };
+  
   console.log("companydata", companydata)
+  console.log("responsibilityList", responsibilityList)
   const handleCompanyInputChange = (e) => {
     const { name, value, id } = e.target;
     companydata[id] = {
@@ -27,7 +35,7 @@ const Company = () => {
       [name]: value
     }
     const updatedArr = companydata.reduce((acc, company, index) => {
-      if (index == id) {
+      if (index === id) {
         acc.push({
           ...company,
           [name]: value
@@ -47,18 +55,17 @@ const Company = () => {
   };
 
   const handleAddProject = (e) => {
-    const cid = e.target.id
-    console.log(cid);
-    companydata[cid] = {
-      ...companydata[cid],
-      projects: [
-        ...companydata[cid].projects,
-        initialProject
-      ]
-    }
-    companydata.splice(cid, 1, companydata[cid])
-    setCompanydata(companydata);
-
+    const cid = e.target.id;
+    const newCompanyData = companydata.map((company, index) => {
+      if (index !== parseInt(cid)) {
+        return company;
+      }
+      return {
+        ...company,
+        projects: [...company.projects, initialProject],
+      };
+    });
+    setCompanydata(newCompanyData);
   };
 
   const handleProjectChange = (index, value) => {
@@ -68,36 +75,21 @@ const Company = () => {
   };
 
   const handleProjectInputChange = (e) => {
-    const { name, value , id } = e.target;
-    project[id]={
-      ...project[id],
+    const { name, value, id } = e.target;
+    const [companyIndex, projectIndex] = id.split('/');
+    const updatedCompanyData = [...companydata];
+    const updatedProjects = [...updatedCompanyData[companyIndex].projects];
+    updatedProjects[projectIndex] = {
+      ...updatedProjects[projectIndex],
       [name]: value
-    }
-    // const updatedProject = project.reduce((acc, proj, index) => {
-    //   if (index == id) {
-    //     acc.push({
-    //       ...proj,
-    //       [name]: value
-    //     })
-    //   } else {
-    //     acc.push(proj)
-    //   }
-    //   return acc;
-    // }, [])
-    // setProject(updatedProject);
-
-
-
-
-    // setProject((prevData) => ({
-    //   ...prevData,
-    //   [name]: value
-    // }
-    // ));
-
-    project.splice(id, 1, project[id])
-    setProject(project);
+    };
+    updatedCompanyData[companyIndex] = {
+      ...updatedCompanyData[companyIndex],
+      projects: updatedProjects
+    };
+    setCompanydata(updatedCompanyData);
   };
+
   const RemoveCompanies = (ele) => {
     if (window.confirm(`Are you sure you want to remove ${companydata}?`)) {
       const newItems = [...companydata];
@@ -105,21 +97,39 @@ const Company = () => {
       setCompanydata(newItems);
     }
   };
-  const RemoveProject = (ele) => {
-    if (window.confirm(`Are you sure you want to remove ${project}?`)) {
+  // const RemoveProject = (ele) => {
+  //   if (window.confirm(`Are you sure you want to remove ${project}?`)) {
+  //     const newItems = [...project];
+  //     newItems.splice(ele, 1);
+  //     setProject(newItems);
+  //   }
+  // };
+
+  const RemoveProject = (index) => {
+    if (window.confirm(`Are you sure you want to remove this project?`)) {
       const newItems = [...project];
-      newItems.splice(ele, 1);
+      newItems.splice(index, 1);
       setProject(newItems);
     }
   };
 
-
+  
 
   return (
     <form id='Companyform' onSubmit={handleAddProject}>
       {companydata.map((company, cindex) => <div style={{ marginBottom: "20px" }} className='subContainer' >
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: "15px", marginRight: "30px" }}>
-          <button style={{ width: "50px", height: "50px", backgroundColor: "red", color: "white", border: "none", fontSize: "25px", fontWeight: "bold" }} onClick={RemoveCompanies}>X</button>
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: "15px", marginRight: "5px" }}>
+          <button style={{
+            width: "30px",
+            height: "30px",
+            backgroundColor: "red",
+            color: "white",
+            border: "none",
+            fontSize: "25px",
+            fontWeight: "bold",
+            cursor: "pointer",
+            borderRadius: "5px",
+          }} onClick={RemoveCompanies}>X</button>
         </Grid>
         <Grid container spacing={2} >
           <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
@@ -190,13 +200,24 @@ const Company = () => {
         {company.projects.map((project, pindex) => (
           <>
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: "15px", marginRight: "5px" }}>
-              <button style={{
-                width: "50px", height: "50px",
-                backgroundColor: "red", color: "white",
-                border: "none", fontSize: "25px", fontWeight: "bold"
-              }}
-                id={`${cindex}/${pindex}`}
-                onClick={RemoveProject}>X</button>
+              <button
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    backgroundColor: "red",
+                    color: "white",
+                    border: "none",
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    borderRadius: "5px",
+                  }}
+                  id={`${cindex}/${pindex}`}
+                  onClick={() => RemoveProject(pindex, project, setProject)}
+              >
+                X
+              </button>
+
             </Grid>
             <Grid container spacing={2} className='subprojectcls' >
 
@@ -226,8 +247,8 @@ const Company = () => {
                   placeholder="Enter your Project Technology"
                   required
                   onChange={handleProjectInputChange}
-                  value={project.projectTechnology}
-                  name=' projectTechnology'
+                  value={project.proTechnologies}
+                  name='proTechnologies'
                 />
               </Grid>
               <Grid item xs={4} style={{ display: 'flex' }} >
@@ -243,21 +264,22 @@ const Company = () => {
                   placeholder="Enter your project description"
                   required
                   onChange={handleProjectInputChange}
-                  value={project.projectDescription}
-                  name='projectDescription'
+                  value={project.proDescription}
+                  name='proDescription'
                 />
               </Grid>
 
               <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
-
+                  
               </Grid>
+              <Responsibility onResponsibilityListChange={handleResponsibilityListChange}/>
             </Grid>
           </>
 
         ))}
 
         {<Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '20px' }}>
-          <Button id={cindex} variant="contained" type="submit" onClick={handleAddProject}>Add Projects</Button>
+          <Button id={cindex} variant="contained" type="submit"  onClick={handleAddProject}>Add Projects</Button>
         </Grid>}
 
       </div>)}
