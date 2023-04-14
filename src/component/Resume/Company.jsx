@@ -20,17 +20,13 @@ const Company = ({ onCompanyDataChange, onResponsibilityListChange }) => {
   const [companydata, setCompanydata] = useState([initialCompany]);
   const [project, setProject] = useState([initialProject]);
 
-  const [responsibilitiesList, setResponsibilitiesList] = useState([]);
-
     const handleResponsibilityListChange = (cId,pId,newList) => {
       let tempCompanyData=[...companydata]
       tempCompanyData[cId].projects[pId].responsibilities=newList
       setCompanydata(tempCompanyData)
-         //setResponsibilitiesList(newList);
-        //onResponsibilityListChange(newList);
+       
     };
- // console.log("Company Data -> ",companydata)
- // console.log("responsibilities -> ",responsibilitiesList)
+ 
   const handleCompanyInputChange = (e) => {
     const { name, value, id } = e.target;
     companydata[id] = {
@@ -103,13 +99,7 @@ const Company = ({ onCompanyDataChange, onResponsibilityListChange }) => {
       setCompanydata(newItems);
     }
   };
-  // const RemoveProject = (ele) => {
-  //   if (window.confirm(`Are you sure you want to remove ${project}?`)) {
-  //     const newItems = [...project];
-  //     newItems.splice(ele, 1);
-  //     setProject(newItems);
-  //   }
-  // };
+ 
 
   const RemoveProject = (index) => {
     if (window.confirm(`Are you sure you want to remove this project?`)) {
