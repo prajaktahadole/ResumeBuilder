@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Grid, TextField, Button } from '@mui/material'
 import Responsibility from './Responsibility';
 
-const Company = () => {
+const Company = ({ onCompanyDataChange, onResponsibilityListChange }) => {
   const initialProject = {
     projectName: '',
     proDescription: '',
@@ -14,20 +14,23 @@ const Company = () => {
     designation: '',
     startDate: '',
     endDate: '',
-    projects: [initialProject]
+    projects: [initialProject],
   }
 
   const [companydata, setCompanydata] = useState([initialCompany]);
   const [project, setProject] = useState([initialProject]);
 
-  const [responsibilityList, setResponsibilityList] = useState([]);
+  const [responsibilitiesList, setResponsibilitiesList] = useState([]);
 
-    const handleResponsibilityListChange = (newList) => {
-        setResponsibilityList(newList);
+    const handleResponsibilityListChange = (cId,pId,newList) => {
+      let tempCompanyData=[...companydata]
+      tempCompanyData[cId].projects[pId].responsibilities=newList
+      setCompanydata(tempCompanyData)
+         //setResponsibilitiesList(newList);
+        //onResponsibilityListChange(newList);
     };
-  
-  console.log("companydata", companydata)
-  console.log("responsibilityList", responsibilityList)
+ // console.log("Company Data -> ",companydata)
+ // console.log("responsibilities -> ",responsibilitiesList)
   const handleCompanyInputChange = (e) => {
     const { name, value, id } = e.target;
     companydata[id] = {
@@ -46,6 +49,7 @@ const Company = () => {
       return acc;
     }, [])
     setCompanydata(updatedArr);
+    onCompanyDataChange(updatedArr);
   };
 
   const handleAddCompany = (e) => {
@@ -65,7 +69,9 @@ const Company = () => {
         projects: [...company.projects, initialProject],
       };
     });
+
     setCompanydata(newCompanyData);
+    onCompanyDataChange(newCompanyData);
   };
 
   const handleProjectChange = (index, value) => {
@@ -272,7 +278,7 @@ const Company = () => {
               <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
                   
               </Grid>
-              <Responsibility onResponsibilityListChange={handleResponsibilityListChange}/>
+              <Responsibility pindex={pindex} cindex={cindex} onResponsibilityListChange={handleResponsibilityListChange}/>
             </Grid>
           </>
 

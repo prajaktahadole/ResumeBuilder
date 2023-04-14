@@ -9,7 +9,7 @@ function Responsibility(props) {
 
     const handleOpenResponsibilities = () => {
         setResponsibilityList([...responsibilityList, { val: responsibility }]);
-        props.onResponsibilityListChange(responsibilityList);
+        props.onResponsibilityListChange(props.cindex,props.pindex,responsibilityList);
     };
 
     const removeItem = (ele) => {

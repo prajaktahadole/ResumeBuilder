@@ -27,10 +27,23 @@ function Resume() {
     setGender(event.target.value);
   }
 
+  const [companyData, setCompanyData] = useState([]);
+  const [responsibilityList, setResponsibilityList] = useState([]);
+
+  const handleCompanyDataChange = (newCompanyData) => {
+    setCompanyData(newCompanyData);
+  };
+
+  const handleResponsibilityListChange = (newList) => {
+    setResponsibilityList(newList);
+  };
+
+  //console.log("companyData -> ",companyData)
+  //console.log("responsibilityList ->",responsibilityList)
 
   const removeItem = (ele) => {
     if (window.confirm(`Are you sure you want to remove ${summaryList}?`)) {
-      console.log("first", ele)
+      //console.log("first", ele)
       const newItems = summaryList.filter((i) => i !== ele);
       setSummaryList(newItems);
       console.log(newItems)
@@ -38,11 +51,16 @@ function Resume() {
   };
   const getSumbitData = () => {
     const form = document.getElementById("myForm"); // replace 'myForm' with the ID of your form element
-    console.log("Form data", form.elements)
     const str = [];
     summaryList.forEach((ele) => {
       str.push(ele.val);
     });
+
+    const str1 = [];
+    responsibilityList.forEach((el) => {
+      str1.push(el.val)
+    })
+    
     const personalDetails = {
       personalDetails: {
         empName: form.elements.fullName.value,
@@ -70,24 +88,26 @@ function Resume() {
         university:  form.elements.university.value,
         passingYear:  form.elements.passingYear.value,
       },
-     workExperience : [
-        {
-          company: form.elements.company.value,
-          jobRole: form.elements.desigination.value,
-          periodFrom: form.elements.periodFrom.value,
-          periodTo: form.elements.periodTo.value,
-          projects : [
-            {
-              projectName: form.elements.projectName.value,
-              description: form.elements.description.value,
-              proTechnologies: form.elements.proTech.value,
-              responsibilities : [
-                form.elements.proResponsibilities.value
-              ]
-            }
-          ]  
-        }
-    ]
+    //  workExperience : [
+    //     {
+    //       company: form.elements.company.value,
+    //       jobRole: form.elements.desigination.value,
+    //       periodFrom: form.elements.periodFrom.value,
+    //       periodTo: form.elements.periodTo.value,
+    //       projects : [
+    //         {
+    //           projectName: form.elements.projectName.value,
+    //           description: form.elements.description.value,
+    //           proTechnologies: form.elements.proTech.value,
+    //           responsibilities : [
+    //             form.elements.proResponsibilities.value
+    //           ]
+    //         }
+    //       ]  
+    //     }
+    // ]
+    companyData,
+
     };
 
     const personalDetailsJSON = JSON.stringify(personalDetails);
@@ -95,6 +115,8 @@ function Resume() {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("companyData -> ",companyData)
+    console.log("responsibilityList ->",responsibilityList)
     getSumbitData();
   }
 
@@ -221,7 +243,7 @@ function Resume() {
           <SkillSets />
        
           <Education />
-          <Company/>
+          <Company onCompanyDataChange={handleCompanyDataChange} onResponsibilityListChange={handleResponsibilityListChange} />
           <Button style={{  width : "25%" ,padding: "10px",
            fontSize:"15px" ,fontWeight: "bolder",  left:"38%" ,
             margin:"25px 0px 25px 0px"}}  variant="contained" 
