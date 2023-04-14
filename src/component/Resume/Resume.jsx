@@ -124,7 +124,7 @@ function Resume() {
   return (
     <>
     <form id="myForm">
-      <div className="container">
+      <div className="containerResume">
         <div className="main">
           <div >
           <h1>Resume</h1>

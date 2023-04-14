@@ -1,7 +1,8 @@
-.container {
+.containerResume {
   width: 100%;
   display: flex;
   justify-content: center;
+  border: "10px solid red";
 }
 
 .main {

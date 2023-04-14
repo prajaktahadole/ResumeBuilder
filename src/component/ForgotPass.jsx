@@ -79,12 +79,12 @@ const PasswordReset  = () => {
     return (
 
         <>
-          <div className="container">
+          <div className="containerforgot">
             <div className="imgmain">
             
             </div>
 
-                <div className="main">
+                <div className="mainResume">
                     <FormControl className="formcontrol">
                         {step === 0 && (
                             <div  >

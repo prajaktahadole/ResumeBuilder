@@ -15,18 +15,20 @@ import {
 const Feedback = () => {
   const [technoList, setTechnoList] = useState(technologyList);
   const [state, setState] = useState(false);
-  function submitHandler(event) {}
+  function submitHandler(event) { }
   // function ratingChanger(event) {}
 
-    
-    return (
-       
-    <div>
+
+  return (
+
+    <div style={{
+      // border: "5px solid red",
+    }}>
       <React.Fragment>
         <form onSubmit={submitHandler}>
           <Card
             style={{
-              maxWidth: 850,
+              maxWidth: "95%",
               margin: "10px auto",
               padding: "25px",
               boxShadow: "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
@@ -36,14 +38,14 @@ const Feedback = () => {
             <Typography
               variant="h5"
               style={{
-                maxWidth: 850,
+                maxWidth: "95%",
                 margin: "10px  auto",
                 padding: "5px 5x",
               }}
             >
               Resume Feedback Form
             </Typography>
-            <Card style={{ maxWidth: 850, margin: "20px auto" }}>
+            <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
               <CardContent>
                 <Grid container spacing={1}>
                   <Grid xs={12} sm={6} item>
@@ -60,7 +62,7 @@ const Feedback = () => {
               </CardContent>
             </Card>
             {/*"interviewType interview round"*/}
-            <Card style={{ maxWidth: 850, margin: "10px auto" }}>
+            <Card style={{ maxWidth: "95%", margin: "10px auto" }}>
               <CardContent>
                 <Grid container spacing={1}>
                   <Grid xs={4} item>
@@ -76,14 +78,13 @@ const Feedback = () => {
               </CardContent>
             </Card>
             {/* Technical Skills*/}
-            <Card style={{ maxWidth: 850, margin: "20px auto" }}>
+            <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
               <CardContent>
                 <Typography
                   variant="h6"
                   style={{
-                    maxWidth: 850,
-                    margin: "10px  auto",
-                    padding: "20px 5x",
+                    maxWidth: "95%",
+                    padding: "5px",
                     textAlign: "left",
                   }}
                 >
@@ -118,15 +119,15 @@ const Feedback = () => {
             </Card>
             {/* Soft Skills*/}
             <Card
-              style={{ maxWidth: 850, margin: "20px auto", padding: "20px 5x" }}
+              style={{ maxWidth: "95%", margin: "20px auto", padding: "20px 5x" }}
             >
               <CardContent>
                 <Typography
                   variant="h6"
                   style={{
-                    maxWidth: 850,
-                    margin: "10px  auto",
-                    padding: "20px 5x",
+                    maxWidth: "95%",
+                    padding: "5px",
+                    marginBottom: "5px",
                     textAlign: "left",
                   }}
                 >
@@ -142,7 +143,7 @@ const Feedback = () => {
                 </Grid>
               </CardContent>
             </Card>
-            <Card style={{ maxWidth: 850, margin: "20px auto" }}>
+            <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
               <CardContent>
                 <Grid container spacing={1}>
                   <Grid xs={12} item>
@@ -174,7 +175,7 @@ const Feedback = () => {
       </React.Fragment>
     </div>
   );
-    
+
 }
 
 export default Feedback

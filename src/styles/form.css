@@ -1,4 +1,4 @@
-.container{
+.containerforgot{
     margin: auto;
      width: 100%;
      /* border:5px solid green; */
@@ -12,7 +12,7 @@
     height: 100vh;
 
 }
-.main{
+.mainResume{
     width: 30%;
     border: "10px solid red";
     margin: auto;
