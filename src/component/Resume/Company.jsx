@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Grid, TextField, Button } from "@mui/material";
 import Responsibility from "./Responsibility";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { format } from "date-fns";
-import { CheckBox } from "@mui/icons-material";
+
 
 const Company = ({
   onCompanyDataChange,
@@ -33,28 +30,6 @@ const Company = ({
     isEdit ? item.workExperience[0] : [initialProject]
   );
 
-  const [selectedStartDate, setSelectedStartDate] = useState(format(new Date(), "MMM-yyyy"));
-
-  const [selectedEndDate, setSelectedEndDate] = useState(
-    format(new Date(), "MMM-yyyy")
-  );
-
-  const handleStartDateChange = (date) => {
-    setSelectedStartDate(format(date, "MMM-yyyy"));
-  };
-
-  const handleEndDateChange = (date) => {
-    setSelectedEndDate(format(date, "MMM-yyyy"));
-  };
-
-  useEffect(() => {
-    console.log("Selected Start Date:", selectedStartDate);
-  }, [selectedStartDate]);
-  
-  useEffect(() => {
-    console.log("Selected End Date:", selectedEndDate);
-  }, [selectedEndDate]);
-
   const handleResponsibilityListChange = (cId, pId, newList) => {
     const str1 = [];
     newList.forEach((el) => {
@@ -68,6 +43,18 @@ const Company = ({
 
   const handleCompanyInputChange = (e) => {
     const { name, value, id } = e.target;
+   
+    console.log("Name123", name, value)
+
+    if(name === "periodFrom" || name === "periodTo"){
+      const dateObj = new Date(value);
+    const formattedDate = dateObj.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+    console.log("formattedDate00", formattedDate); 
+    }
+
+    
+
     companydata[id] = {
       ...companydata[id],
       [name]: value,
@@ -107,6 +94,8 @@ const Company = ({
     onCompanyDataChange(newCompanyData);
   };
 
+  console.log("Company Data ---> ",companydata)
+
   const handleProjectChange = (index, value) => {
     const newCompany = [...project];
     newCompany[index] = value;
@@ -136,6 +125,11 @@ const Company = ({
       setCompanydata(newItems);
     }
   };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('default', { month: 'short', year: 'numeric' }).toUpperCase();
+  }
 
   const RemoveProject = (index) => {
     if (window.confirm(`Are you sure you want to remove this project?`)) {
@@ -199,7 +193,7 @@ const Company = ({
             <Grid item xs={4} style={{ display: "flex", alignItems: "start" }}>
               <h3>Designation:</h3>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <TextField
                 style={{ width: "100%" }}
                 Designation
@@ -213,59 +207,42 @@ const Company = ({
                 onChange={handleCompanyInputChange}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={2.5}>
               <TextField
                 style={{ width: "100%" }}
                 periodFrom
                 id={cindex}
+                type="month"
                 label="Start"
-                placeholder="Start Date"
+                //placeholder="Start Date"
                 required
                 defaultValue={isEdit ? item.workExperience.periodFrom : ""}
                 name="periodFrom"
                 value={company.periodFrom}
                 onChange={handleCompanyInputChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
-              {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  label="Start Date"
-                  id={cindex}
-                  views={["year", "month"]}
-                  onChange={handleStartDateChange}
-                  maxDate = {new Date()}
-                  format="MMM-yyyy"
-                  inputVariant="outlined"
-                  value={selectedStartDate}
-                  autoOk
-                />
-              </MuiPickersUtilsProvider> */}
+                        
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={2.5}>
               <TextField
                 style={{ width: "100%" }}
                 periodFrom
                 id={cindex}
+                type="month"
                 label="End"
-                placeholder="End Date"
+                //placeholder="End Date"
                 required
                 defaultValue={isEdit ? item.workExperience.periodTo : ""}
                 name="periodTo"
                 value={company.periodTo}
                 onChange={handleCompanyInputChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
-              {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  label="End Date"
-                  id={cindex}
-                  views={["year", "month"]}
-                  onChange={handleEndDateChange}
-                  maxDate = {new Date()}
-                  format="MMM-yyyy"
-                  value={selectedEndDate}
-                  inputVariant="outlined"
-                  autoOk
-                />
-              </MuiPickersUtilsProvider> */}
             </Grid>
           </Grid>
 
@@ -426,3 +403,7 @@ const Company = ({
 };
 
 export default Company;
+
+
+
+
