@@ -4,7 +4,6 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { technologyList } from "./Data";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -16,8 +15,6 @@ const MenuProps = {
     },
   },
 };
-const names = technologyList.map((technology) => technology.name);
-console.log(names);
 
 function getStyles(name, personName, theme) {
   return {
@@ -35,23 +32,23 @@ export default function MultipleSelectPlaceholder({
   const theme = useTheme();
 
   const [personName, setPersonName] = React.useState([]);
+  const names =
+    Array.isArray(technoList) &&
+    technoList.map((technology) => technology.techName);
+  const [techSkill, setTechSkill] = React.useState([]);
 
   const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    const newList = technologyList.map((techno) => {
-      if (value.includes(techno.name)) {
-        return { ...techno, isSelected: true };
-      } else {
-        return { ...techno, isSelected: false };
-      }
-    });
-
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setPersonName(event.target.value);
+    const newList =
+      Array.isArray(technoList) &&
+      technoList.map((tech) => {
+        if (event.target.value.includes(tech.techName)) {
+          return { ...tech, isSelected: true };
+        } else {
+          return { ...tech, isSelected: false };
+        }
+      });
+    setTechSkill(newList);
     setTechnoList(newList);
   };
 
@@ -69,7 +66,6 @@ export default function MultipleSelectPlaceholder({
             if (selected.length === 0) {
               return <em>Select Technologies</em>;
             }
-
             return selected.join(", ");
           }}
           MenuProps={MenuProps}
@@ -78,15 +74,16 @@ export default function MultipleSelectPlaceholder({
           <MenuItem disabled value="">
             <em>Select Technologies</em>
           </MenuItem>
-          {names.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
-            >
-              {name}
-            </MenuItem>
-          ))}
+          {Array.isArray(names) &&
+            names.map((name) => (
+              <MenuItem
+                key={name}
+                value={name}
+                style={getStyles(name, personName, theme)}
+              >
+                {name}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
     </div>

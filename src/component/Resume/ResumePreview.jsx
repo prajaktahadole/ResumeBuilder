@@ -5,7 +5,7 @@ function ResumePreview() {
     <>
    <div>
     <h1>ResumePreview</h1>
-    <div>my own</div>
+    
    </div>
     </>
   )

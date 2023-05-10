@@ -1,0 +1,121 @@
+
+
+.Previewmain {
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    padding: 25px;
+    width: 90%;
+    margin: auto;
+  
+}
+
+.Name {
+    color:rgb(33, 80, 162);
+    font-size: 45px;
+    /* border: 1px solid red; */
+    margin: 0px;
+    font-weight: bold;
+}
+
+.Pname {
+    display: flex;
+    flex-direction: column;
+}
+
+.Pname>p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.preflex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.pleft {
+    margin-top: -10px;
+    text-align: right;
+}
+
+.PsubContainer {
+    padding: 25px;
+   
+}
+
+.Phead {
+    background-color:rgb(33, 80, 162);
+    color: aliceblue;
+    text-align: center;
+    font-weight: bolder;
+    margin-top: -35px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.pskills{
+    padding: 45px;
+}
+
+.pskills>* {
+    /*  */
+    display: flex;
+    margin: -18px;
+
+}
+.pwork{
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: space-between;
+}
+.pwork> div, .pproject > div {
+    display: flex;
+   
+}
+
+.Rlogo{
+    object-fit: contain;
+}
+
+
+.skillsmain > div{
+    display: flex;
+    flex-direction: row;
+    padding: 3px 0px 3px 0px;     
+}
+
+
+.Psubhead {
+    font-size: large;
+    font-weight: 500;
+    margin-right: 25px;
+    font-weight: bold;
+    width: 20%;
+    /* border: 1px solid blue; */
+}
+
+.Pdhead{
+    width: 200px;
+}
+.projectsmain{
+     margin-bottom: 10px;
+}
+
+.projectsmain > div{
+   /* border: 1px solid green; */
+    display: flex;
+    flex-direction: row;
+    padding: 3px 0px 3px 0px; 
+}
+
+.Pdescription{
+     /* border: 1px solid green; */
+     width: 79%;
+     align-items: end;
+}
+
+.Proname{
+    font-size: large;
+    font-weight: 500;
+    margin-right: 25px;
+    font-weight: bold;
+   
+}

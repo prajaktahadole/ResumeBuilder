@@ -1,31 +1,66 @@
-import './App.css';
-import Resume from './component/Resume/Resume';
-import Login from './component/Login';
-import SignUp from './component/SignUp';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Dashboard from './component/dashboard/Drawer';
-import AppRoutes from './AppRoutes';
-import MiniDrawer from './component/dashboard/Drawer';
-import { useState } from 'react';
-
+import "./App.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import AppRoutes from "./AppRoutes";
+import MiniDrawer from "./component/dashboard/Drawer";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsLogin } from "./reduxToolkit/Account/accountSlice";
+import { isTokenValid } from "./utils/validToken";
+import MultiNotification from "./component/NotificationSnackbar/MultipleNotification";
+import { header } from "react-dom-factories";
 
 function App() {
-  const [loginStatus, setLoginStatus] = useState(false);
+  const { isLogin } = useSelector((state) => state.account);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const [redirectTo, setRedirectTo] = useState(location.state?.from || "/resumemakerui/dashboard");
+  
+  useEffect(() => {
+    if(location.pathname !== "/resumemakerui/login" && location.pathname !== "/resumemakerui/dashboard") {
+      localStorage.setItem("redirect", location.pathname)
+    }
+    else
+    {
+      localStorage.setItem("redirect", redirectTo)
+    }
+  }, []);
+  
+  header('Access-Control-Allow-Origin:  *');
+  header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
+  header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Authorization');
 
-  const handleLoginStatus = (data) => {
-    setLoginStatus(data)
-  }
-  return (
-    <BrowserRouter>
-      <div>
-        {
-          loginStatus ? (<>
-            <MiniDrawer handleLoginStatus={handleLoginStatus} />
-          </>) : (<AppRoutes loginStatus={loginStatus} handleLoginStatus={handleLoginStatus} />)
+  useEffect(() => {
+    if (isTokenValid()) {
+      dispatch(setIsLogin(true));
+      //navigate("/resumemakerui/dashboard");
+      if (localStorage.getItem("redirect") !== null) {
+        const redirect = localStorage.getItem("redirect");
+        if (redirect.startsWith("/resumemakerui")) {
+          navigate(redirect);
+        } else {
+          navigate("/resumemakerui/dashboard");
         }
-      </div>
+        localStorage.removeItem("redirect");
+      } else {
+        navigate("/resumemakerui/dashboard");
+      }
+    } else {
+      dispatch(setIsLogin(false));
+    }
+  }, []);
 
-    </BrowserRouter>
+  return (
+    <div>
+      <MultiNotification />
+      {isLogin ? (
+        <>
+          <MiniDrawer />
+        </>
+      ) : (
+        <AppRoutes />
+      )}
+    </div>
   );
 }
 

@@ -17,6 +17,7 @@
 
 
 .box {
+    border: "5px solid red";
     /* height: 100vh; */
     padding: 22px 96px;
     /* overflow-y: scroll; */

@@ -1,9 +1,21 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { FormControl, InputAdornment, OutlinedInput } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  OutlinedInput,
+  Typography,
+} from "@mui/material";
+import { array } from "yup";
+import {
+  setMultiNotificationData,
+  setMultiNotificationVariant,
+} from "../../reduxToolkit/Notification/notificationSlice";
+import { useDispatch } from "react-redux";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -13,15 +25,47 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function FormRow({ technologyList, setTechnologyList, isSoftskill }) {
-  console.log("setTechnologyList", setTechnologyList);
+function FormRow({
+  technologyList,
+  setTechnologyList,
+  isSoftskill,
+  handleSoftSkillRatingsChange,
+  setValue,
+  handleTechRatingsChange,
+}) {
+  const [skillRatings, setSkillRatings] = useState([]);
+  const [techStackRating, setTechStackRating] = useState([]);
+  const [techSkills, setTechSkills] = useState([]);
+  const [inputError, setInputError] = useState(false);
+  const uniqueSkills = new Set();
+
+  const updatedTechnologyList = technologyList &&
+    Array.isArray(technologyList) && technologyList.map(tech => {
+      const { techId, techSkills, ...rest } = tech; // Destructuring assignment to remove techSkills array
+      const updatedTechSkills = techSkills && Array.isArray(techSkills) && techSkills.map(({ techSkillId, ...skill }) => skill); // Destructuring assignment to remove techSkillId from techSkills array
+      return { ...rest, techSkills: updatedTechSkills }; // Combine rest of the properties with updated techSkills array
+    });
+  // Initialize the softSkillRatings array with default values
+  useEffect(() => {
+    const defaultRatings =
+      technologyList &&
+      Array.isArray(technologyList) &&
+      technologyList.map((skill) => ({
+        skillName: skill.skillName,
+        rating: 0,
+      }));
+    setSkillRatings(defaultRatings);
+  }, [technologyList]);
+
+  const dispatch = useDispatch();
+
   const renderSkill = (skill) => {
     return (
       <Grid item xs={4}>
         <Item>
           <Grid container justifyContent={"space-between"} alignItems="center">
-            <Grid item>{skill.name}</Grid>
-            <Grid item>
+            <Grid item style={{ width: "70%", wordWrap: 'break-word', textAlign: 'start' }}>{skill.skillName}</Grid>
+            <Grid item style={{ width: "30%", }}>
               <FormControl
                 sx={{ maxWidth: 75 }}
                 size="small"
@@ -30,20 +74,55 @@ function FormRow({ technologyList, setTechnologyList, isSoftskill }) {
                 <OutlinedInput
                   id="outlined-adornment-weight"
                   endAdornment={
-                    <InputAdornment position="end">/10</InputAdornment>
+                    <InputAdornment
+                      position="end"
+                      style={{ fontWeight: "800", }}
+                    >
+                      / 5
+                    </InputAdornment>
                   }
                   onChange={(e) => {
-                    if (isSoftskill) handleRatingChange(e, skill);
-                    else handleSoftSKillRatingChange(e, skill);
+                    if (isSoftskill) handleSoftSKillRatingChange(e, skill);
+                    else handleRatingChange(e, skill);
+                  }}
+                  // onKeyPress={(e) => {
+                  //   const charCode = e.which || e.keyCode;
+                  //   if (
+                  //     (charCode < 48 ||
+                  //       charCode > 53 ||
+                  //       e.target.value.length >= 1) && e.target.value !== ""
+                  //   ) {
+                  //     e.preventDefault();
+                  //     dispatch(setMultiNotificationVariant("error"));
+                  //     const errorArray = [
+                  //       {
+                  //         propertyValue:
+                  //           "Please enter a single digit between 0 and 5",
+                  //       },
+                  //     ];
+                  //     dispatch(setMultiNotificationData(errorArray));
+                  //   }
+                  // }}
+                  onKeyPress={(e) => {
+                    const charCode = e.which || e.keyCode;
+                    if (charCode < 48 || charCode > 53 || e.target.value.length >= 1) {
+                      e.preventDefault();
+                      dispatch(setMultiNotificationVariant("error"));
+                      const errorArray = [
+                        {
+                          propertyValue: "Please enter a single digit between 1 and 5",
+                        },
+                      ];
+                      dispatch(setMultiNotificationData(errorArray));
+                    }
                   }}
                   aria-describedby="outlined-weight-helper-text"
                   inputProps={{
                     "aria-label": "weight",
+                    min: 1,
+                    max: 5,
                   }}
                 />
-                {/* <FormHelperText id="outlined-weight-helper-text">
-        Weight
-      </FormHelperText> */}
               </FormControl>
             </Grid>
           </Grid>
@@ -52,28 +131,97 @@ function FormRow({ technologyList, setTechnologyList, isSoftskill }) {
     );
   };
 
-  const handleSoftSKillRatingChange = (e, skill) => {};
+  const handleSoftSKillRatingChange = (e, skill) => {
+    const ratings =
+      Array.isArray(technologyList) &&
+      technologyList.map((eg) => {
+        if (eg.skillName === skill.skillName) {
+          if (
+            !isNaN(e.target.value) &&
+            e.target.value >= 0 &&
+            e.target.value <= 5
+          ) {
+            setInputError(false);
+          } else {
+            setInputError(true);
+          }
+          return { ...eg, rating: e.target.value };
+        } else {
+          // Preserve the previous rating for skills that don't match
+          const existingSkillRating = skillRatings.find(
+            (r) => r.skillName === eg.skillName
+          );
+          return existingSkillRating || eg;
+        }
+      });
+    setSkillRatings(ratings);
+    handleSoftSkillRatingsChange(ratings);
+    setValue("softSkillRatings", ratings);
+  };
 
   const handleRatingChange = (e, skill) => {
-    const tech = [...technologyList];
-    for (let t of tech) {
-      for (let s of t.skills) {
-        if (s.name === skill.name) {
-          s.rating = e.target.value;
-        }
-      }
-    }
-    setTechnologyList(tech);
+
+    const ratings =
+      updatedTechnologyList &&
+      Array.isArray(updatedTechnologyList) &&
+      updatedTechnologyList.map((eg) => {
+        const tech =
+          eg.techSkills &&
+          Array.isArray(eg.techSkills) &&
+          eg.techSkills.map((techskill) => {
+
+            if (techskill.skillName === skill.skillName) {
+              // Update the current rating for the matching skill
+              return { ...techskill, rating: e.target.value };
+            } else {
+              // Preserve the previous rating for skills that don't match
+              const existingSkillRating = techSkills.find(
+                (r) => r.skillName === techskill.skillName
+              );
+
+              return existingSkillRating
+                ? { ...existingSkillRating, rating: 0 }
+                : techskill;
+            }
+          });
+        return { ...eg, techSkills: tech };
+      });
+
+    setTechStackRating(ratings);
+
+    const filteredTechnologyList = ratings.filter(item => item.isSelected);
+    const cleanedFilteredTechnologyList = filteredTechnologyList.map(({ isSelected, ...rest }) => rest);
+    setTechnologyList(ratings); // Update the technologyList state with the updated ratings
+    handleTechRatingsChange(technologyList);
+
+    setValue("technologyRating", cleanedFilteredTechnologyList);
   };
-  console.log(technologyList);
+
   return (
     <React.Fragment>
       {isSoftskill &&
-        technologyList[0].skills.map((skill) => renderSkill(skill))}
+        technologyList &&
+        Array.isArray(technologyList) &&
+        technologyList.map((skill) => renderSkill(skill))}
+      {technologyList &&
+        Array.isArray(technologyList) &&
+        technologyList
+          .filter((t) => t.isSelected)
+          .map((tech) =>
+            tech.techSkills
+              .filter((skill) => !uniqueSkills.has(skill.skillName))
+              .map((skill) => {
+                uniqueSkills.add(skill.skillName);
+                {/* return renderSkill(skill, uniqueSkills); */ }
+                if (tech.isSelected) {
+                  // Check if the technology is selected
+                  return renderSkill(skill, uniqueSkills);
+                } else {
+                  return null; // Return null for skills whose technology is not selected
+                }
+              })
+          )}
 
-      {technologyList
-        .filter((t) => t.isSelected)
-        .map((tech) => tech.skills.map((skill) => renderSkill(skill)))}
     </React.Fragment>
   );
 }
@@ -81,17 +229,22 @@ function FormRow({ technologyList, setTechnologyList, isSoftskill }) {
 export default function NestedGrid({
   technologyList,
   setTechnologyList,
+  setValue,
   isSoftskill,
+  handleSoftSkillRatingsChange,
+  handleTechRatingsChange,
 }) {
-  // console.log("nested", technologyList);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={1}>
         <Grid container item spacing={3}>
           <FormRow
+            setValue={setValue}
             technologyList={technologyList}
             setTechnologyList={setTechnologyList}
             isSoftskill={isSoftskill}
+            handleSoftSkillRatingsChange={handleSoftSkillRatingsChange}
+            handleTechRatingsChange={handleTechRatingsChange}
           />
         </Grid>
       </Grid>

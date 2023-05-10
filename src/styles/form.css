@@ -1,6 +1,7 @@
 .containerforgot{
     margin: auto;
      width: 100%;
+     display: flex;
      /* border:5px solid green; */
    }
 .imgmain{

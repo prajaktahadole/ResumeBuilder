@@ -3,27 +3,81 @@ import { Button, Typography,TextField, FormControl,  Paper , Grid, Alert } from 
 import "../styles/form.css"
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { checkEmail, resetPassword } from "../services/resumemaker-services";
+import {
+    setMultiNotificationData,
+    setMultiNotificationVariant,
+  } from "../reduxToolkit/Notification/notificationSlice";
+import { useDispatch } from "react-redux";
+import { axiosMethod } from "../services/helper";
 
 const PasswordReset  = () => {
-    const [step, setStep] = useState(0);
-    const [email, setEmail] = useState("");
+
+    const activeStatus = localStorage.getItem("activeStatus")
+    const emailres = localStorage.getItem("email")
+    let activeStatusRes = false;
+    if(activeStatus === "N"){
+        activeStatusRes = true;
+    }
+
+    const dispatch = useDispatch();
+    const [step, setStep] = useState( activeStatusRes ? 1 : 0);
+    const [email, setEmail] = useState(activeStatusRes ? emailres : "");
     const [newpass, setNewPass] = useState("");
     const [pass, setPass] = useState("");
 
      const navigate = useNavigate()
 
-    const HandleSteps = (e) => {
+    const HandleSteps = async (e) => {  
         e.preventDefault();
+        const res = await checkEmail({
+            email: email,
+            header: {
+                "Content-Type": "application/json",
+              },
+          });
 
         if (step === 0) {
-            if (email === "" || !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email))) Alert("Please Fill Your Correct Email")
-            else setStep(cur => cur + 1)
+
+            if (email === "" || !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email))) toast("Please Fill Your Correct Email")
+            else if(res.code === "200" ){
+                setStep(cur => cur + 1)
+            }else{
+   
+               dispatch(setMultiNotificationVariant("error"));
+                const errorArray = [
+                  {
+                    propertyValue: res?.message || "Something went wrong",
+                  },
+                ];
+                dispatch(setMultiNotificationData(errorArray));
+              
+            }
+             
         }
         else if (step === 1) {
-            if (newpass === "" || pass.length < 5) Alert("Please Fill Proper Password")
-            if (pass === "" || pass.length < 5) Alert("Please Fill Proper Password")
-            if (newpass !== pass) Alert("Password is not matched")
-            else setStep(cur => cur + 1)
+            if (newpass === "" || pass.length < 5) toast("Please Fill Proper Password")
+            if (pass === "" || pass.length < 5) toast("Please Fill Proper Password")
+            if (newpass !== pass) toast("Password is not matched")
+            else {
+                
+                const data = {
+                    email: email,
+                    password: pass
+                }
+            
+                const res = await resetPassword(JSON.stringify(data),{
+                    headers: {
+                        'Content-Type': 'application/json',
+                      }
+                })
+              
+                if(res?.code==="200")
+                {
+                    setStep(cur => cur + 1)
+                }
+
+            }
 
         } else {
             setStep(cur => cur + 1)
@@ -32,16 +86,16 @@ const PasswordReset  = () => {
     const renderNextButton = () => {
         if (step === 0) {
             return (
-                <Button onClick={HandleSteps} type="button">Confirm</Button>
+                <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none'}} onClick={HandleSteps} type="button">Confirm</Button>
             )
         }
           else if (step === 1) {
             return (
-                <Button onClick={HandleSteps} type="button">Reset Password</Button>
+                <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none'}} onClick={HandleSteps} type="button">Reset Password</Button>
             )
         } else if (step === 2) {
             return (
-                  <Button onClick={() => navigate('/resumemakerui/login')} type="button">Back to Login</Button>
+                  <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none'}} onClick={() => navigate('/resumemakerui/login')} type="button">Back to Login</Button>
             )}
         else {
             return (
@@ -58,12 +112,12 @@ const PasswordReset  = () => {
     const renderBackButton = () => {
         if (step === 0) {
             return (
-                <Button onClick={() => navigate('/resumemakerui/login')} type="button">Back to Login</Button>
+                <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none'}} onClick={() => navigate('/resumemakerui/login')} type="button">Back to Login</Button>
             )
      }
             else if (step === 1) {
              return (
-                 <Button onClick={handelBack} type="button">Change Registered Email ID</Button>
+                 <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none'}} onClick={handelBack} type="button">Change Registered Email Id</Button>
              )}
              else if (step === -1) {
                 return (
@@ -71,7 +125,7 @@ const PasswordReset  = () => {
                 )}
              else {
              return (
-                 <Button onClick={handelBack} type="button">Back</Button>
+                 <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none'}} onClick={handelBack} type="button">Back</Button>
              )
          }
      }
@@ -89,9 +143,10 @@ const PasswordReset  = () => {
                         {step === 0 && (
                             <div  >
                                 <Typography variant="h4" gutterBottom>
-                                Forgot your Password?
+                                Forgot your password?
                                 </Typography>
-                                <h6>Enter your Registered Email ID to Reset Password</h6>
+                                <h4> </h4>
+                                {/* <h4>Enter your Registered Email ID to Reset Password</h4> */}
 
                                 <TextField type="email" name="email" label="Email" fullWidth
                                     placeholder="Enter your Registered Email ID" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -102,25 +157,25 @@ const PasswordReset  = () => {
 
                         {step === 1 && (
                             <div style={{ display: "flex" , flexDirection:"column"}}>
-                                <Typography variant="h4" gutterBottom >Reset Password</Typography>
+                                {activeStatusRes ?  <Typography variant="h4" gutterBottom >Set Password</Typography>
+                                 : 
+                                <Typography variant="h4" gutterBottom >Reset Password</Typography>}
+                          
                            <div className="textmar">
                            <TextField type="password" name="newpass" fullWidth
-                                    label="New PassWord"
-                                    placeholder="Enter your New PassWord"
+                                    label="New Password"
+                                    placeholder="Enter your New Password"
                                     value={newpass} onChange={(e) => setNewPass(e.target.value)} />
                            </div>
                            <div className="textmar">
-                           <TextField type="text"
+                           <TextField type="password"
                                     fullWidth
                                     name="pass"
                                     value={pass}
-                                    label="Confirm PassWord"
-                                    placeholder="Confirm Your PassWord"
+                                    label="Confirm Password"
+                                    placeholder="Confirm Your Password"
                                     onChange={(e) => setPass(e.target.value)} />
-                           </div>
-                               
-
-                               
+                           </div>   
                             </div>
                         )}
 
@@ -128,8 +183,7 @@ const PasswordReset  = () => {
 
                         {step === 2 && (
                             <div>
-                                <Typography className="head">Congratulations!</Typography>
-                                <Typography fontSize='xl'>PassWord Changed Sucessfully :)</Typography>
+                                <Typography className="head">Congratulations! Password Changed Sucessfully.</Typography>
                             </div>
                         )}
 
@@ -148,4 +202,4 @@ const PasswordReset  = () => {
     );
 };
 
-export default PasswordReset ;
+export default PasswordReset;

@@ -1,97 +1,236 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { Link } from "react-router-dom"
-import "../../styles/resume.css"
-import PreviewRoundedIcon from '@mui/icons-material/PreviewRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { getResumeAllData } from '../../services/resumemaker-services'
-
-const token = localStorage.getItem("token")
-
-const config = {
-  headers: {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  }
-};
-
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
-function createData(name, email, designation, resumeid) {
-  return { name, email, designation, resumeid };
-}
+import * as React from "react";
+import Paper from "@mui/material/Paper";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../styles/resume.css";
+import { deleteResumeById, downloadResumeById, getResumeAllData, getResumeAllDataByEmail } from "../../services/resumemaker-services";
+import AgGridTable from "../AgGridTable/AgGridTable";
+import { columnDefsResume } from "../../utils/AgGridTableColumns";
+import { Button, Grid, IconButton, InputBase } from "@mui/material";
+import DownloadForOfflineRoundedIcon from '@mui/icons-material/DownloadForOfflineRounded';
+import PreviewRoundedIcon from "@mui/icons-material/PreviewRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import SearchIcon from '@mui/icons-material/Search';
+import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
+import { useDispatch } from "react-redux";
+import { setMultiNotificationData, setMultiNotificationVariant } from "../../reduxToolkit/Notification/notificationSlice";
 
 export default function CustomizedTables() {
-
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState("");
+  const buttonRendererView = (props) => {
+    return (
+      <IconButton
+        size="small"
+        onClick={() =>
+          navigate(`/resumemakerui/resume/${props.data.resumeUUID}`)
+        }
+        color="primary"
+      >
+        <PreviewRoundedIcon />
+      </IconButton>
+    );
+  };
+  const buttonRendererDelete = (props) => {
+    return (
+      <IconButton
+        size="small"
+        onClick={() => deleteResume(props.data.resumeUUID)}
+        color="error"
+      >
+        <DeleteRoundedIcon />
+      </IconButton>
+    );
+  };
+  const buttonDownloadResume = (props) => {
+    return (
+      <IconButton
+        size="small"
+        onClick={() => downloadResume(props.data.resumeUUID)}
+        color="primary"
+      >
+        <DownloadForOfflineRoundedIcon />
+      </IconButton>
+    );
+  };
 
-  useEffect(() => {
-    async function fetchdata() {
-      const res = await getResumeAllData(config);
-      setData(res)
+  const buttonShareResume = (props) => {
+    return (
+      <IconButton
+        size="small"
+        onClick={() => shareResume(props.data.resumeUUID)}
+        color="primary"
+      >
+       <ShareRoundedIcon />
+      </IconButton>
+    );
+  };
+
+  const downloadResume = async (resumeUUID) => {
+    try {
+      const res = await downloadResumeById(resumeUUID, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        },
+        responseType: 'blob'
+      });
+
+      const blob = new Blob([res.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = resumeUUID + '.pdf';
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to download resume.');
     }
-    fetchdata()
-    console.log("Data received: ", data);
+  }
+
+  const shareResume = (resumeUUID) => {
+    const currentURL = `${window.location.origin}/resumemakerui/resume/${resumeUUID}`;
+    navigator.clipboard.writeText(currentURL)
+      .then(() => 
+      {
+        dispatch(setMultiNotificationVariant("success"));
+        const errorArray = [
+          {
+            propertyValue: "Linked Copied",
+          },
+        ];
+        dispatch(setMultiNotificationData(errorArray));
+      })
+      .catch(() =>  {
+        dispatch(setMultiNotificationVariant("error"));
+        const errorArray = [
+          {
+            propertyValue: "Error in Copy Link",
+          },
+        ];
+        dispatch(setMultiNotificationData(errorArray));
+      });
+   
+  }
+
+  const deleteResume = async (resumeUUID) => {
+    const confirmed = window.confirm("Are you sure you want to delete?");
+      if (confirmed) {
+    const res = await deleteResumeById(resumeUUID, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    if (res.status === 200) {
+      alert("Resume Deleted Successfully")
+      fetchdata();
+    } else {
+      alert('Something went wrong')
+    }
+  }
+}
+
+  const gridOptionsResume = {
+    headerHeight: 36,
+    columnDefs: columnDefsResume,
+    frameworkComponents: {
+      buttonRendererViewResume: buttonRendererView,
+      buttonRendererDownloadResume: buttonDownloadResume,
+      buttonRendererShareResume: buttonShareResume,
+      buttonRendererDeleteResume: buttonRendererDelete,
+      customNoRowsOverlay: CustomNoRowsOverlay,
+    }
+  };
+
+  function CustomNoRowsOverlay() {
+    return (
+      <div
+        className="ag-overlay-no-rows-wrapper"
+        style={{
+          backgroundColor: "white",
+          padding: "20px",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "20px",
+          fontWeight: "bolder"
+        }}
+      >
+        <div style={{ textAlign: "center" }}>NO DATA FOUND FOR LOGGED IN USER</div>
+      </div>
+    );
+  }
+  useEffect(() => {
+    fetchdata();
   }, []);
 
-  return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow style={{ margin: "auto", alignContent: "center", textAlign: "center" }} >
+  async function fetchdata() {
+    if(localStorage.getItem("role") === "ADMIN")
+    {
+      const res = await getResumeAllData({
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setData(res);
+    }
+    else
+    {
+      const res = await getResumeAllDataByEmail(localStorage.getItem("email"),{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell >Email</StyledTableCell>
-            <StyledTableCell >Designation</StyledTableCell>
-            <StyledTableCell >Resume UUID</StyledTableCell>
-            <StyledTableCell >View</StyledTableCell>
-            <StyledTableCell >Delete</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody
-          style={{ margin: "auto", alignContent: "center", textAlign: "center" }}>
-          {data && Array.isArray(data) && data.length && data.map((row) => (
-            <StyledTableRow key={row.id}>
-              <StyledTableCell component="th" scope="row">
-                {row.personalDetails.empName}
-              </StyledTableCell>
-              <StyledTableCell >{row.personalDetails.email}</StyledTableCell>
-              <StyledTableCell >{row.personalDetails.designation}</StyledTableCell>
-              <StyledTableCell ><Link to={`/resumemakerui/resume/${row.id}`} style={{ textDecoration: "none" }}>{row.id}</Link></StyledTableCell>
-              <StyledTableCell ><Link to={`/resumemakerui/resume/${row.id}`}><PreviewRoundedIcon /></Link></StyledTableCell>
-              <StyledTableCell ><Link><DeleteRoundedIcon /></Link></StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+      setData(res);
+
+    }
+    
+  }
+
+  return (
+    <>
+      <Grid container width={'100%'} height={'100%'} marginBottom={"25px"}  >
+
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Paper
+            component="form"
+            sx={{ display: 'flex', alignItems: 'center', width: 300 }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Search resume"
+              inputProps={{ 'aria-label': 'search name' }}
+              value={searchValue}
+              onChange={(e) => {
+                setSearchValue(e?.target?.value || "");
+              }}
+            />
+            <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+
+          </Paper>
+  
+          <Button variant='contained'  sx={{backgroundColor: "rgb(33, 80, 162)"}} onClick={() => navigate('/resumemakerui/resume')}>Create Resume</Button>
+        </Grid>
+
+      </Grid>
+      {
+        // data.length ? (
+        //   <AgGridTable gridOptions={gridOptionsResume} data={data} />
+        // ) : null
+        <AgGridTable searchData={searchValue} gridOptions={gridOptionsResume} data={data} />
+      }
+    </>
   );
 }
