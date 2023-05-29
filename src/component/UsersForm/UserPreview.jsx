@@ -23,8 +23,14 @@ import { Box } from "@mui/system";
 import AddUser from "./AddUser";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import {
+  setMultiNotificationData,
+  setMultiNotificationVariant,
+} from "../../reduxToolkit/Notification/notificationSlice";
+import { useDispatch } from "react-redux";
 
 export const UserPreview = () => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
@@ -67,16 +73,27 @@ export const UserPreview = () => {
       });
 
       if (res.code === "200") {
-        alert("User Updated Successfully");
+        dispatch(setMultiNotificationVariant("success"));
+          const errorArray = [
+            {
+              propertyValue: "User updated successfully.",
+            },
+          ];
+          dispatch(setMultiNotificationData(errorArray));
         setEditUser(false); // Exit edit mode
       } else {
-        alert("Something went wrong");
+        dispatch(setMultiNotificationVariant("error"));
+        const errorArray = [
+          {
+            propertyValue: "Something went wrong.",
+          },
+        ];
+        dispatch(setMultiNotificationData(errorArray));
       }
     } catch (error) {
       console.error(error);
     }
   };
-  //console.log("user ---> ",user)
 
   return (
     <div>
@@ -175,98 +192,7 @@ export const UserPreview = () => {
               <Card style={{ maxWidth: "90%", margin: "35px auto" }}>
                 <CardContent>
                   <Grid container spacing={0} style={{ margin: "auto" }}>
-                    {/* <Grid xs={12} sm={12} item>
-                    <Box
-                      sx={{
-                        width: '500px',
-                        height: '50px',
-                        display: 'flex',
-                        justifyContent: 'left',
-                        alignItems: 'center',
-                        fontWeight: 'bold',
-                        margin : 'auto',
-                       
-                      }}
-                    >
-                      <h3 style={{width: "28%" ,  textAlign: 'right' , marginRight : '25px' }}>First Name : </h3> <h3>{userData.firstName}</h3>
-                    </Box>
-                  </Grid>
-                  <Grid xs={12} sm={12} item>
-                    <Box
-                      sx={{
-                        width: '500px',
-                        height: '50px',
-                        // backgroundColor: '#f1f1f1',
-                        display: 'flex',
-                        justifyContent: 'left',
-                        alignItems: 'center',
-                        fontWeight: 'bold',
-                        margin : 'auto'
-                        // padding:'10px'
-                      }}
-                    >
-                      <h3 style={{width: "28%",  textAlign: 'right' , marginRight : '25px' }}>Last Name : </h3> <h3>{userData.lastName}</h3>
-                    </Box>
-                  </Grid>
-            
-                  <Grid xs={12} sm={12} item>
-                    <Box
-                      sx={{
-                        width: '500px',
-                        height: '50px',
-                        // backgroundColor: '#f1f1f1',
-                        display: 'flex',
-                        justifyContent: 'left',
-                        alignItems: 'center',
-                        fontWeight: 'bold',
-                        margin : 'auto'
-                        // padding:'10px'
-                      }}
-                    >
-                      <h3 style={{width: "28%",  textAlign: 'right' , marginRight : '25px'}}>Email Id :</h3> <h3>{user.email}</h3>
-                    </Box>
-                  </Grid>
-                  <Grid xs={12} sm={12} item>
-                    <Box
-                      sx={{
-                        width: '500px',
-                        height: '50px',
-                        display: 'flex',
-                        justifyContent: 'left',
-                        alignItems: 'center',
-                        fontWeight: 'bold',
-                        margin : 'auto'
-                      }}
-                    >
-                      <h3 style={{width: "28%" ,  textAlign: 'right' , marginRight : '25px' }}> User Role : </h3>
-                      <h3>
-                        {user.roles && Array.isArray(user.roles) && user.roles.map(role => (
-                          <h3 key={role.id}>{role.name}</h3>
-                        ))}
-                      </h3>
-                    </Box>
-                  </Grid>
-                  {
-                    user.company === null ||  user.company === "" ? "" :
-                    <Grid xs={12} sm={12} item>
-                    <Box
-                      sx={{
-                        width: '500px',
-                        height: '50px',
-                        // backgroundColor: '#f1f1f1',
-                        display: 'flex',
-                        justifyContent: 'left',
-                        alignItems: 'center',
-                        fontWeight: 'bold',
-                        margin : 'auto'
-                        // padding:'10px'
-                      }}
-                    >
-                      <h3 style={{width: "28%",  textAlign: 'right' , marginRight : '25px'}}>Company :</h3> <h3>{user.company}</h3>
-                    </Box>
-                  </Grid>
-                  } */}
-
+                  
                     <TableContainer
                       component={Paper}
                       style={{ maxWidth: "90%", margin: "35px auto" }}

@@ -7,6 +7,7 @@ import {
   resumedatamapper,
   usersdatamapper,
   feedbackdatamapper,
+  feedbackKpidatamapper,
 } from "../../utils/dataMappers";
 
 const AgGridTable = ({
@@ -17,7 +18,7 @@ const AgGridTable = ({
 }) => {
   const [gridApi, setGridApi] = useState(null);
   const [rowData, setRowData] = useState([]);
-
+ 
   useEffect(() => {
     if (type === "resume") {
       setRowData(resumedatamapper(data));
@@ -25,9 +26,10 @@ const AgGridTable = ({
       setRowData(usersdatamapper(data));
     } else if (type === "feedback") {
       setRowData(feedbackdatamapper(data));
+    } else if (type === "interview") {
+      setRowData(feedbackKpidatamapper(data));
     }
   }, [data, type]);
-
   const onGridReady = (params) => {
     setGridApi(params.api);
   };
@@ -40,6 +42,7 @@ const AgGridTable = ({
   const defaultColDef = {
     resizable: true,
     flex: 1,
+    //sort: "desc",
   };
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const AgGridTable = ({
   }, [searchData]);
 
   return (
-    <div style={{ width: "100%", height: "500px" }}>
+    <div style={{ width: "100%", height: "500px"}}>
       <div
         className="ag-theme-alpine"
         style={{ height: "100%", width: "100%" }}
@@ -55,7 +58,7 @@ const AgGridTable = ({
     {rowData.length === 0 ? (
       <AgGridReact
       defaultColDef={defaultColDef}
-      rowData={"NO DATA FOUND"}
+      rowData={[]}
       onGridReady={onGridReady}
       // columnDefs={columnDefs}
       pagination={true}

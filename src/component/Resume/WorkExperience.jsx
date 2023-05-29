@@ -1,6 +1,5 @@
 import { Button, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
-// import Projects from './Projects'
 import { ProjectTemplate } from "./Projects";
 
 function WorkExperience({ item, isEdit = false }) {
@@ -63,8 +62,8 @@ const WorkExperienceTemplate = ({ item, isEdit = false }) => {
             Company
             id="outlined-required"
             label="Company"
-            placeholder="Enter your Company Name"
-            defaultValue={isEdit ? item.workExperience.company:''}
+            placeholder="Enter Your Company Name"
+            defaultValue={isEdit ? item.workExperience.company:''}  
             
           />
         </Grid>
@@ -79,7 +78,7 @@ const WorkExperienceTemplate = ({ item, isEdit = false }) => {
             Designation
             id="outlined-required"
             label="Designation"
-            placeholder="Enter your Designation"
+            placeholder="Enter Your Designation"
             defaultValue={isEdit ? item.workExperience.jobRole:''}
           />
         </Grid>
@@ -89,7 +88,7 @@ const WorkExperienceTemplate = ({ item, isEdit = false }) => {
             periodFrom
             id="outlined-required"
             label="Start"
-            placeholder="Enter your Working Period in last  Company "
+            placeholder="Enter Your Working Period In Last Company "
             defaultValue={isEdit ? item.workExperience.periodFrom:''}
           />
         </Grid>
@@ -99,7 +98,7 @@ const WorkExperienceTemplate = ({ item, isEdit = false }) => {
             periodFrom
             id="outlined-required"
             label="End"
-            placeholder="Enter your Working Period To "
+            placeholder="Enter Your Working Period To "
             defaultValue={isEdit ? item.workExperience.periodTo:''}
           />
         </Grid>

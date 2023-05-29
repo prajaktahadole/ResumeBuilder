@@ -1,6 +1,5 @@
-import { useLocation, useRoutes } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import Dashboard from "./component/dashboard/Dashboard";
-import Feedback from "./component/feedback/Feedback";
 import Login from "./component/Login";
 import Resume from "./component/Resume/Resume";
 import SignUp from "./component/SignUp";
@@ -16,12 +15,16 @@ import PasswordReset from "./component/ForgotPass";
 import FeedBackFormReview from "./component/feedback/FeedBackFormReview";
 import { UserPreview } from "./component/UsersForm/UserPreview";
 import LoginInternal from "./component/LoginInternal";
-
+import ScheduleInterview from "./component/ScheduleInterview/ScheduleInterview"
+import InterviewDetails from "./component/Interview/Interview";
+import ChangePassword from "./component/changePass";
+import Feedback from "./component/feedback/Feedback";
+import TechStack from "./component/Master/TechStack";
+import Master from "./component/Master/Master";
 
 const AppRoutes = () => {
   const { isLogin } = useSelector((state) => state.account);
   const isUserAuthentic = () => isLogin && isTokenValid();
- 
 
   const testRoutes = [
     { path: "*", element: <Redirect /> },
@@ -61,6 +64,14 @@ const AppRoutes = () => {
       element: isUserAuthentic() ? <UserPreview /> : <Redirect />,
     },
     {
+      path: "/resumemakerui/master",
+      element: isUserAuthentic() ? <Master/> : <Redirect />,
+    },
+    {
+      path: "/resumemakerui/tech-stacks",
+      element: isUserAuthentic() ? <TechStack /> : <Redirect />,
+    },
+    {
       path: "/resumemakerui/adduser",
       element: isUserAuthentic() ? <AddUser /> : <Redirect />,
     },
@@ -69,6 +80,14 @@ const AppRoutes = () => {
       element: isUserAuthentic() ? <FeedbackDashboard /> : <Redirect />,
     },
     { path: "/resumemakerui/passwordreset", element: <PasswordReset /> },
+    { path: "/resumemakerui/changepassword", element: <ChangePassword  /> },
+
+    { path: "/resumemakerui/schedule-interview",
+     element: isUserAuthentic() ? <ScheduleInterview /> : <Redirect />  },
+
+    { path: "/resumemakerui/interview-details", 
+    element: isUserAuthentic() ? <InterviewDetails />: <Redirect />  },
+
   ];
   const routes = useRoutes(testRoutes);
   return routes;

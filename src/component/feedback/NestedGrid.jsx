@@ -64,7 +64,7 @@ function FormRow({
       <Grid item xs={4}>
         <Item>
           <Grid container justifyContent={"space-between"} alignItems="center">
-            <Grid item style={{ width: "70%", wordWrap: 'break-word', textAlign: 'start' }}>{skill.skillName}</Grid>
+            <Grid  item style={{ width: "70%", wordWrap: 'break-word', textAlign: 'start' }}>{skill.skillName}</Grid>
             <Grid item style={{ width: "30%", }}>
               <FormControl
                 sx={{ maxWidth: 75 }}
@@ -78,34 +78,17 @@ function FormRow({
                       position="end"
                       style={{ fontWeight: "800", }}
                     >
-                      / 5
+                      /  5
                     </InputAdornment>
                   }
                   onChange={(e) => {
                     if (isSoftskill) handleSoftSKillRatingChange(e, skill);
                     else handleRatingChange(e, skill);
                   }}
-                  // onKeyPress={(e) => {
-                  //   const charCode = e.which || e.keyCode;
-                  //   if (
-                  //     (charCode < 48 ||
-                  //       charCode > 53 ||
-                  //       e.target.value.length >= 1) && e.target.value !== ""
-                  //   ) {
-                  //     e.preventDefault();
-                  //     dispatch(setMultiNotificationVariant("error"));
-                  //     const errorArray = [
-                  //       {
-                  //         propertyValue:
-                  //           "Please enter a single digit between 0 and 5",
-                  //       },
-                  //     ];
-                  //     dispatch(setMultiNotificationData(errorArray));
-                  //   }
-                  // }}
+                 
                   onKeyPress={(e) => {
                     const charCode = e.which || e.keyCode;
-                    if (charCode < 48 || charCode > 53 || e.target.value.length >= 1) {
+                    if (charCode < 49 || charCode > 53 || e.target.value.length >= 1) {
                       e.preventDefault();
                       dispatch(setMultiNotificationVariant("error"));
                       const errorArray = [
@@ -212,7 +195,7 @@ function FormRow({
               .filter((skill) => !uniqueSkills.has(skill.skillName))
               .map((skill) => {
                 uniqueSkills.add(skill.skillName);
-                {/* return renderSkill(skill, uniqueSkills); */ }
+              
                 if (tech.isSelected) {
                   // Check if the technology is selected
                   return renderSkill(skill, uniqueSkills);

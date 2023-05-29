@@ -76,6 +76,8 @@ const ImageUploadPreviewComponent = ({ handleFiles }) => {
   return (
     <>
       <div>
+        <label>Upload Image : </label>
+       
         <Button variant="contained"
          component="label" 
          style={{backgroundColor: "rgb(33, 80, 162)"}}

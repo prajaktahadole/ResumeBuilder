@@ -1,5 +1,5 @@
 import React , {useState} from 'react';
-
+import "../../styles/FeedbackPrev.css";
 
 export default function ImageListComponent(props) {
   const { attachments } = props;
@@ -27,16 +27,19 @@ export default function ImageListComponent(props) {
     </div>
 
     <div>
-    {showPreview && (
-        <div className="modal" onClick={handleClose}   >
-          <img src={currentImage} className="preview" />
+
+      {showPreview && (
+        <div className="modal" onClick={handleClose}>
+          <div className="modal-content">
+            <span className="close" onClick={handleClose}>
+              &times;
+            </span>
+            <img src={currentImage} alt="Preview" className="preview" />
+          </div>
         </div>
       )}
     </div>
-
-    
-       
-    </div>
+ </div>
    
   );
 }

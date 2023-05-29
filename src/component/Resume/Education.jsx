@@ -1,9 +1,8 @@
 import { Grid, TextField } from '@mui/material'
-import React from 'react'
+import React,  { useState } from 'react'
 
-function Education({ item, isEdit = false }) {
+function Education({ item, isEdit = false, register, errors, validationSchema }) {
 
-    
     return (
         <>
             <Grid container>
@@ -26,7 +25,9 @@ function Education({ item, isEdit = false }) {
                             defaultValue={isEdit ? item.educationDetails.degree : ''}
                             required
                             name='degree'
-                         
+                            {...register("degree",{ validate: validationSchema })}
+                            error={!!errors.degree}
+                            helperText={errors.degree?.message}
                         />
                     </Grid>
                 </Grid>
@@ -45,7 +46,9 @@ function Education({ item, isEdit = false }) {
                             required
                             name='university'
                             defaultValue={isEdit ? item.educationDetails.university : ''}
-                    
+                            {...register("university",{ validate: validationSchema })}
+                            error={!!errors.university}
+                            helperText={errors.university?.message}
                         />
                     </Grid>
 
@@ -64,8 +67,15 @@ function Education({ item, isEdit = false }) {
                             placeholder="Enter Your Passing Year"
                             required
                             name='passingYear'
+                            type='year'
+                            inputProps={{
+                              pattern: "\\d{0,4}", // Regex pattern to allow up to 10 digits
+                              maxLength: 4, // Maximum length of 10
+                            }}
                             defaultValue={isEdit ? item.educationDetails.passingYear : ''}
-                       
+                            {...register("passingYear",{ validate: validationSchema })}
+                            error={!!errors.passingYear}
+                            helperText={errors.passingYear?.message}
                         />
 
                     </Grid>

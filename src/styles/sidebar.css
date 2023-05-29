@@ -1,0 +1,76 @@
+.downButton{
+    cursor: pointer;   
+}
+.upButton{
+    transform: rotate(180deg);
+  }
+
+
+  .inside-item{
+    border:  "1px solid red";
+  }
+
+
+  /*Highlight active sidebar.css */
+
+.inside-content.active {
+  background-color: rgb(33, 80, 162);
+  color: white;
+}
+
+.inside-content.active:hover {
+  background-color:rgb(20, 86, 199);
+}
+
+.downButton.active,
+.upButton.active {
+  color: white;
+}
+
+.inside-content.resume .active {
+  background-color: rgb(33, 80, 162);
+  color: white;
+}
+
+.inside-content.resume .active:hover {
+  background-color: rgb(33, 80, 162);
+}
+
+.inside-content.users .active {
+  background-color:rgb(33, 80, 162);
+  color: white;
+}
+
+.inside-content.users .active:hover {
+  background-color: rgb(33, 80, 162);
+}
+
+
+/* Sub-components of Interview section */
+.inside-content.openList .feedback .active,
+.inside-content.openList .feedback .active:hover,
+.inside-content.openList .schedule-interview .active,
+.inside-content.openList .schedule-interview .active:hover {
+  background-color: skyblue;
+  color: #333333;
+}
+
+
+.inside-content .active {
+  background-color:rgb(33, 80, 162);
+  color: white;
+}
+
+.inside-content .active:hover {
+  background-color: rgb(33, 80, 162);
+}
+
+.inside-content .upButton.active,
+.inside-content .downButton.active {
+  color: white;
+}
+
+.inside-content .interview-details .active {
+  background-color:rgb(159, 191, 245);
+  color: #333333;
+}

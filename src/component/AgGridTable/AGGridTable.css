@@ -3,3 +3,6 @@
   --ag-header-background-color: rgb(33, 80, 162) !important;
 
 }
+.ag-header-cell-label {
+  justify-content: center;
+}

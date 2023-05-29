@@ -49,7 +49,7 @@ export default function CustomizedTables() {
     return (
       <IconButton
         size="small"
-        onClick={() => downloadResume(props.data.resumeUUID)}
+        onClick={() => downloadResume(props.data.resumeUUID,props.data.name)}
         color="primary"
       >
         <DownloadForOfflineRoundedIcon />
@@ -69,7 +69,7 @@ export default function CustomizedTables() {
     );
   };
 
-  const downloadResume = async (resumeUUID) => {
+  const downloadResume = async (resumeUUID,name) => {
     try {
       const res = await downloadResumeById(resumeUUID, {
         headers: {
@@ -78,11 +78,17 @@ export default function CustomizedTables() {
         responseType: 'blob'
       });
 
+      const nameid = name?.split(' ') || [];
+      const userData = {
+        firstName: nameid[0],
+        lastName: nameid[1]
+      }
       const blob = new Blob([res.data], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = resumeUUID + '.pdf';
+      //link.download = resumeUUID + '.pdf';
+      link.download = "Resume_"+userData.firstName+"_"+userData.lastName+ '.pdf';
       link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
@@ -128,10 +134,22 @@ export default function CustomizedTables() {
       }
     })
     if (res.status === 200) {
-      alert("Resume Deleted Successfully")
+      dispatch(setMultiNotificationVariant("success"));
+      const errorArray = [
+        {
+          propertyValue: "Resume Deleted Successfully.",
+        },
+      ];
+      dispatch(setMultiNotificationData(errorArray));
       fetchdata();
     } else {
-      alert('Something went wrong')
+      dispatch(setMultiNotificationVariant("error"));
+      const errorArray = [
+        {
+          propertyValue: "Something went wrong.",
+        },
+      ];
+      dispatch(setMultiNotificationData(errorArray));
     }
   }
 }
@@ -172,7 +190,7 @@ export default function CustomizedTables() {
   }, []);
 
   async function fetchdata() {
-    if(localStorage.getItem("role") === "ADMIN")
+    if(localStorage.getItem("role") === "ADMIN" || localStorage.getItem("role") === "INTERNAL")
     {
       const res = await getResumeAllData({
         headers: {
@@ -226,9 +244,6 @@ export default function CustomizedTables() {
 
       </Grid>
       {
-        // data.length ? (
-        //   <AgGridTable gridOptions={gridOptionsResume} data={data} />
-        // ) : null
         <AgGridTable searchData={searchValue} gridOptions={gridOptionsResume} data={data} />
       }
     </>

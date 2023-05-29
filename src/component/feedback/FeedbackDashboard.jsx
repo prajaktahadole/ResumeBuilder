@@ -45,10 +45,22 @@ const FeedbackDashboard = () => {
         },
       });
       if (res.status === 200) {
-        alert("Resume Deleted Successfully");
+        dispatch(setMultiNotificationVariant("success"));
+      const errorArray = [
+        {
+          propertyValue: "Feedback Deleted Successfully.",
+        },
+      ];
+      dispatch(setMultiNotificationData(errorArray));
         fetchdata();
       } else {
-        alert("Something went wrong");
+        dispatch(setMultiNotificationVariant("error"));
+      const errorArray = [
+        {
+          propertyValue: "Something went wrong.",
+        },
+      ];
+      dispatch(setMultiNotificationData(errorArray));
       }
     }
   };
@@ -71,7 +83,6 @@ const FeedbackDashboard = () => {
         size="small"
         onClick={() => shareFeedbackForm(props.data.formId)}
         color="primary"
-        style={{ display: "flex", justifyContent: "center" }}
       >
         <ShareRoundedIcon />
       </IconButton>
@@ -134,7 +145,7 @@ const FeedbackDashboard = () => {
     );
   }
   async function fetchdata() {
-    if (localStorage.getItem("role") === "ADMIN") {
+    if (localStorage.getItem("role") === "ADMIN" || localStorage.getItem("role") === "INTERNAL") {
       const res = await getFeedbackAllData({
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -1,22 +1,46 @@
-import { Grid, TextField } from '@mui/material'
+import { Grid, TextField , Button, IconButton} from '@mui/material'
 import React,  { useRef ,  useState}  from 'react'
 import resume from "../../styles/resume.css"
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
 function SkillSets({ item, isEdit = false}) {
-
+    const [fields, setFields] = useState([]);
+    
     const [focusedIndex, setFocusedIndex] = useState(0);
     const textFieldsRef = useRef([]);
   
     const handleKeyPress = (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        const nextIndex = focusedIndex + 1;
-        if (nextIndex < textFieldsRef.current.length) {
-          textFieldsRef.current[nextIndex].focus();
-          setFocusedIndex(nextIndex);
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const nextIndex = focusedIndex + 1;
+          if (nextIndex < textFieldsRef.current.length) {
+            textFieldsRef.current[nextIndex].focus();
+            setFocusedIndex(nextIndex);
+          }
         }
-      }
-    };
+      };
+    
+      const handleAddField = () => {
+        setFields((prevFields) => [...prevFields, { name: '', description: '' }]);
+      };
+    
+      const handleDeleteField = (index) => {
+        setFields((prevFields) => {
+          const updatedFields = [...prevFields];
+          updatedFields.splice(index, 1);
+          return updatedFields;
+        });
+      };
+    
+      const handleChange = (index, field, value) => {
+        setFields((prevFields) => {
+          const updatedFields = [...prevFields];
+          updatedFields[index][field] = value;
+          return updatedFields;
+        });
+      };
+  console.log("other skills data", fields )
+    
 
     return (
         <>
@@ -28,10 +52,10 @@ function SkillSets({ item, isEdit = false}) {
             <div className='subContainer'>
 
              <Grid container spacing={2}>
-                <Grid item xs={4}style={{display:'flex',alignItems:'start'}}>
+                <Grid item xs={3}style={{display:'flex',alignItems:'start'}}>
                     <h3>Technologies:</h3>
                 </Grid>
-                <Grid item xs={8} >
+                <Grid item xs={9} >
                     <TextField
                         style={{width:'100%'}}
                         Technology Name
@@ -50,10 +74,10 @@ function SkillSets({ item, isEdit = false}) {
                 </Grid>
 
                 <Grid container spacing={2}>
-                    <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
+                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
                         <h3>Languages:</h3>
                     </Grid>
-                    <Grid item xs={8} >
+                    <Grid item xs={9} >
                         <TextField
                             style={{ width: '100%' }}
                             languages Name
@@ -73,10 +97,10 @@ function SkillSets({ item, isEdit = false}) {
                 </Grid>
 
                 <Grid container spacing={2}>
-                    <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
+                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
                         <h3>Tools:</h3>
                     </Grid>
-                    <Grid item xs={8} >
+                    <Grid item xs={9} >
                         <TextField
                             style={{ width: '100%' }}
                             Tools Name
@@ -94,10 +118,10 @@ function SkillSets({ item, isEdit = false}) {
 
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
+                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
                         <h3>Database:</h3>
                     </Grid>
-                    <Grid item xs={8} >
+                    <Grid item xs={9} >
                         <TextField
                             style={{ width: '100%' }}
                             databaseUsed Name
@@ -114,10 +138,10 @@ function SkillSets({ item, isEdit = false}) {
 
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
+                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
                         <h3>Operating System:</h3>
                     </Grid>
-                    <Grid item xs={8} >
+                    <Grid item xs={9} >
                         <TextField
                             style={{ width: '100%' }}
                             operating Systems
@@ -134,10 +158,10 @@ function SkillSets({ item, isEdit = false}) {
 
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
+                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
                         <h3>IDE Used:</h3>
                     </Grid>
-                    <Grid item xs={8} >
+                    <Grid item xs={9} >
                         <TextField
                             style={{ width: '100%' }}
                             IDE Used Name
@@ -154,10 +178,10 @@ function SkillSets({ item, isEdit = false}) {
 
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
+                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
                         <h3>Web Server:</h3>
                     </Grid>
-                    <Grid item xs={8} >
+                    <Grid item xs={9} >
                         <TextField
                             style={{ width: '100%' }}
                             Web Server
@@ -173,6 +197,67 @@ function SkillSets({ item, isEdit = false}) {
                     </Grid>
 
                 </Grid>
+
+         {fields.map((field, index) => (
+          <Grid container 
+                spacing={2} 
+                key={index}
+                style={{marginBottom : '10px'}}>
+            <Grid item xs={3} 
+                style={{ 
+                    display: 'flex',
+                    alignItems: 'start' }}>
+              <TextField
+                style={{ width: '100%' }}
+                id={`SkillName-${index}`}
+                label={`Skill Name ${index + 1}`}
+                placeholder={`Skill Name ${index + 1}`}
+                name={`Skill Name-${index}`}
+                value={field.name}
+                onChange={(e) => handleChange(index, 'name', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={8.4}>
+              <TextField
+                style={{ width: '100%' }}
+                id={`Description-${index}`}
+                label={`Description ${index + 1}`}
+                placeholder={`Description ${index + 1}`}
+                name={`Description-${index}`}
+                value={field.description}
+                onChange={(e) => handleChange(index, 'description', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={0.6}>
+            <Button
+                    style={{
+                        marginTop: '3px',
+                        marginLeft: '-10px',
+                        minWidth: '25px',
+                        }}
+                        onClick={() => handleDeleteField(index)}
+                        >
+                          <IconButton size="small" color="error">
+                            <DeleteRoundedIcon />
+                          </IconButton>
+            </Button>
+            </Grid>  
+          </Grid>
+        ))}
+       
+            <Grid
+             item
+             xs={12}
+             sx={{
+               display: "flex",
+               justifyContent: "flex-end",
+               paddingTop: "20px",
+             }}>
+                <Button
+                  variant="contained"
+                  style={{ backgroundColor: "rgb(33, 80, 162)" }} 
+                 onClick={handleAddField}>Add Skills</Button>
+            </Grid>
             </div>
         </>
     )

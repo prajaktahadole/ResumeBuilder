@@ -10,8 +10,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import AgGridTable from "../AgGridTable/AgGridTable";
 import SearchIcon from "@mui/icons-material/Search";
+import {
+  setMultiNotificationData,
+  setMultiNotificationVariant,
+} from "../../reduxToolkit/Notification/notificationSlice";
+import { useDispatch } from "react-redux";
 
 const UserDashboard = () => {
+  const dispatch = useDispatch();
   const [userData, setUserData] = useState([]);
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
@@ -47,7 +53,13 @@ const UserDashboard = () => {
       },
     });
     if (resuser.email === localStorage.getItem("email")) {
-      alert("You cannot delete your own account.");
+      dispatch(setMultiNotificationVariant("error"));
+      const errorArray = [
+        {
+          propertyValue: "You cannot delete your own account.",
+        },
+      ];
+      dispatch(setMultiNotificationData(errorArray));
     } else {
       const confirmed = window.confirm("Are you sure you want to delete?");
       if (confirmed) {
@@ -58,10 +70,22 @@ const UserDashboard = () => {
           },
         });
         if (res.status === 200) {
-          alert("User Deleted Successfully");
+          dispatch(setMultiNotificationVariant("success"));
+          const errorArray = [
+            {
+              propertyValue: "User Deleted Successfully.",
+            },
+          ];
+          dispatch(setMultiNotificationData(errorArray));
           fetchdata();
         } else {
-          alert("Something went wrong");
+          dispatch(setMultiNotificationVariant("error"));
+          const errorArray = [
+            {
+              propertyValue: "Something went wrong.",
+            },
+          ];
+          dispatch(setMultiNotificationData(errorArray));
         }
       }
     }

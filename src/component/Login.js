@@ -4,6 +4,8 @@ import {
   Button,
   FormControl,
   Grid,
+  IconButton,
+  InputAdornment,
   Link,
   Paper,
   Stack,
@@ -24,10 +26,12 @@ import {
   setMultiNotificationData,
   setMultiNotificationVariant,
 } from "../reduxToolkit/Notification/notificationSlice";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 function Login() {
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const routerChange = async (data) => {
     const loginData = {
       email: data.email,
@@ -64,7 +68,7 @@ function Login() {
       dispatch(setMultiNotificationVariant("error"));
       const errorArray = [
         {
-          propertyValue: response?.data?.token || "Something went wrong",
+          propertyValue: response?.data?.message || "Something went wrong",
         },
       ];
       dispatch(setMultiNotificationData(errorArray));
@@ -96,6 +100,14 @@ function Login() {
     mode: "onBlur",
   });
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <Grid tabIndex="0" container>
       <Grid item xs={12} sm={12} md={5} lg={5}>
@@ -106,15 +118,7 @@ function Login() {
           <Typography variant="h2" gutterBottom>
             Welcome
           </Typography>
-          {/* <Typography
-                    variant="subtitle1"
-                    gutterBottom
-                    component="div"
-                    sx={{ py: 1 }}
-                  >
-                    Don't have an account?
-                    <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none' }} onClick={handleSignUpOpen}> Register</Button>
-                  </Typography> */}
+       
           <FormControl sx={{ py: 2 }}>
             <Grid container rowSpacing={3}>
               <Grid item xs={12} sm={12} md={12} lg={10}>
@@ -137,7 +141,21 @@ function Login() {
                   label="Password"
                   name="password"
                   required
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                   onKeyPress={(event) => {
                     if (event.key === "Enter") {
                       handleSubmit(routerChange)();
@@ -156,18 +174,7 @@ function Login() {
                   lg={12}
                   sx={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  {/* <Typography my={2} variant="subtitle2">
-                    <Link>
-                      <Typography
-                        id="logInForgot"
-                        onClick={() => navigate('/resumemakerui/passwordreset')}
-                        sx={{ ":hover": { cursor: "pointer" } }}
-                        variant="h7"
-                      >
-                        Forgot Password?
-                      </Typography>
-                    </Link>
-                  </Typography> */}
+                
                   <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none'}} onClick={() => navigate('/resumemakerui/passwordreset')}>Forgot Password ?</Button>
 
                 </Grid>

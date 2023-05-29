@@ -110,15 +110,7 @@ function LoginInternal() {
           <Typography variant="h2" gutterBottom>
             Welcome
           </Typography>
-          {/* <Typography
-                    variant="subtitle1"
-                    gutterBottom
-                    component="div"
-                    sx={{ py: 1 }}
-                  >
-                    Don't have an account?
-                    <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none' }} onClick={handleSignUpOpen}> Register</Button>
-                  </Typography> */}
+        
           <FormControl sx={{ py: 2 }}>
             <Grid container rowSpacing={3}>
               <Grid item xs={12} sm={12} md={12} lg={10}>
@@ -160,18 +152,7 @@ function LoginInternal() {
                   lg={12}
                   sx={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  {/* <Typography my={2} variant="subtitle2">
-                    <Link>
-                      <Typography
-                        id="logInForgot"
-                        onClick={() => navigate('/resumemakerui/passwordreset')}
-                        sx={{ ":hover": { cursor: "pointer" } }}
-                        variant="h7"
-                      >
-                        Forgot Password?
-                      </Typography>
-                    </Link>
-                  </Typography> */}
+                 
                   <Button style={{ fontWeight: 'bold', color: 'navy', textTransform: 'none'}} onClick={() => navigate('/resumemakerui/passwordreset')}>Forgot Password ?</Button>
 
                 </Grid>

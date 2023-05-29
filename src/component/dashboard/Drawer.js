@@ -132,11 +132,7 @@ function DrawerCustome() {
             >
               {open ? `Welcome, ${localStorage.getItem('user')}` : 'Humancloud'}
             </Typography>
-            {/* <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
+      
             <Profile />
           </Toolbar>
         </AppBar>
@@ -174,7 +170,7 @@ function DrawerCustome() {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: "90vh",
+            height: "100vh",
             overflow: "auto",
           }}
         >

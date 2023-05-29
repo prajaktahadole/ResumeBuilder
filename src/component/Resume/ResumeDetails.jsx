@@ -11,8 +11,14 @@ import Resume from "./Resume";
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import {
+  setMultiNotificationData,
+  setMultiNotificationVariant,
+} from "../../reduxToolkit/Notification/notificationSlice";
+import { useDispatch } from "react-redux";
 
 function ResumeDetails() {
+  const dispatch = useDispatch();
   const [item, setItem] = useState({});
   const { id } = useParams();
   const [editMode, setEditMode] = useState(false);
@@ -39,10 +45,22 @@ function ResumeDetails() {
       });
 
       if (res.code === "200") {
-        alert("Resume Edited Successfully");
+        dispatch(setMultiNotificationVariant("success"));
+          const errorArray = [
+            {
+              propertyValue: "Resume Edited Successfully.",
+            },
+          ];
+          dispatch(setMultiNotificationData(errorArray));
         setEditMode(false); // Exit edit mode
       } else {
-        alert("Something went wrong");
+        dispatch(setMultiNotificationVariant("error"));
+          const errorArray = [
+            {
+              propertyValue: "Something went wrong",
+            },
+          ];
+          dispatch(setMultiNotificationData(errorArray));
       }
     } catch (error) {
       console.error(error);
@@ -93,7 +111,7 @@ function ResumeDetails() {
   useEffect(() => {
     fetchdata();
   }, []);
-  console.log("item ---> ",item)
+
   return (
     <div>
       {editMode ? (
@@ -155,8 +173,7 @@ function ResumeDetails() {
               </IconButton>
             </Button>
 
-            {item.createdBy === localStorage.getItem("email") ||
-            localStorage.getItem("role") === "ADMIN" ? (
+            {item.createdBy === localStorage.getItem("email") ? (
               <Button
                 style={{
                   margin: "5px",
@@ -202,7 +219,8 @@ function ResumeDetails() {
                       <div className="Pname pleft">
                         <p> Email : {item.personalDetails.email}</p>
                         <p> Mobile No :{item.personalDetails.mobileNo}</p>
-                        <p>Linkedin : {item.personalDetails.linkedinURL}</p>
+                       {item.personalDetails.linkedinUR === "" ? "" :  <p>Linkedin : {item.personalDetails.linkedinURL}</p>}
+                  
                       </div>
                     </div>
                   </Grid>
@@ -277,7 +295,7 @@ function ResumeDetails() {
                       <div key={index}>
                         <h3>
                           {experience.jobRole} at {experience.company} (
-                          {experience.periodFrom} - {experience.periodTo})
+                          {new Date(experience.periodFrom).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - {experience.periodTo === "Present" ? "Present" : new Date(experience.periodTo).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })})
                         </h3>
 
                         {experience.projects.map((project, projectIndex) => (

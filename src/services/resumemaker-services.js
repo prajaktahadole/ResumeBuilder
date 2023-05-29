@@ -60,12 +60,7 @@ export const resumeSave = (config, data) => {
 }
 
 export const checkEmail = (emailId) => {
-  return axiosMethod.post(`/account/checkemail/${emailId.email}`, emailId.header)
-    .then((response) => response.data)
-    .catch(error => {
-      console.error(error);
-      throw error;
-    });
+  return axiosMethod.get(`/account/checkemail/${emailId.email}`, emailId.header)
 }
 
 export const editResumeById = async (resumeUUID, config, item) => {
@@ -117,4 +112,8 @@ export const updateUser = async (id,data,config) => {
     console.error(error);
     throw error;
   });
+}
+
+export const getInterviewers = async (config) => {
+  return await axiosMethod.get(`/account/interviewers`, config)
 }

@@ -1,0 +1,29 @@
+
+
+.countbox{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+
+.countboxsubmain{
+    display: flex;
+    justify-content: space-between;
+    margin: '30px 0px';
+}
+
+
+.countindvmain{
+    width: '13%';
+    padding: "20px";
+    text-align: center;
+}
+
+
+h4, h1{
+    margin: auto;
+}
+
+

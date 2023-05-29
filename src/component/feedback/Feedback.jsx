@@ -23,6 +23,11 @@ import AutoCompleteCustome from "./AutoCompleteCustome.jsx";
 import ImageUploadPreviewComponent from "./ImageUploadPreviewComponent.jsx";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../utils/Spinner.js";
+import {
+  setMultiNotificationData,
+  setMultiNotificationVariant,
+} from "../../reduxToolkit/Notification/notificationSlice";
+import { useDispatch } from "react-redux";
 
 const schema = yup.object().shape({
   // technologyRating: yup
@@ -55,7 +60,7 @@ const schema = yup.object().shape({
     .of(
       yup.object().shape({
         skillName: yup.string().required(),
-        rating: yup.number().integer().min(0).max(4).required(),
+        rating: yup.number().integer().min(0).max(5).required(),
       })
     )
     .required("At least one soft skill rating is required"),
@@ -64,19 +69,42 @@ const schema = yup.object().shape({
 const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
   const [technoList, setTechnoList] = useState([]);
   const [softSkill, setSoftSkill] = useState([]);
-  const [totalExperience, setTotalExperience] = useState(isFeedbackEdit ? feedbackform.experience : "");
-  const [interviewType, setInterviewType] = useState(isFeedbackEdit ? feedbackform.interviewType : "");
-  const [interviewRound, setInterviewRound] = useState(isFeedbackEdit ? feedbackform.interviewRound : "");
-  const [result, setResult] = useState(isFeedbackEdit ? feedbackform.result : "");
-  const [softSkillRatings, setSoftSkillRatings] = useState(isFeedbackEdit ? feedbackform.softSkillRatings.map((ele) => { return { "val": ele } }) : []);
-  const [technologyRating, setTechnologyRating] = useState(isFeedbackEdit ? feedbackform.technologyRating.map((ele) => { return { "val": ele } }) : []);
-  const [files, setFiles] = useState(isFeedbackEdit ? feedbackform.attachments : []);
+  const [totalExperience, setTotalExperience] = useState(
+    isFeedbackEdit ? feedbackform.experience : ""
+  );
+  const [interviewType, setInterviewType] = useState(
+    isFeedbackEdit ? feedbackform.interviewType : ""
+  );
+  const [interviewRound, setInterviewRound] = useState(
+    isFeedbackEdit ? feedbackform.interviewRound : ""
+  );
+  const [result, setResult] = useState(
+    isFeedbackEdit ? feedbackform.result : ""
+  );
+  const [softSkillRatings, setSoftSkillRatings] = useState(
+    isFeedbackEdit
+      ? feedbackform.softSkillRatings.map((ele) => {
+          return { val: ele };
+        })
+      : []
+  );
+  const [technologyRating, setTechnologyRating] = useState(
+    isFeedbackEdit
+      ? feedbackform.technologyRating.map((ele) => {
+          return { val: ele };
+        })
+      : []
+  );
+  const [files, setFiles] = useState(
+    isFeedbackEdit ? feedbackform.attachments : []
+  );
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleFiles = (files) => {
     setFiles(files);
-  }
+  };
 
   const handleSoftSkillRatingsChange = (ratings) => {
     const updateRating = ratings.map((rating) => {
@@ -113,39 +141,63 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
       technologyRating: [],
     },
   });
-
-
+  const isError = () => {
+    console.log(errors);
+  };
   const submitFormdata = (data) => {
-    setIsLoading(true);
-    const axiosInstance = axios.create({
-      baseURL: BASE_URL,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    const feedbackForm = JSON.stringify(data);
-    let formData = new FormData();
-
-    formData.append('form', feedbackForm);
-    if (files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        formData.append("file", files[i]);
-      }
-    }
-
-    axiosInstance
-      .post("/feedback/form", formData)
-      .then((res) => {
-        if (res?.status === 200) {
-          navigate("/resumemakerui/feedback")
-        } else {
-          alert("Something get Wrong..!");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+    if (files.length !== 0) {
+      setIsLoading(true);
+      const axiosInstance = axios.create({
+        baseURL: BASE_URL,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
+        },
       });
+      const feedbackForm = JSON.stringify(data);
+      let formData = new FormData();
+
+      formData.append("form", feedbackForm);
+      if (files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append("file", files[i]);
+        }
+      }
+
+      axiosInstance
+        .post("/feedback/form", formData)
+        .then((res) => {
+          if (res?.status === 200) {
+            dispatch(setMultiNotificationVariant("success"));
+            const errorArray = [
+              {
+                propertyValue: "Feedback submitted successfully.",
+              },
+            ];
+            dispatch(setMultiNotificationData(errorArray));
+            navigate("/resumemakerui/feedback");
+          } else {
+            dispatch(setMultiNotificationVariant("error"));
+            const errorArray = [
+              {
+                propertyValue: "Something went wrong",
+              },
+            ];
+            dispatch(setMultiNotificationData(errorArray));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      dispatch(setMultiNotificationVariant("error"));
+      const errorArray = [
+        {
+          propertyValue: "Please Upload atleast one Image",
+        },
+      ];
+      dispatch(setMultiNotificationData(errorArray));
+    }
   };
 
   useEffect(() => {
@@ -166,7 +218,6 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
       setSoftSkill(resp);
     }
     fetchdata();
-
   }, []);
 
   return (
@@ -208,12 +259,16 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         {...register("candidateId")}
                         fullWidth
                         required
-                        size="small"
-                        defaultValue={isFeedbackEdit ? feedbackform.candidateId : ''}
+                        defaultValue={
+                          isFeedbackEdit ? feedbackform.candidateId : ""
+                        }
+                        error={!!errors.candidateId}
                       ></TextField>
-                      {errors.candidateId &&
-                        <p style={{ fontSize: 14, color: 'red' }}>{errors.candidateId?.message}</p>
-                      }
+                      {errors.candidateId && (
+                        <p style={{ fontSize: 14, color: "red" }}>
+                          {errors.candidateId?.message}
+                        </p>
+                      )}
                     </Grid>
                     <Grid xs={6} sm={6} item>
                       <TextField
@@ -224,12 +279,16 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         {...register("candidateName")}
                         fullWidth
                         required
-                        size="small"
-                        defaultValue={isFeedbackEdit ? feedbackform.candidateName : ''}
+                        defaultValue={
+                          isFeedbackEdit ? feedbackform.candidateName : ""
+                        }
+                        error={!!errors.candidateName}
                       ></TextField>
-                      {errors.candidateName &&
-                        <p style={{ fontSize: 14, color: 'red' }}>{errors.candidateName?.message}</p>
-                      }
+                      {errors.candidateName && (
+                        <p style={{ fontSize: 14, color: "red" }}>
+                          {errors.candidateName?.message}
+                        </p>
+                      )}
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -241,7 +300,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                     <Grid xs={6} sm={6} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                          Interview Type
+                          Interview Type *
                         </InputLabel>
                         <Select
                           value={interviewType}
@@ -251,20 +310,24 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                           onChange={(e) => setInterviewType(e.target.value)}
                           required
                         >
-                          <MenuItem value={"The_Converge"}>The Converge</MenuItem>
+                          <MenuItem value={"The_Converge"}>
+                            The Converge
+                          </MenuItem>
                           <MenuItem value={"Humancloud_Internal"}>
                             Humancloud Internal
                           </MenuItem>
                         </Select>
-                        {!interviewType && errors.interviewType &&
-                          <p style={{ fontSize: 14, color: 'red' }}>{errors.interviewType?.message}</p>
-                        }
+                        {!interviewType && errors.interviewType && (
+                          <p style={{ fontSize: 14, color: "red" }}>
+                            {errors.interviewType?.message}
+                          </p>
+                        )}
                       </FormControl>
                     </Grid>
                     <Grid xs={6} sm={6} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                          Interview Round
+                          Interview Round *
                         </InputLabel>
                         <Select
                           value={interviewRound}
@@ -278,16 +341,17 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                           <MenuItem value={"L2"}>Level 2</MenuItem>
                           <MenuItem value={"L3"}>Level 3</MenuItem>
                         </Select>
-                        {!interviewRound && errors.interviewRound &&
-                          <p style={{ fontSize: 14, color: 'red' }}>{errors.interviewRound?.message}</p>
-                        }
+                        {!interviewRound && errors.interviewRound && (
+                          <p style={{ fontSize: 14, color: "red" }}>
+                            {errors.interviewRound?.message}
+                          </p>
+                        )}
                       </FormControl>
                     </Grid>
                   </Grid>
                 </CardContent>
               </Card>
-              {/* <p>{errors.totalExperience && errors.interviewType && errors.interviewRound?.message }</p> */}
-              {/* Technical Skills*/}
+
               <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
                 <CardContent>
                   <Typography
@@ -311,7 +375,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                     <Grid xs={4} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                          Total Experience
+                          Total Experience *
                         </InputLabel>
                         <Select
                           value={totalExperience}
@@ -320,16 +384,19 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                           {...register("experience")}
                           onChange={(e) => setTotalExperience(e.target.value)}
                           required
-
                         >
                           <MenuItem value={"0-2"}>0-2</MenuItem>
                           <MenuItem value={"2-5"}>2-5</MenuItem>
                           <MenuItem value={"5-8"}>5-8</MenuItem>
                           <MenuItem value={"8-10"}>8-10</MenuItem>
+                          <MenuItem value={"10-12"}>10-12</MenuItem>
+                          <MenuItem value={"12-15"}>12-15</MenuItem>
                         </Select>
-                        {!totalExperience && errors.experience &&
-                          <p style={{ fontSize: 14, color: 'red' }}>{errors.experience?.message}</p>
-                        }
+                        {!totalExperience && errors.experience && (
+                          <p style={{ fontSize: 14, color: "red" }}>
+                            {errors.experience?.message}
+                          </p>
+                        )}
                       </FormControl>
                     </Grid>
                   </Grid>
@@ -344,15 +411,16 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         handleTechRatingsChange={handleTechRatingsChange}
                       />
                     }
-                    {/* {errors.technologyRating &&
-                      <p style={{ fontSize: 14, color: 'red' }}>{errors.technologyRating?.message}</p>
-                    } */}
                   </Grid>
                 </CardContent>
               </Card>
               {/* Soft Skills*/}
               <Card
-                style={{ maxWidth: "95%", margin: "20px auto", padding: "20px 5x" }}
+                style={{
+                  maxWidth: "95%",
+                  margin: "20px auto",
+                  padding: "20px 5x",
+                }}
               >
                 <CardContent>
                   <Typography
@@ -375,7 +443,9 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                       isSoftskill={true}
                       setTechnologyList={setSoftSkill}
                       {...register("softSkillRatings")}
-                      handleSoftSkillRatingsChange={handleSoftSkillRatingsChange}
+                      handleSoftSkillRatingsChange={
+                        handleSoftSkillRatingsChange
+                      }
                     />
                   </Grid>
                 </CardContent>
@@ -386,7 +456,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                     <Grid xs={6} sm={6} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                          Interview Result
+                          Interview Result *
                         </InputLabel>
                         <Select
                           value={result}
@@ -400,9 +470,11 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                           <MenuItem value={"REJECTED"}>Rejected</MenuItem>
                           <MenuItem value={"HOLD"}>Hold</MenuItem>
                         </Select>
-                        {!result && errors.result &&
-                          <p style={{ fontSize: 14, color: 'red' }}>{errors.result?.message}</p>
-                        }
+                        {!result && errors.result && (
+                          <p style={{ fontSize: 14, color: "red" }}>
+                            {errors.result?.message}
+                          </p>
+                        )}
                       </FormControl>
                     </Grid>
                   </Grid>
@@ -422,11 +494,14 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         rows={2}
                         fullWidth
                         required
-                        defaultValue={isFeedbackEdit ? feedbackform.goodAt : ''}
+                        defaultValue={isFeedbackEdit ? feedbackform.goodAt : ""}
+                        error={!!errors.goodAt}
                       ></TextField>
-                      {errors.goodAt &&
-                        <p style={{ fontSize: 14, color: 'red' }}>{errors.goodAt?.message}</p>
-                      }
+                      {errors.goodAt && (
+                        <p style={{ fontSize: 14, color: "red" }}>
+                          {errors.goodAt?.message}
+                        </p>
+                      )}
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -445,11 +520,16 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         rows={2}
                         fullWidth
                         required
-                        defaultValue={isFeedbackEdit ? feedbackform.improvmentAreas : ''}
+                        defaultValue={
+                          isFeedbackEdit ? feedbackform.improvmentAreas : ""
+                        }
+                        error={!!errors.improvmentAreas}
                       ></TextField>
-                      {errors.improvmentAreas &&
-                        <p style={{ fontSize: 14, color: 'red' }}>{errors.improvmentAreas?.message}</p>
-                      }
+                      {errors.improvmentAreas && (
+                        <p style={{ fontSize: 14, color: "red" }}>
+                          {errors.improvmentAreas?.message}
+                        </p>
+                      )}
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -468,12 +548,16 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         rows={2}
                         fullWidth
                         required
-                        defaultValue={isFeedbackEdit ? feedbackform.comments : ''}
+                        error={!!errors.comments}
+                        defaultValue={
+                          isFeedbackEdit ? feedbackform.comments : ""
+                        }
                       ></TextField>
-                      {errors.comments &&
-                        <p style={{ fontSize: 14, color: 'red' }}>{errors.comments?.message}</p>
-                      }
-
+                      {errors.comments && (
+                        <p style={{ fontSize: 14, color: "red" }}>
+                          {errors.comments?.message}
+                        </p>
+                      )}
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -482,16 +566,30 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                 <CardContent>
                   <Grid container spacing={1}>
                     <Grid xs={12} item>
-                      <ImageUploadPreviewComponent
-                        handleFiles={handleFiles}
-                      />
-                      {!files && (
-                        <p style={{ fontSize: 14, color: "red", marginTop: "10px" }}>
-                          Please upload an image file.
+                      <ImageUploadPreviewComponent handleFiles={handleFiles} />
+                      {files.length === 0 ? (
+                        <p
+                          style={{
+                            fontSize: 12,
+                            color: "red",
+                            marginTop: "10px",
+                          }}
+                        >
+                          Note: Please upload at least one screenshot in .png or
+                          .jpeg format.
                         </p>
-                      )}
+                      ) : null}
+                      <p
+                        style={{
+                          fontSize: 12,
+                          color: "black",
+                          marginTop: "10px",
+                        }}
+                      >
+                        Note: Multiple images can be added with a size limit of
+                        5 MB for all images.
+                      </p>
                     </Grid>
-
                   </Grid>
                 </CardContent>
               </Card>
@@ -505,12 +603,11 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         color="primary"
                         fullWidth
                         id="submit"
-                        style={{backgroundColor: "rgb(33, 80, 162)"}}
-                        onClick={handleSubmit(submitFormdata)}
+                        style={{ backgroundColor: "rgb(33, 80, 162)" }}
+                        onClick={handleSubmit(submitFormdata, isError)}
                       >
                         Submit
                       </Button>
-
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -518,7 +615,6 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
             </Card>
           </form>
         )}
-
       </React.Fragment>
     </div>
   );

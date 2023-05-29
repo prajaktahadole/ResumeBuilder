@@ -16,16 +16,62 @@ export const getAllResumeThunk = createAsyncThunk(
 const initialState = {
   loading: false,
   getResumes: false,
+  feedbackFormData: "",
+  technologyApi: "",
+  softSkillApi: "",
+  techNameId: "",
+  currentSoftSkillList: "",
+  selectedMultipleLang: [],
+  languageListArray: [],
+  languageToSkill: "",
+  newLangToSkill: "",
+  techNameId: "",
+  currentTechnologyList: "",
+  techId: "",
 };
 
 export const resumeSlice = createSlice({
   name: "resume",
   initialState,
   reducers: {
+    setTechId: (state, action) => {
+      state.techId = action.payload;
+    },
+    setTechNameId: (state, action) => {
+      state.techNameId = action.payload;
+    },
+    setNewLangToSkill: (state, action) => {
+      state.newLangToSkill = action.payload;
+    },
     setGetResume: (state, action) => {
       state.getResumes = action.payload;
     },
+    setGetFeedbackform: (state, action) => {
+      state.feedbackFormData = action.payload;
+    },
+    setGetTechnologyApi: (state, action) => {
+      state.technologyApi = action.payload;
+    },
+    setGetSoftskillApi: (state, action) => {
+      state.softSkillApi = action.payload;
+    },
+    setTechnologyList: (state, action) => {
+      state.currentTechnologyList = action.payload;
+    },
+    setSoftSkillList: (state, action) => {
+      state.currentSoftSkillList = action.payload;
+    },
+    setselectedMultipleLang: (state, action) => {
+      state.selectedMultipleLang = action.payload;
+    },
+    setlanguageListArray: (state, action) => {
+      state.languageListArray = action.payload;
+    },
+    setlanguagetoSkill: (state, action) => {
+      state.languageToSkill = action.payload;
+    },
   },
+
   extraReducers: (builder) => {
     builder.addCase(getAllResumeThunk.pending, (state, action) => {
       state.loading = true;
@@ -43,6 +89,19 @@ export const resumeSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setGetResume } = resumeSlice.actions;
+export const {
+  setGetResume,
+  setTechNameId,
+  setNewLangToSkill,
+  setGetFeedbackform,
+  setGetSoftskillApi,
+  setGetTechnologyApi,
+  setSoftSkillList,
+  setTechnologyList,
+  setTechId,
+  setlanguageListArray,
+  setselectedMultipleLang,
+  setlanguagetoSkill,
+} = resumeSlice.actions;
 
 export default resumeSlice.reducer;

@@ -113,9 +113,7 @@ export const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-  // ...(!open && {
-  //     width: `calc(100% - 3.4%)`,
-  // }),
+ 
   "& .MuiToolbar-root": {
     backgroundColor: "rgba(243, 245, 246, 1)",
   },
@@ -147,118 +145,6 @@ export const DrawerHeader = styled("div")(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
-
-// export const avatar1 = createTheme({
-//   components: {
-//     MuiAvatar: {
-//       styleOverrides: {
-//         root: {
-//           backgroundColor: "#ffb300",
-//           color: "#000",
-//           width: "72px",
-//           height: "72px",
-//           borderRadius: "55px",
-//           position: "relative",
-//           right: "10px",
-//         },
-//       },
-//     },
-//   },
-// });
-
-// export const avatar2 = createTheme({
-//   components: {
-//     MuiAvatar: {
-//       styleOverrides: {
-//         root: {
-//           backgroundColor: "#fff",
-//           border: "2px solid #9e9e9e",
-//           color: "#000",
-//           width: "72px",
-//           height: "72px",
-//           borderRadius: "55px",
-//           position: "relative",
-//           right: "10px",
-//         },
-//       },
-//     },
-//   },
-// });
-
-// export const avatar3 = createTheme({
-//   components: {
-//     MuiAvatar: {
-//       styleOverrides: {
-//         root: {
-//           backgroundColor: "#fff",
-//           border: "2px solid #9e9e9e",
-//           color: "#000",
-//           width: "72px",
-//           height: "72px",
-//           borderRadius: "55px",
-//           position: "relative",
-//           right: "10px",
-//         },
-//       },
-//     },
-//   },
-// });
-
-// export const avatar4 = createTheme({
-//   components: {
-//     MuiAvatar: {
-//       styleOverrides: {
-//         root: {
-//           backgroundColor: "#fff",
-//           border: "2px solid #9e9e9e",
-//           color: "#000",
-//           width: "72px",
-//           height: "72px",
-//           borderRadius: "55px",
-//           position: "relative",
-//           right: "10px",
-//         },
-//       },
-//     },
-//   },
-// });
-
-// export const avatar5 = createTheme({
-//   components: {
-//     MuiAvatar: {
-//       styleOverrides: {
-//         root: {
-//           backgroundColor: "#fff",
-//           border: "2px solid #9e9e9e",
-//           color: "#000",
-//           width: "72px",
-//           height: "72px",
-//           borderRadius: "55px",
-//           position: "relative",
-//           right: "10px",
-//         },
-//       },
-//     },
-//   },
-// });
-
-// export const avatar6 = createTheme({
-//   components: {
-//     MuiAvatar: {
-//       styleOverrides: {
-//         root: {
-//           backgroundColor: "#ffb300",
-//           color: "#000",
-//           width: "72px",
-//           height: "72px",
-//           borderRadius: "55px",
-//           position: "relative",
-//           right: "10px",
-//         },
-//       },
-//     },
-//   },
-// });
 
 export const typography = createTheme({
   components: {
