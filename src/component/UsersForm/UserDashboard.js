@@ -137,16 +137,17 @@ const UserDashboard = () => {
 
   return (
     <>
-      
+    <Paper style={{padding: '15px', marginTop: '30px', height: '635px', backgroundColor: "#F0F0F0"}}>
       <div>
-      <h1></h1>
         <Grid
-          item
-          xs={12}
+         item
+         xs={12}
+         sm={12}
+         lg={12}
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            marginBottom: "30px",
+            margin: "10px 0px 10px 0px",
           }}
         >
           <Paper
@@ -189,6 +190,7 @@ const UserDashboard = () => {
           data={userData}
           type="users"
         />
+        </Paper>
     </>
   );
 };

@@ -8,7 +8,7 @@ const CandidateIDnName = ({
 }) => {
   return (
     <Grid container spacing={1}>
-      <Grid item xs={6} sm={6}>
+      <Grid item xs={12} sm={6} lg={6}>
         <TextField
           label="Candidate Id"
           placeholder="Candidate Id"
@@ -26,7 +26,7 @@ const CandidateIDnName = ({
           </p>
         )}
       </Grid>
-      <Grid item xs={6} sm={6}>
+      <Grid item xs={12} sm={6} lg={6}>
         <TextField
           label="Candidate Name"
           placeholder="FirstName LastName"

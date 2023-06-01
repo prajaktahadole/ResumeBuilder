@@ -8,7 +8,7 @@ const ImprovementAreas = ({
 }) => {
   return (
     <Grid container spacing={1}>
-      <Grid xs={12} item>
+      <Grid xs={12} sm={12} lg={12} item>
         <TextField
           label="Improvement Areas"
           name="improvmentAreas"

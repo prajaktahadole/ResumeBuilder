@@ -6,7 +6,7 @@ export const resumedatamapper = (data) => {
     obj["name"] = ele.personalDetails.empName;
     obj["resumeUUID"] = ele.id;
     obj["email"] = ele.personalDetails.email;
-    // obj["designation"] = ele.workExperience[0].jobRole;
+   // obj["designation"] = ele.workExperience[0].jobRole;
     obj["designation"] = ele.personalDetails.designation;
     obj["skills"] = ele.skillSet.languages;
     return obj;
@@ -21,7 +21,7 @@ export const usersdatamapper = (userData) => {
     obj["userUUID"] = ele.userId;
     obj["email"] = ele.email;
     obj["role"] = ele.roles && ele.roles.length > 0 ? ele.roles[0].name : "";
-    obj["status"] = ele.activeStatus === "Y" ? "Active" : "New";
+    obj["status"] = ele.activeStatus==="Y" ? "Active" : "New" ;
     return obj;
   });
   return temparray;
@@ -30,53 +30,97 @@ export const usersdatamapper = (userData) => {
 export const feedbackdatamapper = (userData) => {
   let temparray = userData.map((ele) => {
     let obj = {};
+    obj["candidateId"] = ele.candidateId;
     obj["candidate"] = ele.candidateName;
     obj["interviewType"] = ele.interviewType;
-    obj["interviewRound"] =
-      ele.interviewRound === "L1"
-        ? "Level 1"
-        : ele.interviewRound === "L2"
-        ? "Level 2"
-        : "Level 3";
+    obj["interviewRound"] = ele.interviewRound === 'L1' ? "Level 1" : ele.interviewRound === 'L2' ? "Level 2" : "Level 3" ;
     obj["interviewer"] = ele.interviewerName;
     obj["status"] = ele.result;
-    obj["submittedDate"] = format(parseISO(ele.createdDate), "dd/MM/yyyy");
+    obj["submittedDate"] = format(parseISO(ele.createdDate),'dd/MM/yyyy');
     obj["formId"] = ele.formId;
     return obj;
   });
   return temparray;
 };
 
+// export const feedbackKpidatamapper = (inData) => {
+//   let temparray = inData.map((ele) => {
+//     let obj = {};
+//     console.log("ele-->",ele)
+//     obj["interviewer"] = ele.interviewerName;
+//     obj["internalSe"] = ele.interviewType === "Humancloud_Internal" ? ele.Selected : 0;
+//     obj["convergeSe"] = ele.interviewType === "The_Converge" ? ele.Selected : 0;
+//     obj["internalRe"] = ele.interviewType === "Humancloud_Internal" ? ele.Rejected : 0;
+//     obj["convergeRe"] = ele.interviewType === "The_Converge" ? ele.Rejected : 0;
+//     obj["internalHo"] = ele.interviewType === "Humancloud_Internal" ? ele.Hold : 0;
+//     obj["convergeHo"] = ele.interviewType === "The_Converge" ? ele.Hold : 0;
+//     obj["internalTo"] = ele.interviewType === "Humancloud_Internal" ? ele.Total : 0;
+//     obj["convergeTo"] = ele.interviewType === "The_Converge" ? ele.Total : 0;
+//     // obj["rejected"] = ele.Rejected;
+//     // obj["hold"] = ele.Hold;
+//     // obj["total"] = ele.Total;
+//     return obj;
+//   });
+//
+//   return temparray;
+// };
+
 export const feedbackKpidatamapper = (inData) => {
-  let temparray = inData.map((ele) => {
-    let obj = {};
-    obj["interviewer"] = ele.interviewerName;
-    obj["selected"] = ele.Selected;
-    obj["rejected"] = ele.Rejected;
-    obj["hold"] = ele.Hold;
-    obj["total"] = ele.Total;
-    return obj;
+  let temparray = [];
+
+  inData.forEach((ele) => {
+    let existingObj = temparray.find(obj => obj.interviewer === ele.interviewerName);
+
+    if (existingObj) {
+      // Object for the interviewer already exists, update the values
+      if (ele.interviewType === "Humancloud_Internal") {
+        existingObj.internalSe = ele.Selected;
+        existingObj.internalRe = ele.Rejected;
+        existingObj.internalHo = ele.Hold;
+        existingObj.internalTo = ele.Total;
+      } else if (ele.interviewType === "The_Converge") {
+        existingObj.convergeSe = ele.Selected;
+        existingObj.convergeRe = ele.Rejected;
+        existingObj.convergeHo = ele.Hold;
+        existingObj.convergeTo = ele.Total;
+      }
+    } else {
+      // Object for the interviewer doesn't exist, create a new object
+      let newObj = {
+        interviewer: ele.interviewerName,
+        internalSe: ele.interviewType === "Humancloud_Internal" ? ele.Selected : 0,
+        convergeSe: ele.interviewType === "The_Converge" ? ele.Selected : 0,
+        internalRe: ele.interviewType === "Humancloud_Internal" ? ele.Rejected : 0,
+        convergeRe: ele.interviewType === "The_Converge" ? ele.Rejected : 0,
+        internalHo: ele.interviewType === "Humancloud_Internal" ? ele.Hold : 0,
+        convergeHo: ele.interviewType === "The_Converge" ? ele.Hold : 0,
+        internalTo: ele.interviewType === "Humancloud_Internal" ? ele.Total : 0,
+        convergeTo: ele.interviewType === "The_Converge" ? ele.Total : 0
+      };
+
+      temparray.push(newObj);
+    }
   });
   return temparray;
 };
 
 export const putFeedBackDataMapper = (
-  data,
-  softSkillApi,
-  currentSoftSkillList,
-  techNameId,
-  currentTechnologyList,
-  techId,
-  selectedMultipleLang,
-  feedbackFormData
+    data,
+    softSkillApi,
+    currentSoftSkillList,
+    techNameId,
+    currentTechnologyList,
+    techId,
+    selectedMultipleLang,
+    feedbackFormData
 ) => {
   let tempData = JSON.parse(JSON.stringify(data));
   tempData.softSkillRatings = softSkillApi.map((ele) => {
     let objRating = { ...ele };
     objRating["rating"] = currentSoftSkillList[ele.skillName]
-      ? parseInt(currentSoftSkillList[ele.skillName])
-      : 0;
-    console.log(objRating, "------------5566");
+        ? parseInt(currentSoftSkillList[ele.skillName])
+        : 0;
+
     return objRating;
   });
   let techListWithTechName = {};
@@ -116,3 +160,7 @@ export const putFeedBackDataMapper = (
   delete tempData["improvementAreas"];
   return tempData;
 };
+
+
+
+

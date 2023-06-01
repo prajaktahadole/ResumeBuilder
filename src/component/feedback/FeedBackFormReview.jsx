@@ -72,6 +72,8 @@ function FeedBackFormReview() {
     //   console.error(error);
     // }
   };
+  const interviewDate = new Date(feedbackform.interviewDate === null ? feedbackform.createdDate : feedbackform.interviewDate);
+  const formattedDate = interviewDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
   return (
     <div>
       {editFeedback ? (
@@ -297,6 +299,24 @@ function FeedBackFormReview() {
                               style={{ fontSize: "1rem", fontWeight: "bold" }}
                             >
                               {feedbackform.interviewRound}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell
+                                component="th"
+                                scope="row"
+                                style={{
+                                  fontSize: "1rem",
+                                  borderRight: "1px solid lightgray",
+                                  textAlign: "right",
+                                }}
+                            >
+                              Interview Date
+                            </TableCell>
+                            <TableCell
+                                style={{ fontSize: "1rem", fontWeight: "bold" }}
+                            >
+                              {formattedDate}
                             </TableCell>
                           </TableRow>
                         </TableBody>

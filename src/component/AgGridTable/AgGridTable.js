@@ -9,6 +9,8 @@ import {
   feedbackdatamapper,
   feedbackKpidatamapper,
 } from "../../utils/dataMappers";
+import {Button, IconButton} from "@mui/material";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 
 const AgGridTable = ({
   data = [],
@@ -34,6 +36,17 @@ const AgGridTable = ({
     setGridApi(params.api);
   };
 
+  const exportData = () => {
+    if (type === "interview" && gridApi) {
+      const currentDateTime = new Date().toISOString().replace(/[-:.]/g, "");
+      const fileName = `interview_data_${currentDateTime}.csv`;
+      const params = {
+        fileName: fileName,
+      };
+      gridApi.exportDataAsCsv(params);
+    }
+  };
+
   const onFilterTextChange = (value) => {
     if (gridApi) {
       gridApi.setQuickFilter(value);
@@ -51,9 +64,31 @@ const AgGridTable = ({
 
   return (
     <div style={{ width: "100%", height: "500px"}}>
+      <div className="downloadButton">
+        {type === "interview" && (
+            <Button
+                style={{
+                  width: "10%",
+                  padding: "10px",
+                  fontSize: "10px",
+                  fontWeight: "bolder",
+                  backgroundColor: "rgb(33, 80, 162)",
+                  textTransform: "none",
+                  //marginLeft: "10px",
+                }}
+                variant="contained"
+                onClick={exportData}
+            >
+              Export CSV
+              {/*<IconButton color="primary" size="medium">*/}
+              {/*  <CloudDownloadIcon />*/}
+              {/*</IconButton>*/}
+            </Button>
+        )}
+      </div>
       <div
         className="ag-theme-alpine"
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "102%", width: "100%", overflowX: 'hidden', margin: "auto" }}
       >
     {rowData.length === 0 ? (
       <AgGridReact
@@ -79,7 +114,6 @@ const AgGridTable = ({
       noRowsOverlayComponent={"customNoRowsOverlay"}
     />
     )}
-       
       </div>
     </div>
   );

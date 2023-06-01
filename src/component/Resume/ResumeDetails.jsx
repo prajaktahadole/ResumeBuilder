@@ -107,7 +107,6 @@ function ResumeDetails() {
       throw new Error('Failed to download resume.');
     }
   }
-
   useEffect(() => {
     fetchdata();
   }, []);
@@ -173,7 +172,7 @@ function ResumeDetails() {
               </IconButton>
             </Button>
 
-            {item.createdBy === localStorage.getItem("email") ? (
+            {item.createdBy === localStorage.getItem("email") || localStorage.getItem("role") === 'ADMIN'  || localStorage.getItem("role") === 'INTERNAL' ? (
               <Button
                 style={{
                   margin: "5px",
@@ -282,9 +281,19 @@ function ResumeDetails() {
                       item.skillSet.ideUsed === "" ? "" :
                        <div>
                        <Grid className="Psubhead">IDE Used: </Grid>
-                       <Grid>{item.skillSet.ideUsed}</Grid>
+                         <Grid>{item.skillSet.ideUsed}</Grid>
                      </div>
                      }
+                      {item.skillSet.othersSkillSet && item.skillSet.othersSkillSet.length > 0 ? (
+                          item.skillSet.othersSkillSet.map((skill, index) => (
+                                <div key={index}>
+                                  <Grid className="Psubhead">{skill.name}: </Grid>
+                                  <Grid>{skill.description}</Grid>
+                                </div>
+                            ))
+                      ) : (
+                          " "
+                      )}
                     </Grid>
                   </Grid>
 

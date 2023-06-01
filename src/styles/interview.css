@@ -8,6 +8,15 @@
     padding: 10px;
 }
 
+
+.countbox1{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+}
+
 .countboxsubmain{
     display: flex;
     justify-content: space-between;
@@ -26,4 +35,9 @@ h4, h1{
     margin: auto;
 }
 
+.borbtm{
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+    width: 100%;
+}
 

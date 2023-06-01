@@ -3,7 +3,7 @@ import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 const InterviewResult = ({ errors, result, setResult, register }) => {
   return (
     <Grid container spacing={1}>
-      <Grid xs={6} sm={6} item>
+      <Grid xs={12} sm={6} lg={6} item>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">
             Interview Result *

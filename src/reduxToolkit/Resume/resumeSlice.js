@@ -2,15 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getAllResume } from "./resumeApis";
 
 export const getAllResumeThunk = createAsyncThunk(
-  "resume/getAllResume",
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await getAllResume(data);
-      return response;
-    } catch (error) {
-      return rejectWithValue(error.response);
+    "resume/getAllResume",
+    async (data, { rejectWithValue }) => {
+      try {
+        const response = await getAllResume(data);
+        return response;
+      } catch (error) {
+        return rejectWithValue(error.response);
+      }
     }
-  }
 );
 
 const initialState = {
@@ -25,7 +25,6 @@ const initialState = {
   languageListArray: [],
   languageToSkill: "",
   newLangToSkill: "",
-  techNameId: "",
   currentTechnologyList: "",
   techId: "",
 };

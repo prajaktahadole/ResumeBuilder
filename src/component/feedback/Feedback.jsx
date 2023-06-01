@@ -60,10 +60,13 @@ const schema = yup.object().shape({
     .of(
       yup.object().shape({
         skillName: yup.string().required(),
-        rating: yup.number().integer().min(0).max(5).required(),
+        rating: yup.number().integer().min(0).max(4).required(),
       })
     )
     .required("At least one soft skill rating is required"),
+  interviewDate: yup
+    .string()
+    .required('Interview date is compulsory'),
 });
 
 const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
@@ -141,11 +144,9 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
       technologyRating: [],
     },
   });
-  const isError = () => {
-    console.log(errors);
-  };
+
   const submitFormdata = (data) => {
-    if (files.length !== 0) {
+    //if (files.length !== 0) {
       setIsLoading(true);
       const axiosInstance = axios.create({
         baseURL: BASE_URL,
@@ -163,41 +164,42 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
           formData.append("file", files[i]);
         }
       }
-
+    
       axiosInstance
-        .post("/feedback/form", formData)
-        .then((res) => {
-          if (res?.status === 200) {
-            dispatch(setMultiNotificationVariant("success"));
-            const errorArray = [
-              {
-                propertyValue: "Feedback submitted successfully.",
-              },
-            ];
-            dispatch(setMultiNotificationData(errorArray));
-            navigate("/resumemakerui/feedback");
-          } else {
-            dispatch(setMultiNotificationVariant("error"));
-            const errorArray = [
-              {
-                propertyValue: "Something went wrong",
-              },
-            ];
-            dispatch(setMultiNotificationData(errorArray));
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      dispatch(setMultiNotificationVariant("error"));
-      const errorArray = [
-        {
-          propertyValue: "Please Upload atleast one Image",
-        },
-      ];
-      dispatch(setMultiNotificationData(errorArray));
-    }
+      .post("/feedback/form", formData)
+      .then((res) => {
+        if (res?.status === 200) {
+          dispatch(setMultiNotificationVariant("success"));
+          const errorArray = [
+            {
+              propertyValue: "Feedback submitted successfully.",
+            },
+          ];
+          dispatch(setMultiNotificationData(errorArray));
+          navigate("/resumemakerui/feedback");
+        } else {
+          dispatch(setMultiNotificationVariant("error"));
+          const errorArray = [
+            {
+              propertyValue: "Something went wrong",
+            },
+          ];
+          dispatch(setMultiNotificationData(errorArray));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  // } else {
+  //   dispatch(setMultiNotificationVariant("error"));
+  //   const errorArray = [
+  //     {
+  //       propertyValue: "Please Upload atleast one Image",
+  //     },
+  //   ];
+  //   dispatch(setMultiNotificationData(errorArray));
+  // }
+  
   };
 
   useEffect(() => {
@@ -219,6 +221,15 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
     }
     fetchdata();
   }, []);
+
+  const [date, setDate] = useState("");
+  const currentDate = new Date().toISOString().split('T')[0];
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
+  useEffect(() => {
+    setDate(currentDate);
+  }, [currentDate]);
 
   return (
     <div>
@@ -250,7 +261,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
               <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid xs={6} sm={6} item>
+                    <Grid xs={12} sm={6} lg={6} item>
                       <TextField
                         label="Candidate Id"
                         placeholder="Candidate Id"
@@ -270,7 +281,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         </p>
                       )}
                     </Grid>
-                    <Grid xs={6} sm={6} item>
+                    <Grid xs={12} sm={6} lg={6} item>
                       <TextField
                         label="Candidate Name"
                         placeholder="FirstName LastName"
@@ -297,7 +308,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
               <Card style={{ maxWidth: "95%", margin: "10px auto" }}>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid xs={6} sm={6} item>
+                    <Grid xs={12} sm={6} lg={6} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                           Interview Type *
@@ -324,7 +335,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         )}
                       </FormControl>
                     </Grid>
-                    <Grid xs={6} sm={6} item>
+                    <Grid xs={12} sm={6} lg={6} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                           Interview Round *
@@ -348,10 +359,36 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         )}
                       </FormControl>
                     </Grid>
+                    <Grid xs={12} sm={6} lg={6} item>
+                      <FormControl fullWidth>
+                        <TextField
+                          style={{ width: "100%" }}
+                          type="date"
+                          id="outlined-required"
+                          label="Interview Date"
+                          name="interviewDate"
+                          {...register("interviewDate")}
+                          defaultValue={currentDate}
+                          onChange={handleDateChange}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          inputProps={{
+                            max: currentDate,
+                            required: true,
+                          }}
+                        />
+                        {errors.interviewDate && (
+                          <p style={{ fontSize: 14, color: "red" }}>
+                            {errors.interviewDate?.message}
+                          </p>
+                        )}
+                      </FormControl>
+                    </Grid>
                   </Grid>
                 </CardContent>
               </Card>
-
+          
               <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
                 <CardContent>
                   <Typography
@@ -366,13 +403,13 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                   </Typography>
 
                   <Grid container spacing={1}>
-                    <Grid xs={8} item>
+                    <Grid xs={12} sm={6} lg={6} item>
                       <AutoCompleteCustome
                         setTechnoList={setTechnoList}
                         technoList={technoList}
                       />{" "}
                     </Grid>
-                    <Grid xs={4} item>
+                    <Grid xs={12} sm={6} lg={6} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                           Total Experience *
@@ -411,6 +448,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         handleTechRatingsChange={handleTechRatingsChange}
                       />
                     }
+                  
                   </Grid>
                 </CardContent>
               </Card>
@@ -453,7 +491,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
               <Card style={{ maxWidth: "95%", margin: "10px auto" }}>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid xs={6} sm={6} item>
+                    <Grid xs={12} sm={6} lg={4} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                           Interview Result *
@@ -483,7 +521,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
               <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid xs={12} item>
+                    <Grid xs={12} sm={12} lg={12} item>
                       <TextField
                         label="Good At"
                         name="goodAt"
@@ -509,7 +547,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
               <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid xs={12} item>
+                    <Grid xs={12} sm={12} lg={12} item>
                       <TextField
                         label="Improvement Areas"
                         name="improvmentAreas"
@@ -537,7 +575,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
               <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid xs={12} item>
+                    <Grid xs={12} sm={12} lg={12} item>
                       <TextField
                         label="Remark"
                         name="comments"
@@ -565,9 +603,9 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
               <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid xs={12} item>
+                    <Grid xs={12} sm={12} lg={12} item>
                       <ImageUploadPreviewComponent handleFiles={handleFiles} />
-                      {files.length === 0 ? (
+                       {/* {files.length === 0 ? (
                         <p
                           style={{
                             fontSize: 12,
@@ -578,7 +616,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                           Note: Please upload at least one screenshot in .png or
                           .jpeg format.
                         </p>
-                      ) : null}
+                      ) : null} */}
                       <p
                         style={{
                           fontSize: 12,
@@ -586,7 +624,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                           marginTop: "10px",
                         }}
                       >
-                        Note: Multiple images can be added with a size limit of
+                         Note: Please upload images in PNG and JPEG format only and Multiple images can be added with a size limit of
                         5 MB for all images.
                       </p>
                     </Grid>
@@ -596,7 +634,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
               <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid xs={12} item>
+                    <Grid xs={12} sm={12} lg={12} item>
                       <Button
                         type="submit"
                         variant="contained"
@@ -604,7 +642,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         fullWidth
                         id="submit"
                         style={{ backgroundColor: "rgb(33, 80, 162)" }}
-                        onClick={handleSubmit(submitFormdata, isError)}
+                        onClick={handleSubmit(submitFormdata)}
                       >
                         Submit
                       </Button>

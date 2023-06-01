@@ -217,7 +217,8 @@ export default function CustomizedTables() {
 
   return (
     <>
-      <Grid container width={'100%'} height={'100%'} marginBottom={"25px"}  >
+      <Paper style={{padding: '20px', marginTop: '10px', height: '635px', backgroundColor: "#F0F0F0"}}>
+      <Grid container width={'100%'} marginBottom={"25px"}  >
 
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Paper
@@ -246,6 +247,7 @@ export default function CustomizedTables() {
       {
         <AgGridTable searchData={searchValue} gridOptions={gridOptionsResume} data={data} />
       }
+      </Paper>
     </>
   );
 }

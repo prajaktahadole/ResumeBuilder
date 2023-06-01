@@ -1,17 +1,17 @@
 .downButton{
-    cursor: pointer;   
+  cursor: pointer;
 }
 .upButton{
-    transform: rotate(180deg);
-  }
+  transform: rotate(180deg);
+}
 
 
-  .inside-item{
-    border:  "1px solid red";
-  }
+.inside-item{
+  border:  "1px solid red";
+}
 
 
-  /*Highlight active sidebar.css */
+/*Highlight active sidebar.css */
 
 .inside-content.active {
   background-color: rgb(33, 80, 162);

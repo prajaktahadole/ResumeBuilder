@@ -3,11 +3,14 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+    Grid,
+    Card,
+  CardContent,
   Select,
-  TextField,
   IconButton,
   FormHelperText,
 } from "@mui/material";
+import TextField from "@mui/material/TextField";
 import React, { useState, useRef } from "react";
 import Education from "./Education";
 import SkillSets from "./SkillSets";
@@ -68,6 +71,11 @@ function Resume({ item, isEdit = false, id }) {
   const [genderValue, setGenderValue] = useState(
     isEdit ? item.personalDetails.gender : ""
   );
+  const [fields, setFields] = useState(isEdit ? item.skillSet.othersSkillSet: []);
+
+  const handleFieldsChange = (updatedFields) => {
+    setFields(updatedFields);
+  };
 
   const navigate = useNavigate();
 
@@ -153,6 +161,8 @@ function Resume({ item, isEdit = false, id }) {
     summaryList.forEach((ele) => {
       str.push(ele);
     });
+
+    console.log("form", form)
     const personalDetails = {
       personalDetails: {
         empName: form.elements.fullName.value,
@@ -172,6 +182,7 @@ function Resume({ item, isEdit = false, id }) {
         operatingSystems: form.elements.operatingSystems.value,
         ideUsed: form.elements.ideUsed.value,
         webServer: form.elements.webServer.value,
+        othersSkillSet: fields,
       },
       professionalSummary: {
         summaryDetails: str,
@@ -247,6 +258,9 @@ function Resume({ item, isEdit = false, id }) {
 
             <div className="detail subContainer">
               <div className="row">
+
+            <Grid container spacing={1}>
+            <Grid item xs={12} sm={6} lg={6}>
                 <TextField
                   Name
                   id="outlined-required"
@@ -254,13 +268,17 @@ function Resume({ item, isEdit = false, id }) {
                   defaultValue={isEdit ? item.personalDetails.empName : ""}
                   placeholder="Enter Your Name"
                   required
+                  autoFocus
                   name="fullName"
                   inputRef={(el) => (inputRefs.current[0] = el)}
                   onKeyDown={(e) => handleKeyDown(e, 0)}
                   {...register("fullName")}
                   error={!!errors.fullName}
                   helperText={errors.fullName?.message}
+                  fullWidth
                 />
+            </Grid>
+            <Grid item xs={12} sm={6} lg={6}>
                 <TextField
                   Email
                   id="outlined-required"
@@ -268,6 +286,7 @@ function Resume({ item, isEdit = false, id }) {
                   defaultValue={isEdit ? item.personalDetails.email : ""}
                   placeholder="Enter Your Email"
                   required
+                  fullWidth
                   name="email"
                   type="email"
                   inputRef={(el) => (inputRefs.current[1] = el)}
@@ -276,9 +295,10 @@ function Resume({ item, isEdit = false, id }) {
                   error={!!errors.email}
                   helperText={errors.email?.message}
                 />
-              </div>
-
-              <div className="row">
+            </Grid>
+              {/*</div>*/}
+              <Grid item xs={12} sm={6} lg={6}>
+              {/*<div className="row">*/}
                 <TextField
                   Title
                   id="outlined-required"
@@ -286,6 +306,7 @@ function Resume({ item, isEdit = false, id }) {
                   defaultValue={isEdit ? item.personalDetails.designation : ""}
                   placeholder="Enter Your Designation"
                   required
+                  fullWidth
                   name="mainDesignation"
                   inputRef={(el) => (inputRefs.current[2] = el)}
                   onKeyDown={(e) => handleKeyDown(e, 2)}
@@ -293,6 +314,8 @@ function Resume({ item, isEdit = false, id }) {
                   error={!!errors.mainDesignation}
                   helperText={errors.mainDesignation?.message}
                 />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={6}>
                 <TextField
                   Enter
                   Mobile
@@ -302,6 +325,7 @@ function Resume({ item, isEdit = false, id }) {
                   defaultValue={isEdit ? item.personalDetails.mobileNo : ""}
                   placeholder="Enter Your Mobile Number"
                   required
+                  fullWidth
                   name="mobileNo"
                   inputRef={(el) => (inputRefs.current[3] = el)}
                   onKeyDown={(e) => handleKeyDown(e, 3)}
@@ -314,8 +338,10 @@ function Resume({ item, isEdit = false, id }) {
                   error={!!errors.mobileNo}
                   helperText={errors.mobileNo?.message}
                 />
-              </div>
-              <div className="row" style={{ textAlign: "left" }}>
+              {/*</div>*/}
+              </Grid>
+              {/*<div className="row" style={{ textAlign: "left" }}>*/}
+            <Grid item xs={12} sm={6}  lg={6}>
                 <TextField
                   LinkedIn
                   id="outlined-required"
@@ -323,9 +349,12 @@ function Resume({ item, isEdit = false, id }) {
                   placeholder="Enter Your Linkedin Profile URL"
                   defaultValue={isEdit ? item.personalDetails.linkedinURL : ""}
                   name="linkedin"
+                  fullWidth
                   inputRef={(el) => (inputRefs.current[4] = el)}
                   onKeyDown={(e) => handleKeyDown(e, 4)}
                 />
+            </Grid>
+            <Grid item xs={12} sm={6} lg={6}>
                 <TextField
                   Address
                   id="outlined-required"
@@ -333,6 +362,7 @@ function Resume({ item, isEdit = false, id }) {
                   placeholder="Enter Your Address"
                   defaultValue={isEdit ? item.personalDetails.address : ""}
                   required
+                  fullWidth
                   name="address"
                   inputRef={(el) => (inputRefs.current[5] = el)}
                   onKeyDown={(e) => handleKeyDown(e, 5)}
@@ -340,8 +370,10 @@ function Resume({ item, isEdit = false, id }) {
                   error={!!errors.address}
                   helperText={errors.address?.message}
                 />
-              </div>
-              <div className="row" style={{ textAlign: "left" }}>
+            </Grid>
+              {/*</div>*/}
+            <Grid item xs={12} sm={6} lg={6}>
+              {/*<div className="row" style={{ textAlign: "left" }}>*/}
                 <FormControl error={!!errors.gender} fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Gender *
@@ -377,6 +409,8 @@ function Resume({ item, isEdit = false, id }) {
                     <FormHelperText>{errors.gender.message}</FormHelperText>
                   )}
                 </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={6}>
                 <FormControl error={!!errors.maritalStatus} fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Marital Status *
@@ -413,6 +447,8 @@ function Resume({ item, isEdit = false, id }) {
                     </FormHelperText>
                   )}
                 </FormControl>
+            </Grid>
+            </Grid>
               </div>
             </div>
             <div>
@@ -438,7 +474,7 @@ function Resume({ item, isEdit = false, id }) {
                         placeholder="Press Enter Key To Add Summary"
                         value={editText}
                         onChange={handleEditInputChange}
-                        autoFocus
+                        fullWidth
                         required
                         style={{
                           width: "780px",
@@ -550,7 +586,7 @@ function Resume({ item, isEdit = false, id }) {
               </div>
             </div>
 
-            <SkillSets item={item} isEdit={isEdit} />
+            <SkillSets fields={fields} setFields={handleFieldsChange} item={item} isEdit={isEdit} />
 
             <Education
               item={item}

@@ -63,14 +63,14 @@ const FeedbackformWrapper = ({ id }) => {
     }
     dispatch(setGetSoftskillApi(feedbackFormData.softSkillRatings));
     if (
-      feedbackFormData.softSkillRatings &&
-      feedbackFormData.softSkillRatings.length
+        feedbackFormData.softSkillRatings &&
+        feedbackFormData.softSkillRatings.length
     ) {
       Array.isArray(feedbackFormData.softSkillRatings) &&
-        feedbackFormData.softSkillRatings.map((softSkills) => {
-          obj[softSkills.skillName] = softSkills.rating;
-          // obj["softSkillId"] = softSkills.softSkillId;
-        });
+      feedbackFormData.softSkillRatings.map((softSkills) => {
+        obj[softSkills.skillName] = softSkills.rating;
+        // obj["softSkillId"] = softSkills.softSkillId;
+      });
       dispatch(setSoftSkillList(obj));
     }
     obj = {};
@@ -92,8 +92,8 @@ const FeedbackformWrapper = ({ id }) => {
     });
     let techIdTemp = {};
     if (
-      feedbackFormData.technologyRating &&
-      feedbackFormData.technologyRating.length
+        feedbackFormData.technologyRating &&
+        feedbackFormData.technologyRating.length
     ) {
       feedbackFormData.technologyRating.forEach((ele) => {
         let tempArray = [...tempNewLangToSkill[ele.techName]];
@@ -133,8 +133,8 @@ const FeedbackformWrapper = ({ id }) => {
     });
     dispatch(setlanguagetoSkill(langToSkill));
     if (
-      feedbackFormData.technologyRating &&
-      feedbackFormData.technologyRating.length
+        feedbackFormData.technologyRating &&
+        feedbackFormData.technologyRating.length
     ) {
       feedbackFormData.technologyRating.forEach((ele) => {
         techName = [...techName, ...ele.techSkills];
@@ -145,11 +145,11 @@ const FeedbackformWrapper = ({ id }) => {
 
     dispatch(setselectedMultipleLang(tempSelectedObj));
     techName.length &&
-      techName.map((item) => {
-        obj[item.skillName] = {
-          rating: item.rating,
-        };
-      });
+    techName.map((item) => {
+      obj[item.skillName] = {
+        rating: item.rating,
+      };
+    });
 
     dispatch(setTechnologyList(obj));
   };
@@ -176,11 +176,11 @@ const FeedbackformWrapper = ({ id }) => {
     });
     if (res.status === 200) {
       dispatch(
-        setlanguageListArray(
-          res.data.map((ele) => {
-            return ele.techName;
-          })
-        )
+          setlanguageListArray(
+              res.data.map((ele) => {
+                return ele.techName;
+              })
+          )
       );
       dispatch(setGetTechnologyApi(res.data));
       setTechnologySkills(true);
@@ -199,13 +199,13 @@ const FeedbackformWrapper = ({ id }) => {
     }
   };
   return (
-    <>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <FeedbackPage feedbackform={feedbackFormData} isFeedbackEdit={true} />
-      )}
-    </>
+      <>
+        {loading ? (
+            <Spinner />
+        ) : (
+            <FeedbackPage feedbackform={feedbackFormData} isFeedbackEdit={true} />
+        )}
+      </>
   );
 };
 export default FeedbackformWrapper;

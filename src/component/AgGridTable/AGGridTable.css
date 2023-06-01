@@ -6,3 +6,13 @@
 .ag-header-cell-label {
   justify-content: center;
 }
+.ag-header-center {
+ padding-left: 95px;
+  margin: auto;
+}
+
+.downloadButton {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}

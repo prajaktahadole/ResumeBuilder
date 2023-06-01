@@ -31,6 +31,19 @@ function InterviewDetails() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const navigate = useNavigate();
+    const [selected, setSelected] = useState(0);
+    const [rejected, setRejected] = useState(0);
+    const [hold, setHold] = useState(0);
+    const [total, setTotal] = useState(0);
+    const [selectedInternal, setSelectedInternal] = useState(0);
+    const [selectedConverge, setSelectedConverge] = useState(0);
+    const [rejectedInternal,setRejectedIntenal] = useState(0);
+    const [rejectedConverge, setRejectedConverge] = useState(0);
+    const [holdInternal, setHoldInternal] = useState(0);
+    const [holdConverge, setHoldConverge] = useState(0);
+    const [totalInternal, setTotalInternal] = useState(0);
+    const [totalConverge, setTotalConverge] = useState(0);
+
   const handleSelectInterviewer = (selectedInterviewer) => {
     setInterviewerName(selectedInterviewer);
   };
@@ -44,6 +57,46 @@ function InterviewDetails() {
         },
       });
       setGridData(resData);
+        let selectedSum = 0;
+        let rejectedSum = 0;
+        let holdSum = 0;
+        let totalSum = 0;
+        let selectedInternalSum = 0;
+        let selectedConvergeSum = 0;
+        let rejectedInternalSum = 0;
+        let rejectedConvergeSum = 0;
+        let holdInternalSum = 0;
+        let holdConvergeSum = 0;
+        let totalInternalSum = 0;
+        let totalConvergeSum = 0;
+
+        resData.forEach((item) => {
+            selectedSum += item.Selected;
+            rejectedSum += item.Rejected;
+            holdSum += item.Hold;
+            totalSum += item.Total;
+            selectedInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Selected : 0;
+            selectedConvergeSum += item.interviewType === "The_Converge" ?  item.Selected : 0;
+            rejectedInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Rejected : 0;
+            rejectedConvergeSum += item.interviewType === "The_Converge" ?  item.Rejected : 0;
+            holdInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Hold : 0;
+            holdConvergeSum += item.interviewType === "The_Converge" ?  item.Hold : 0;
+            totalInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Total : 0;
+            totalConvergeSum += item.interviewType === "The_Converge" ?  item.Total : 0;
+        });
+
+        setSelected(selectedSum);
+        setRejected(rejectedSum);
+        setHold(holdSum);
+        setTotal(totalSum);
+        setSelectedInternal(selectedInternalSum);
+        setSelectedConverge(selectedConvergeSum)
+        setRejectedIntenal(rejectedInternalSum);
+        setRejectedConverge(rejectedConvergeSum)
+        setHoldInternal(holdInternalSum);
+        setHoldConverge(holdConvergeSum)
+        setTotalInternal(totalInternalSum);
+        setTotalConverge(totalConvergeSum)
     }
     fetchData();
   }, []);
@@ -56,6 +109,46 @@ function InterviewDetails() {
       },
     });
     setGridData(data);
+      let selectedSum = 0;
+      let rejectedSum = 0;
+      let holdSum = 0;
+      let totalSum = 0;
+      let selectedInternalSum = 0;
+      let selectedConvergeSum = 0;
+      let rejectedInternalSum = 0;
+      let rejectedConvergeSum = 0;
+      let holdInternalSum = 0;
+      let holdConvergeSum = 0;
+      let totalInternalSum = 0;
+      let totalConvergeSum = 0;
+
+      data.forEach((item) => {
+          selectedSum += item.Selected;
+          rejectedSum += item.Rejected;
+          holdSum += item.Hold;
+          totalSum += item.Total;
+          selectedInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Selected : 0;
+          selectedConvergeSum += item.interviewType === "The_Converge" ?  item.Selected : 0;
+          rejectedInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Rejected : 0;
+          rejectedConvergeSum += item.interviewType === "The_Converge" ?  item.Rejected : 0;
+          holdInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Hold : 0;
+          holdConvergeSum += item.interviewType === "The_Converge" ?  item.Hold : 0;
+          totalInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Total : 0;
+          totalConvergeSum += item.interviewType === "The_Converge" ?  item.Total : 0;
+      });
+
+      setSelected(selectedSum);
+      setRejected(rejectedSum);
+      setHold(holdSum);
+      setTotal(totalSum);
+      setSelectedInternal(selectedInternalSum);
+      setSelectedConverge(selectedConvergeSum)
+      setRejectedIntenal(rejectedInternalSum);
+      setRejectedConverge(rejectedConvergeSum)
+      setHoldInternal(holdInternalSum);
+      setHoldConverge(holdConvergeSum)
+      setTotalInternal(totalInternalSum);
+      setTotalConverge(totalConvergeSum)
   };
 
   const getbyInterviewerandDate = async () => {
@@ -66,6 +159,46 @@ function InterviewDetails() {
       }
     });
     setGridData(data);
+      let selectedSum = 0;
+      let rejectedSum = 0;
+      let holdSum = 0;
+      let totalSum = 0;
+      let selectedInternalSum = 0;
+      let selectedConvergeSum = 0;
+      let rejectedInternalSum = 0;
+      let rejectedConvergeSum = 0;
+      let holdInternalSum = 0;
+      let holdConvergeSum = 0;
+      let totalInternalSum = 0;
+      let totalConvergeSum = 0;
+
+      data.forEach((item) => {
+          selectedSum += item.Selected;
+          rejectedSum += item.Rejected;
+          holdSum += item.Hold;
+          totalSum += item.Total;
+          selectedInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Selected : 0;
+          selectedConvergeSum += item.interviewType === "The_Converge" ?  item.Selected : 0;
+          rejectedInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Rejected : 0;
+          rejectedConvergeSum += item.interviewType === "The_Converge" ?  item.Rejected : 0;
+          holdInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Hold : 0;
+          holdConvergeSum += item.interviewType === "The_Converge" ?  item.Hold : 0;
+          totalInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Total : 0;
+          totalConvergeSum += item.interviewType === "The_Converge" ?  item.Total : 0;
+      });
+
+      setSelected(selectedSum);
+      setRejected(rejectedSum);
+      setHold(holdSum);
+      setTotal(totalSum);
+      setSelectedInternal(selectedInternalSum);
+      setSelectedConverge(selectedConvergeSum)
+      setRejectedIntenal(rejectedInternalSum);
+      setRejectedConverge(rejectedConvergeSum)
+      setHoldInternal(holdInternalSum);
+      setHoldConverge(holdConvergeSum)
+      setTotalInternal(totalInternalSum);
+      setTotalConverge(totalConvergeSum)
   };
 
   const getbyDate = async () => {
@@ -76,6 +209,46 @@ function InterviewDetails() {
       }
     });
     setGridData(data);
+      let selectedSum = 0;
+      let rejectedSum = 0;
+      let holdSum = 0;
+      let totalSum = 0;
+      let selectedInternalSum = 0;
+      let selectedConvergeSum = 0;
+      let rejectedInternalSum = 0;
+      let rejectedConvergeSum = 0;
+      let holdInternalSum = 0;
+      let holdConvergeSum = 0;
+      let totalInternalSum = 0;
+      let totalConvergeSum = 0;
+
+      data.forEach((item) => {
+          selectedSum += item.Selected;
+          rejectedSum += item.Rejected;
+          holdSum += item.Hold;
+          totalSum += item.Total;
+          selectedInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Selected : 0;
+          selectedConvergeSum += item.interviewType === "The_Converge" ?  item.Selected : 0;
+          rejectedInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Rejected : 0;
+          rejectedConvergeSum += item.interviewType === "The_Converge" ?  item.Rejected : 0;
+          holdInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Hold : 0;
+          holdConvergeSum += item.interviewType === "The_Converge" ?  item.Hold : 0;
+          totalInternalSum += item.interviewType === "Humancloud_Internal" ?  item.Total : 0;
+          totalConvergeSum += item.interviewType === "The_Converge" ?  item.Total : 0;
+      });
+
+      setSelected(selectedSum);
+      setRejected(rejectedSum);
+      setHold(holdSum);
+      setTotal(totalSum);
+      setSelectedInternal(selectedInternalSum);
+      setSelectedConverge(selectedConvergeSum)
+      setRejectedIntenal(rejectedInternalSum);
+      setRejectedConverge(rejectedConvergeSum)
+      setHoldInternal(holdInternalSum);
+      setHoldConverge(holdConvergeSum)
+      setTotalInternal(totalInternalSum);
+      setTotalConverge(totalConvergeSum)
   };
 
   const handleResults = () => {
@@ -151,8 +324,13 @@ function InterviewDetails() {
       </div>
     );
   }
+    const gridApi = React.useRef(null);
   const handleExportToExcel = () => {
-    exportToExcel(gridData, "interview_data.xlsx"); // Function to export data to Excel
+    //exportToExcel(gridData, "interview_data.xlsx"); // Function to export data to Excel
+      //gridOptionsfeedbackkpi.api.exportDataAsExcel();
+      if (gridOptionsfeedbackkpi.current) {
+          gridOptionsfeedbackkpi.current.api.exportDataAsCsv();
+      }
   };
 
   const handleReset = () => {
@@ -161,32 +339,35 @@ function InterviewDetails() {
 
   return (
     <>
+        <Paper style={{padding: '15px', marginTop: '30px', height: '850px', backgroundColor: "#F0F0F0"}}>
       <div>
         <Grid
           item
           xs={12}
+          sm={12}
+          lg={12}
           sx={{
-            margin: "30px 0px 10px 0px",
+            margin: "10px 0px 10px 0px",
           }}
         >
-         
+
           <Paper
             component="form"
             className="countbox"
           >
-            <TextField
-              style={{ width: "45%", marginRight: "10px" }}
-              type="date"
-              id="outlined-required"
-              label="Start Date"
-              InputLabelProps={{ shrink: true }}
-              inputProps={{
-                max: currentDate,
-                required: true,
-              }}
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
+                <TextField
+                    style={{ width: "45%", marginRight: "10px" }}
+                    type="date"
+                    id="outlined-required"
+                    label="Start Date"
+                    InputLabelProps={{ shrink: true }}
+                    inputProps={{
+                        max: currentDate,
+                        required: true,
+                    }}
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                />
             <TextField
               style={{ width: "45%", marginRight: "50px" }}
               type="date"
@@ -217,23 +398,23 @@ function InterviewDetails() {
                 <ScreenSearchDesktopIcon />
               </IconButton>
             </Button>
-            <Button
-              style={{
-                width: "15%",
-                padding: "10px",
-                fontSize: "15px",
-                fontWeight: "bolder",
-                backgroundColor: "white",
-                textTransform: "none",
-                marginLeft: "10px",
-              }}
-              variant="contained"
-              onClick={handleExportToExcel}
-            >
-               <IconButton  color="primary" size="medium">
-                <CloudDownloadIcon />
-              </IconButton>
-            </Button>
+            {/*<Button*/}
+            {/*  style={{*/}
+            {/*    width: "15%",*/}
+            {/*    padding: "10px",*/}
+            {/*    fontSize: "15px",*/}
+            {/*    fontWeight: "bolder",*/}
+            {/*    backgroundColor: "white",*/}
+            {/*    textTransform: "none",*/}
+            {/*    marginLeft: "10px",*/}
+            {/*  }}*/}
+            {/*  variant="contained"*/}
+            {/*  onClick={handleExportToExcel}*/}
+            {/*>*/}
+            {/*   <IconButton  color="primary" size="medium">*/}
+            {/*    <CloudDownloadIcon />*/}
+            {/*  </IconButton>*/}
+            {/*</Button>*/}
             <Button
               style={{
                 width: "15%",
@@ -259,32 +440,83 @@ function InterviewDetails() {
         <Grid
           item
           xs={12}
+          sm={12}
+          lg={12}
           sx={{
             marginBottom: "10px",
           }}
         >
          <Box
-          className="countbox"
+          className="countbox1"
           component="form"
           >
-             <Paper className="countindvmain" style={{width : '13%' , padding : "20px" , textAlign : 'center'}}>
-                        <h4  >Total  </h4>
-                        <h1 >{15}</h1>
-              </Paper >
-              <Paper style={{color : "green", width : '13%' , padding : "20px" , textAlign : 'center'}} >
-                        <h4  >Selected </h4>
-                        <h1 >{25}</h1>
-              </Paper>
 
-              <Paper style={{color : "red", width : '13%' , padding : "20px" , textAlign : 'center'}} >
-                        <h4 >Rejected </h4>
-                        <h1 >{10}</h1>
-              </Paper>
+                 <Paper xs={4} sm={2} lg={2} className="countindvmain" style={{ width: '23%', padding: '8px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                 <div className='borbtm'>
+                     <h4>SELECTED</h4>
+                     <h1 style={{color : "green"}} >{selected}</h1>
+                 </div>
+                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontSize: '12px' }}>
+                     <div style={{ borderRight: '1px solid black', width: '50%' }}>
+                         <h4>INTERNAL</h4>
+                         <h1 style={{color : "green"}}>{selectedInternal}</h1>
+                     </div>
+                     <div style={{ width: '50%' }}>
+                         <h4>CONVERGE</h4>
+                         <h1 style={{color : "green"}}>{selectedConverge}</h1>
+                     </div>
+                 </div>
+             </Paper>
 
-              <Paper style={{color : "orange", width : '13%' , padding : "20px" , textAlign : 'center'}}>
-                        <h4 >Hold </h4>
-                        <h1 >{2}</h1>
-              </Paper>
+             <Paper className="countindvmain" style={{ width: '23%', padding: '8px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                 <div className='borbtm'>
+                     <h4>REJECTED</h4>
+                     <h1 style={{color : "red"}} >{rejected}</h1>
+                 </div>
+                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontSize: '12px' }}>
+                     <div style={{ borderRight: '1px solid black', width: '50%' }}>
+                         <h4>INTERNAL</h4>
+                         <h1 style={{color : "red"}}>{rejectedInternal}</h1>
+                     </div>
+                     <div style={{ width: '50%'}}>
+                         <h4>CONVERGE</h4>
+                         <h1 style={{color : "red"}}>{rejectedConverge}</h1>
+                     </div>
+                 </div>
+             </Paper>
+
+             <Paper className="countindvmain" style={{ width: '23%', padding: '8px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                 <div className='borbtm'>
+                     <h4>HOLD</h4>
+                     <h1 style={{color : "orange"}} >{hold}</h1>
+                 </div>
+                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontSize: '12px' }}>
+                     <div style={{ borderRight: '1px solid black', width: '50%'}}>
+                         <h4>INTERNAL</h4>
+                         <h1 style={{color : "orange"}}>{holdInternal}</h1>
+                     </div>
+                     <div style={{ width: '50%' }}>
+                         <h4>CONVERGE</h4>
+                         <h1 style={{color : "orange"}}>{holdConverge}</h1>
+                     </div>
+                 </div>
+             </Paper>
+             <Paper className="countindvmain" style={{ width: '23%', padding: '8px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                 <div className='borbtm'>
+                     <h4>TOTAL</h4>
+                     <h1>{total}</h1>
+                 </div>
+                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontSize: '12px' }}>
+                     <div style={{ borderRight: '1px solid black', width: '50%'}}>
+                         <h4>INTERNAL</h4>
+                         <h1>{totalInternal}</h1>
+                     </div>
+                     <div style={{ width: '50%' }}>
+                         <h4>CONVERGE</h4>
+                         <h1>{totalConverge}</h1>
+                     </div>
+                 </div>
+             </Paper>
 
           </Box>
         </Grid>
@@ -294,6 +526,7 @@ function InterviewDetails() {
           data={gridData}
           type="interview"
         />
+        </Paper>
     </>
   );
 }

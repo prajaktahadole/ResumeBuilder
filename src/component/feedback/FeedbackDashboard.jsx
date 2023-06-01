@@ -173,15 +173,15 @@ const FeedbackDashboard = () => {
 
   return (
     <>
+    <Paper style={{padding: '20px', marginTop: '20px', height: '635px', backgroundColor: "#F0F0F0"}}>
       <div>
-      <h1></h1>
         <Grid
           item
           xs={12}
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            marginBottom: "30px",
+            margin: "10px 0px",
           }}
         >
           <Paper
@@ -217,6 +217,8 @@ const FeedbackDashboard = () => {
         data={feedbackData}
         type="feedback"
       />
+
+    </Paper>
     </>
   );
 };

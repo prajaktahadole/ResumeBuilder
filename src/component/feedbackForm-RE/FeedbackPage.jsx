@@ -27,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { putFeedBackDataMapper } from "../../utils/dataMappers";
 
 const FeedbackPage = ({ feedbackform, isFeedbackEdit = false }) => {
+  const interviewDate = new Date(feedbackform.interviewDate === null ? feedbackform.createdDate : feedbackform.interviewDate);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -41,19 +42,19 @@ const FeedbackPage = ({ feedbackform, isFeedbackEdit = false }) => {
     feedbackFormData,
   } = useSelector((state) => state.resume);
   const [interviewType, setInterviewType] = useState(
-    isFeedbackEdit ? feedbackform.interviewType : ""
+      isFeedbackEdit ? feedbackform.interviewType : ""
   );
   const [interviewRound, setInterviewRound] = useState(
-    isFeedbackEdit ? feedbackform.interviewRound : ""
+      isFeedbackEdit ? feedbackform.interviewRound : ""
   );
   const [totalExperience, setTotalExperience] = useState(
-    isFeedbackEdit ? feedbackform.experience : ""
+      isFeedbackEdit ? feedbackform.experience : ""
   );
   const [result, setResult] = useState(
-    isFeedbackEdit ? feedbackform.result : ""
+      isFeedbackEdit ? feedbackform.result : ""
   );
   const [files, setFiles] = useState(
-    isFeedbackEdit ? feedbackform.attachments : []
+      isFeedbackEdit ? feedbackform.attachments : []
   );
 
   const handleFiles = (files) => {
@@ -67,16 +68,16 @@ const FeedbackPage = ({ feedbackform, isFeedbackEdit = false }) => {
     interviewRound: yup.string().required("Please select interview round"),
     interviewType: yup.string().required("Please select interview type"),
     result: yup
-      .string()
-      .required("Need to specify the result of the candidate"),
+        .string()
+        .required("Need to specify the result of the candidate"),
     goodAt: yup
-      .string()
-      .required("Need to specify some technologies candidate good at"),
+        .string()
+        .required("Need to specify some technologies candidate good at"),
     improvementAreas: yup
-      .string()
-      .required(
-        "Need to specify improvement areas, candidate needs to work on"
-      ),
+        .string()
+        .required(
+            "Need to specify improvement areas, candidate needs to work on"
+        ),
     comments: yup.string().required("Remarks are mandatory"),
   });
 
@@ -116,8 +117,16 @@ const FeedbackPage = ({ feedbackform, isFeedbackEdit = false }) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    const feedbackForm = JSON.stringify(data);
-    console.log(feedbackForm, "feedbackForm", typeof feedbackForm);
+    const feedbackForm = putFeedBackDataMapper(
+        data,
+        softSkillApi,
+        currentSoftSkillList,
+        techNameId,
+        currentTechnologyList,
+        techId,
+        selectedMultipleLang,
+        feedbackFormData
+    );
     let formData = new FormData();
 
     formData.append("form", JSON.stringify(feedbackForm));
@@ -128,30 +137,30 @@ const FeedbackPage = ({ feedbackform, isFeedbackEdit = false }) => {
     }
 
     axiosInstance
-      .put("/feedback/editform/`${formId}`", formData, feedbackform.formId)
-      .then((res) => {
-        if (res?.status === 200) {
-          dispatch(setMultiNotificationVariant("success"));
-          const errorArray = [
-            {
-              propertyValue: "Feedback updated successfully.",
-            },
-          ];
-          dispatch(setMultiNotificationData(errorArray));
-          navigate("/resumemakerui/feedback");
-        } else {
-          dispatch(setMultiNotificationVariant("error"));
-          const errorArray = [
-            {
-              propertyValue: "Something went wrong",
-            },
-          ];
-          dispatch(setMultiNotificationData(errorArray));
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .put(`/feedback/editform/${feedbackform.formId}`, formData)
+        .then((res) => {
+          if (res?.status === 200) {
+            dispatch(setMultiNotificationVariant("success"));
+            const errorArray = [
+              {
+                propertyValue: "Feedback updated successfully.",
+              },
+            ];
+            dispatch(setMultiNotificationData(errorArray));
+            navigate("/resumemakerui/feedback");
+          } else {
+            dispatch(setMultiNotificationVariant("error"));
+            const errorArray = [
+              {
+                propertyValue: "Something went wrong",
+              },
+            ];
+            dispatch(setMultiNotificationData(errorArray));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   };
 
   useEffect(() => {
@@ -175,149 +184,152 @@ const FeedbackPage = ({ feedbackform, isFeedbackEdit = false }) => {
   });
 
   return (
-    <div>
-      <React.Fragment>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <form>
-            <Card
-              style={{
-                maxWidth: "95%",
-                margin: "10px auto",
-                padding: "25px",
-                boxShadow:
-                  "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
-                background: "rgb(245,245,245)",
-              }}
-            >
-              <Typography
-                variant="h5"
-                style={{
-                  maxWidth: "95%",
-                  margin: "10px  auto",
-                  padding: "5px 5x",
-                }}
-              >
-                Feedback Form
-              </Typography>
-              <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
-                <CardContent>
-                  <CandidateIDnName
-                    isFeedbackEdit={isFeedbackEdit}
-                    feedbackform={feedbackform}
-                    errors={errors}
-                    register={register}
-                  />
-                </CardContent>
-              </Card>
-              <Card style={{ maxWidth: "95%", margin: "10px auto" }}>
-                <CardContent>
-                  <InterviewRoundnType
-                    setInterviewType={setInterviewType}
-                    interviewType={interviewType}
-                    setInterviewRound={setInterviewRound}
-                    interviewRound={interviewRound}
-                    errors={errors}
-                    register={register}
-                  />
-                </CardContent>
-              </Card>
-              <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
-                <CardContent>
-                  <TechnicalSkillsnExp
-                    handleChange={handleChange}
-                    setTotalExperience={setTotalExperience}
-                    totalExperience={totalExperience}
-                    errors={errors}
-                    register={register}
-                  />
-                </CardContent>
-              </Card>
-              <Card
-                style={{
-                  maxWidth: "95%",
-                  margin: "20px auto",
-                  padding: "20px 5px",
-                }}
-              >
-                <CardContent>
-                  <SoftSkills />
-                </CardContent>
-              </Card>
-              <Card style={{ maxWidth: "95%", margin: "10px auto" }}>
-                <CardContent>
-                  <InterviewResult
-                    result={result}
-                    setResult={setResult}
-                    errors={errors}
-                    register={register}
-                  />
-                </CardContent>
-              </Card>
-              <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
-                <CardContent>
-                  <GoodAt
-                    isFeedbackEdit={isFeedbackEdit}
-                    feedbackform={feedbackform}
-                    errors={errors}
-                    register={register}
-                  />
-                </CardContent>
-              </Card>
-              <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
-                <CardContent>
-                  <ImprovementAreas
-                    isFeedbackEdit={isFeedbackEdit}
-                    feedbackform={feedbackform}
-                    errors={errors}
-                    register={register}
-                  />
-                </CardContent>
-              </Card>
-              <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
-                <CardContent>
-                  <Remarks
-                    isFeedbackEdit={isFeedbackEdit}
-                    feedbackform={feedbackform}
-                    errors={errors}
-                    register={register}
-                  />
-                </CardContent>
-              </Card>
-              <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
-                <CardContent>
-                  <UploadImage files={files} handleFiles={handleFiles} />
-                </CardContent>
-              </Card>
-              <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
-                <CardContent>
-                  {/* <Submit
+      <div>
+        <React.Fragment>
+          {isLoading ? (
+              <Spinner />
+          ) : (
+              <form>
+                <Card
+                    style={{
+                      maxWidth: "95%",
+                      margin: "10px auto",
+                      padding: "25px",
+                      boxShadow:
+                          "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
+                      background: "rgb(245,245,245)",
+                    }}
+                >
+                  <Typography
+                      variant="h5"
+                      style={{
+                        maxWidth: "95%",
+                        margin: "10px  auto",
+                        padding: "5px 5x",
+                        fontWeight: 'bold',
+                        fontSize: '28px'
+                      }}
+                  >
+                    Feedback Form
+                  </Typography>
+                  <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
+                    <CardContent>
+                      <CandidateIDnName
+                          isFeedbackEdit={isFeedbackEdit}
+                          feedbackform={feedbackform}
+                          errors={errors}
+                          register={register}
+                      />
+                    </CardContent>
+                  </Card>
+                  <Card style={{ maxWidth: "95%", margin: "10px auto" }}>
+                    <CardContent>
+                      <InterviewRoundnType
+                          setInterviewType={setInterviewType}
+                          interviewType={interviewType}
+                          setInterviewRound={setInterviewRound}
+                          interviewRound={interviewRound}
+                          interviewDate={interviewDate}
+                          errors={errors}
+                          register={register}
+                      />
+                    </CardContent>
+                  </Card>
+                  <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
+                    <CardContent>
+                      <TechnicalSkillsnExp
+                          handleChange={handleChange}
+                          setTotalExperience={setTotalExperience}
+                          totalExperience={totalExperience}
+                          errors={errors}
+                          register={register}
+                      />
+                    </CardContent>
+                  </Card>
+                  <Card
+                      style={{
+                        maxWidth: "95%",
+                        margin: "20px auto",
+                        padding: "20px 5px",
+                      }}
+                  >
+                    <CardContent>
+                      <SoftSkills />
+                    </CardContent>
+                  </Card>
+                  <Card style={{ maxWidth: "95%", margin: "10px auto" }}>
+                    <CardContent>
+                      <InterviewResult
+                          result={result}
+                          setResult={setResult}
+                          errors={errors}
+                          register={register}
+                      />
+                    </CardContent>
+                  </Card>
+                  <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
+                    <CardContent>
+                      <GoodAt
+                          isFeedbackEdit={isFeedbackEdit}
+                          feedbackform={feedbackform}
+                          errors={errors}
+                          register={register}
+                      />
+                    </CardContent>
+                  </Card>
+                  <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
+                    <CardContent>
+                      <ImprovementAreas
+                          isFeedbackEdit={isFeedbackEdit}
+                          feedbackform={feedbackform}
+                          errors={errors}
+                          register={register}
+                      />
+                    </CardContent>
+                  </Card>
+                  <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
+                    <CardContent>
+                      <Remarks
+                          isFeedbackEdit={isFeedbackEdit}
+                          feedbackform={feedbackform}
+                          errors={errors}
+                          register={register}
+                      />
+                    </CardContent>
+                  </Card>
+                  <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
+                    <CardContent>
+                      <UploadImage files={files} handleFiles={handleFiles} />
+                    </CardContent>
+                  </Card>
+                  <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
+                    <CardContent>
+                      {/* <Submit
                     handleSubmit={handleSubmit}
                     submitFormdata={submitFormdata}
                   /> */}
-                  <Grid container spacing={1}>
-                    <Grid xs={12} item>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        id="submit"
-                        style={{ backgroundColor: "rgb(33, 80, 162)" }}
-                        onClick={handleSubmit(submitFormdata, isError)}
-                      >
-                        Submit
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Card>
-          </form>
-        )}
-      </React.Fragment>
-    </div>
+                      <Grid container spacing={1}>
+                        <Grid xs={12} item>
+                          <Button
+                              type="submit"
+                              variant="contained"
+                              color="primary"
+                              fullWidth
+                              id="submit"
+                              style={{ backgroundColor: "rgb(33, 80, 162)" }}
+                              onClick={handleSubmit(submitFormdata, isError)}
+                          >
+                            Submit
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Card>
+              </form>
+          )}
+        </React.Fragment>
+      </div>
   );
 };
 export default FeedbackPage;

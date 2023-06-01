@@ -233,19 +233,22 @@ const PasswordReset = () => {
       );
     } else if (step === 1) {
       return (
-        
-        <>
-        {
-          activeStatus === "N" ? ("") :
-          (<Button
+
+        <> {
+          activeStatus === "N" ? (
+        ""
+        ) : (
+          <Button
           style={{ fontWeight: "bold", color: "navy", textTransform: "none" }}
           onClick={handelBack}
           type="button"
-        >
-          Change Registered Email Id
-        </Button>)
-        }
+          >
+            Change Registered Email Id
+          </Button>
+        )}
         </>
+        
+       
       );
     } else if (step === -1) {
       return undefined;
@@ -460,7 +463,8 @@ const PasswordReset = () => {
                 </div>
               </div>
             )}
-              <div className="butt">
+
+            <div className="butt">
               {renderNextButton()}
               {renderBackButton()}
             </div>

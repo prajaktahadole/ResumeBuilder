@@ -61,7 +61,7 @@ function FormRow({
 
   const renderSkill = (skill) => {
     return (
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={6} lg={6}>
         <Item>
           <Grid container justifyContent={"space-between"} alignItems="center">
             <Grid  item style={{ width: "70%", wordWrap: 'break-word', textAlign: 'start' }}>{skill.skillName}</Grid>

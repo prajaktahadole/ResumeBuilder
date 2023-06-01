@@ -3,12 +3,12 @@ import React,  { useRef ,  useState}  from 'react'
 import resume from "../../styles/resume.css"
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
-function SkillSets({ item, isEdit = false}) {
-    const [fields, setFields] = useState([]);
-    
+function SkillSets({ fields, setFields, item, isEdit = false}) {
+    // const [fields, setFields] = useState([]);
+
     const [focusedIndex, setFocusedIndex] = useState(0);
     const textFieldsRef = useRef([]);
-  
+
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
@@ -19,11 +19,11 @@ function SkillSets({ item, isEdit = false}) {
           }
         }
       };
-    
+
       const handleAddField = () => {
         setFields((prevFields) => [...prevFields, { name: '', description: '' }]);
       };
-    
+
       const handleDeleteField = (index) => {
         setFields((prevFields) => {
           const updatedFields = [...prevFields];
@@ -31,7 +31,7 @@ function SkillSets({ item, isEdit = false}) {
           return updatedFields;
         });
       };
-    
+
       const handleChange = (index, field, value) => {
         setFields((prevFields) => {
           const updatedFields = [...prevFields];
@@ -39,10 +39,7 @@ function SkillSets({ item, isEdit = false}) {
           return updatedFields;
         });
       };
-  console.log("other skills data", fields )
-    
-
-    return (
+      return (
         <>
             <Grid container>
                 <Grid item lg={12} sx={12}>
@@ -67,7 +64,7 @@ function SkillSets({ item, isEdit = false}) {
                         defaultValue={isEdit ? item.skillSet.technologies:''}
                         onKeyPress={handleKeyPress}
                         inputRef={(ref) => (textFieldsRef.current[0] = ref)}
-                        
+
                     />
                 </Grid>
 
@@ -89,7 +86,7 @@ function SkillSets({ item, isEdit = false}) {
                             defaultValue={isEdit ? item.skillSet.languages : ''}
                             onKeyPress={handleKeyPress}
                             inputRef={(ref) => (textFieldsRef.current[1] = ref)}
-                        
+
 
                         />
                     </Grid>
@@ -112,7 +109,7 @@ function SkillSets({ item, isEdit = false}) {
                             defaultValue={isEdit ? item.skillSet.tools : ''}
                             onKeyPress={handleKeyPress}
                              inputRef={(ref) => (textFieldsRef.current[2] = ref)}
-                      
+
                         />
                     </Grid>
 
@@ -198,54 +195,107 @@ function SkillSets({ item, isEdit = false}) {
 
                 </Grid>
 
-         {fields.map((field, index) => (
-          <Grid container 
-                spacing={2} 
-                key={index}
-                style={{marginBottom : '10px'}}>
-            <Grid item xs={3} 
-                style={{ 
-                    display: 'flex',
-                    alignItems: 'start' }}>
-              <TextField
-                style={{ width: '100%' }}
-                id={`SkillName-${index}`}
-                label={`Skill Name ${index + 1}`}
-                placeholder={`Skill Name ${index + 1}`}
-                name={`Skill Name-${index}`}
-                value={field.name}
-                onChange={(e) => handleChange(index, 'name', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={8.4}>
-              <TextField
-                style={{ width: '100%' }}
-                id={`Description-${index}`}
-                label={`Description ${index + 1}`}
-                placeholder={`Description ${index + 1}`}
-                name={`Description-${index}`}
-                value={field.description}
-                onChange={(e) => handleChange(index, 'description', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={0.6}>
-            <Button
-                    style={{
-                        marginTop: '3px',
-                        marginLeft: '-10px',
-                        minWidth: '25px',
-                        }}
-                        onClick={() => handleDeleteField(index)}
-                        >
-                          <IconButton size="small" color="error">
-                            <DeleteRoundedIcon />
-                          </IconButton>
-            </Button>
-            </Grid>  
-          </Grid>
-        ))}
-       
-            <Grid
+        {/* {fields.map((field, index) => (*/}
+        {/*  <Grid container*/}
+        {/*        spacing={2}*/}
+        {/*        key={index}*/}
+        {/*        style={{marginBottom : '10px'}}>*/}
+        {/*    <Grid item xs={3}*/}
+        {/*        style={{*/}
+        {/*            display: 'flex',*/}
+        {/*            alignItems: 'start' }}>*/}
+        {/*        <TextField*/}
+        {/*            style={{ width: '100%' }}*/}
+        {/*            id={`SkillName-${index}`}*/}
+        {/*            label={`Skill Name ${index + 1}`}*/}
+        {/*            placeholder={`Skill Name ${index + 1}`}*/}
+        {/*            name={`Skill Name-${index}`}*/}
+        {/*            defaultValue={field.name}*/}
+        {/*            onChange={(e) => handleChange(index, 'name', e.target.value)}*/}
+        {/*        />*/}
+        {/*    </Grid>*/}
+        {/*    <Grid item xs={8.4}>*/}
+        {/*        <TextField*/}
+        {/*            style={{ width: '100%' }}*/}
+        {/*            id={`Description-${index}`}*/}
+        {/*            label={`Description ${index + 1}`}*/}
+        {/*            placeholder={`Description ${index + 1}`}*/}
+        {/*            name={`Description-${index}`}*/}
+        {/*            defaultValue={field.description}*/}
+        {/*            onChange={(e) => handleChange(index, 'description', e.target.value)}*/}
+        {/*        />*/}
+        {/*    </Grid>*/}
+        {/*    <Grid item xs={0.6}>*/}
+        {/*    <Button*/}
+        {/*            style={{*/}
+        {/*                marginTop: '3px',*/}
+        {/*                marginLeft: '-10px',*/}
+        {/*                minWidth: '25px',*/}
+        {/*                }}*/}
+        {/*                onClick={() => handleDeleteField(index)}*/}
+        {/*                >*/}
+        {/*                  <IconButton size="small" color="error">*/}
+        {/*                    <DeleteRoundedIcon />*/}
+        {/*                  </IconButton>*/}
+        {/*    </Button>*/}
+        {/*    </Grid>*/}
+        {/*  </Grid>*/}
+        {/*))}*/}
+                {fields.map((field, index) => (
+                    <Grid container spacing={2} key={index} style={{ marginBottom: '10px' }}>
+                        <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
+                            <TextField
+                                style={{ width: '100%' }}
+                                id={`SkillName-${index}`}
+                                label={`Skill Name ${index + 1}`}
+                                placeholder={`Skill Name ${index + 1}`}
+                                name={`Skill Name-${index}`}
+                                defaultValue={
+                                    isEdit &&
+                                    item.skillSet.othersSkillSet &&
+                                    item.skillSet.othersSkillSet.length > index
+                                        ? item.skillSet.othersSkillSet[index].name
+                                        : field.name
+                                }
+                                onChange={(e) => handleChange(index, 'name', e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={8.4}>
+                            <TextField
+                                style={{ width: '100%' }}
+                                id={`Description-${index}`}
+                                label={`Description ${index + 1}`}
+                                placeholder={`Description ${index + 1}`}
+                                name={`Description-${index}`}
+                                defaultValue={
+                                    isEdit &&
+                                    item.skillSet.othersSkillSet &&
+                                    item.skillSet.othersSkillSet.length > index
+                                        ? item.skillSet.othersSkillSet[index].description
+                                        : field.description
+                                }
+                                onChange={(e) => handleChange(index, 'description', e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={0.6}>
+                            <Button
+                                style={{
+                                    marginTop: '3px',
+                                    marginLeft: '-10px',
+                                    minWidth: '25px',
+                                }}
+                                onClick={() => handleDeleteField(index)}
+                            >
+                                <IconButton size="small" color="error">
+                                    <DeleteRoundedIcon />
+                                </IconButton>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                ))}
+
+
+                <Grid
              item
              xs={12}
              sx={{
@@ -255,7 +305,7 @@ function SkillSets({ item, isEdit = false}) {
              }}>
                 <Button
                   variant="contained"
-                  style={{ backgroundColor: "rgb(33, 80, 162)" }} 
+                  style={{ backgroundColor: "rgb(33, 80, 162)" }}
                  onClick={handleAddField}>Add Skills</Button>
             </Grid>
             </div>

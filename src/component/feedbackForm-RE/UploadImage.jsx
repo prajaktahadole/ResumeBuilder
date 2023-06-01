@@ -3,9 +3,10 @@ import ImageUploadPreviewComponent from "../feedback/ImageUploadPreviewComponent
 import ImageListComponent from "../feedback/ImageListComponent";
 
 const UploadImage = ({ handleFiles, files }) => {
+  console.log("handleFiles-->",files)
   return (
     <Grid container spacing={1}>
-      <Grid xs={12} item>
+      <Grid xs={12} sm={12} lg={12} item>
         {/* <ImageUploadPreviewComponent handleFiles={handleFiles} /> */}
         <ImageListComponent attachments={files} />
         {files.length === 0 ? (

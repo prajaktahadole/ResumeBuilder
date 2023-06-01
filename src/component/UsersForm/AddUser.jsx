@@ -187,72 +187,71 @@ function AddUser({ formData, user, name, id, isUserEdit }) {
         {isLoading ? (
           <Spinner />
         ) : (
+            <Grid container justifyContent="center">
+              <Grid item xs={12} sm={12} md={12} lg={6}>
           <form>
-            <Grid item xs={12} sm={12} md={6} lg={6}></Grid>
-            <Grid item xs={12} sm={12} md={6} lg={6}>
-              <Box
-                style={{
-                  width: "45%",
-                  margin: "auto",
-                  padding: "50px",
-                  marginTop: "50px",
-                  boxShadow:
+            <Grid item xs={12} sm={12} md={12} lg={12}>
+               <Box style={{
+                width: "100%",
+                margin: "auto",
+                padding: "50px",
+                marginTop: "50px",
+                boxShadow:
                     "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
-                }}
-              >
+              }}>
                 {isUserEdit ? <h3>Update User</h3> : <h3>Add New User</h3>}
 
-                <FormControl sx={{ py: 2 }}>
-                  <Grid container rowSpacing={2}>
+                <FormControl sx={{ py: 1 }}>
+                  <Grid container rowSpacing={1}>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                       <InputTextfield
-                        fullWidth
-                        label="First Name"
-                        required
-                        {...register("firstName")}
-                        defaultValue={isUserEdit ? name[0] : ""}
+                          fullWidth
+                          label="First Name"
+                          required
+                          {...register("firstName")}
+                          defaultValue={isUserEdit ? name[0] : ""}
                       />
                       {errors.firstName && (
-                        <p className={styles.error}>
-                          {errors.firstName?.message}
-                        </p>
+                          <p className={styles.error}>
+                            {errors.firstName?.message}
+                          </p>
                       )}
                     </Grid>
 
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                       <InputTextfield
-                        fullWidth
-                        label="Last Name"
-                        required
-                        {...register("lastName")}
-                        defaultValue={isUserEdit ? name[1] : ""}
+                          fullWidth
+                          label="Last Name"
+                          required
+                          {...register("lastName")}
+                          defaultValue={isUserEdit ? name[1] : ""}
                       />
                       {errors.lastName && (
-                        <p className={styles.error}>
-                          {errors.lastName?.message}
-                        </p>
+                          <p className={styles.error}>
+                            {errors.lastName?.message}
+                          </p>
                       )}
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                       {isUserEdit ? (
-                        <InputTextfield
-                          fullWidth
-                          type="email"
-                          label="Company email"
-                          disabled={isUserEdit}
-                          defaultValue={isUserEdit ? user.email : ""}
-                        />
+                          <InputTextfield
+                              fullWidth
+                              type="email"
+                              label="Company email"
+                              disabled={isUserEdit}
+                              defaultValue={isUserEdit ? user.email : ""}
+                          />
                       ) : (
-                        <InputTextfield
-                          fullWidth
-                          type="email"
-                          label="Email"
-                          required
-                          {...register("email")}
-                        />
+                          <InputTextfield
+                              fullWidth
+                              type="email"
+                              label="Email"
+                              required
+                              {...register("email")}
+                          />
                       )}
                       {errors.email && (
-                        <p className={styles.error}>{errors.email?.message}</p>
+                          <p className={styles.error}>{errors.email?.message}</p>
                       )}
                     </Grid>
 
@@ -263,12 +262,12 @@ function AddUser({ formData, user, name, id, isUserEdit }) {
                         </InputLabel>
 
                         <Select
-                          sx={{ width: "100%" }}
-                          value={userRole}
-                          label="userRole"
-                          {...register("userRole")}
-                          onChange={handleChangeUserRole}
-                          required
+                            sx={{ width: "100%" }}
+                            value={userRole}
+                            label="userRole"
+                            {...register("userRole")}
+                            onChange={handleChangeUserRole}
+                            required
                         >
                           <MenuItem value={"PARTNER"}>PARTNER</MenuItem>
                           <MenuItem value={"INTERNAL"}>INTERNAL</MenuItem>
@@ -277,104 +276,107 @@ function AddUser({ formData, user, name, id, isUserEdit }) {
                         </Select>
                       </FormControl>
                       {!userRole && errors.userRole && (
-                        <p className={styles.error}>
-                          {errors.userRole?.message}
-                        </p>
+                          <p className={styles.error}>
+                            {errors.userRole?.message}
+                          </p>
                       )}
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                       <InputTextfield
-                        fullWidth
-                        label="Company Name"
-                        required
-                        name="company"
-                        value={cName}
-                        disabled={userRole === "PARTNER" ? false : true}
-                        onChange={(e) => handleCNameChnage(e.target.value)}
+                          fullWidth
+                          label="Company Name"
+                          required
+                          name="company"
+                          value={cName}
+                          disabled={userRole === "PARTNER" ? false : true}
+                          onChange={(e) => handleCNameChnage(e.target.value)}
                       />
                       {errors.company && (
-                        <p className={styles.error}>
-                          {errors.company?.message}
-                        </p>
+                          <p className={styles.error}>
+                            {errors.company?.message}
+                          </p>
                       )}
                     </Grid>
 
                     <Grid
-                      item
-                      xs={12}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      sx={{ display: "flex", justifyContent: "space-Between" }}
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        sx={{ display: "flex", justifyContent: "space-Between" }}
                     >
                       {isUserEdit ? (
-                        <Button
-                          id="signUPButton"
-                          sx={{ width: "150px" }}
-                          variant="contained"
-                          fullWidth
-                          onClick={handleSubmit(submit)}
-                          type="submit"
-                          style={{ backgroundColor: "rgb(33, 80, 162)" }}
-                        >
-                          Update User
-                        </Button>
+                          <Button
+                              id="signUPButton"
+                              sx={{ width: "150px" }}
+                              variant="contained"
+                              fullWidth
+                              onClick={handleSubmit(submit)}
+                              type="submit"
+                              style={{ backgroundColor: "rgb(33, 80, 162)" }}
+                          >
+                            Update User
+                          </Button>
                       ) : (
-                        <Button
-                          id="signUPButton"
-                          sx={{ width: "100px" }}
-                          variant="contained"
-                          fullWidth
-                          style={{ backgroundColor: "rgb(33, 80, 162)" }}
-                          onClick={handleSubmit(submit)}
-                          type="submit"
-                        >
-                          Save
-                        </Button>
+                          <Button
+                              id="signUPButton"
+                              sx={{ width: "100px" }}
+                              variant="contained"
+                              fullWidth
+                              style={{ backgroundColor: "rgb(33, 80, 162)" }}
+                              onClick={handleSubmit(submit)}
+                              type="submit"
+                          >
+                            Save
+                          </Button>
                       )}
 
                       {isUserEdit ? (
-                        <Button
-                          style={{
-                            margin: "5px",
-                            width: "2%",
-                            height: "40px",
-                            fontSize: "15px",
-                            fontWeight: "bolder",
-                            backgroundColor: "rgb(33, 80, 162)",
-                          }}
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-                          onClick={handleBackClick}
-                        >
-                          <IconButton
-                            type="button"
-                            sx={{ p: "30px", color: "white" }}
-                            aria-label="search"
+                          <Button
+                              style={{
+                                margin: "5px",
+                                width: "2%",
+                                height: "40px",
+                                fontSize: "15px",
+                                fontWeight: "bolder",
+                                backgroundColor: "rgb(33, 80, 162)",
+                              }}
+                              type="submit"
+                              variant="contained"
+                              color="primary"
+                              onClick={handleBackClick}
                           >
-                            <ArrowBackOutlinedIcon />
-                          </IconButton>
-                        </Button>
+                            <IconButton
+                                type="button"
+                                sx={{ p: "30px", color: "white" }}
+                                aria-label="search"
+                            >
+                              <ArrowBackOutlinedIcon />
+                            </IconButton>
+                          </Button>
                       ) : (
-                        <Button
-                          id="ResetButton"
-                          sx={{ width: "100px" }}
-                          variant="contained"
-                          fullWidth
-                          style={{ backgroundColor: "rgb(33, 80, 162)" }}
-                          // onClick={handleSubmit(submit)}
-                          type="reset"
-                        >
-                          Reset
-                        </Button>
+                          <Button
+                              id="ResetButton"
+                              sx={{ width: "100px" }}
+                              variant="contained"
+                              fullWidth
+                              style={{ backgroundColor: "rgb(33, 80, 162)" }}
+                              // onClick={handleSubmit(submit)}
+                              type="reset"
+                          >
+                            Reset
+                          </Button>
                       )}
                     </Grid>
                   </Grid>
                 </FormControl>
               </Box>
-            </Grid>
+             </Grid>
+
           </form>
+              </Grid>
+            </Grid>
         )}
       </React.Fragment>
     </div>

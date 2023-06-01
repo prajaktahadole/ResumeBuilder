@@ -45,48 +45,55 @@ const SideBarlist = () => {
   return (
     <React.Fragment>
       {companyCheck() ? null : (
-        <List className={`inside-content ${isActive("/resumemakerui/interview-details")}`}>
-           <ListItemButton
-            onClick={() => navigate("/resumemakerui/interview-details")}
-            className={isActive("/resumemakerui/interview-details") ? "active" : ""}
-           >
+        InterviewerCheck() ? (
+            <ListItemButton
+            onClick={() => navigate("/resumemakerui/feedback")}
+            className={isActive("/resumemakerui/feedback") ? "active" : ""}
+        >
+          <ListItemIcon>
+            <FeedbackIcon></FeedbackIcon>
+          </ListItemIcon>
+          <ListItemText primary="Feedback" />
+        </ListItemButton>) : (<List className={`inside-content ${isActive("/resumemakerui/interview-details")}`}>
+          <ListItemButton
+              onClick={() => navigate("/resumemakerui/interview-details")}
+              className={isActive("/resumemakerui/interview-details") ? "active" : ""}
+          >
             <ListItemIcon>
               <LaptopMacIcon />
             </ListItemIcon>
             <ListItemText primary="Interview" />
             <KeyboardArrowDownIcon
-              className={openList ? "upButton active" : "downButton"}
-              onClick={handleArrowClick}
+                className={openList ? "upButton active" : "downButton"}
+                onClick={handleArrowClick}
             />
-         </ListItemButton>
+          </ListItemButton>
+          {openList && (
+              <div>
+                <List>
+                  <ListItemButton
+                      onClick={() => navigate("/resumemakerui/feedback")}
+                      className={isActive("/resumemakerui/feedback") ? "active" : ""}
+                  >
+                    <ListItemIcon>
+                      <FeedbackIcon></FeedbackIcon>
+                    </ListItemIcon>
+                    <ListItemText primary="Feedback" />
+                  </ListItemButton>
 
-         
-           {openList && (
-          <div>
-            <List>
-              <ListItemButton
-                onClick={() => navigate("/resumemakerui/feedback")}
-                className={isActive("/resumemakerui/feedback") ? "active" : ""}
-              >
-                <ListItemIcon>
-                  <FeedbackIcon></FeedbackIcon>
-                </ListItemIcon>
-                <ListItemText primary="Feedback" />
-              </ListItemButton>
-
-              <ListItemButton
-                onClick={() => navigate("/resumemakerui/schedule-interview")}
-                className={isActive("/resumemakerui/schedule-interview") ? "active" : ""}
-              >
-                <ListItemIcon>
-                  <EventNoteIcon></EventNoteIcon>
-                </ListItemIcon>
-                <ListItemText primary="Schedule Interview" />
-              </ListItemButton>
-            </List>
-          </div>
-         )}
-        </List>
+                  {/*<ListItemButton*/}
+                  {/*  onClick={() => navigate("/resumemakerui/schedule-interview")}*/}
+                  {/*  className={isActive("/resumemakerui/schedule-interview") ? "active" : ""}*/}
+                  {/*>*/}
+                  {/*  <ListItemIcon>*/}
+                  {/*    <EventNoteIcon></EventNoteIcon>*/}
+                  {/*  </ListItemIcon>*/}
+                  {/*  <ListItemText primary="Schedule Interview" />*/}
+                  {/*</ListItemButton>*/}
+                </List>
+              </div>
+          )}
+        </List>)
       )}
 
 
@@ -120,15 +127,15 @@ const SideBarlist = () => {
             <ListItemText primary="Users" />
           </ListItemButton>
 
-          <ListItemButton
-              onClick={() => navigate("/resumemakerui/tech-stacks")}
-            className={isActive("/resumemakerui/tech-stacks") ? "active" : ""}
-          >
-            <ListItemIcon>
-            <SchoolIcon />
-            </ListItemIcon>
-            <ListItemText primary="Tech Stack" />
-          </ListItemButton>
+          {/*<ListItemButton*/}
+          {/*    onClick={() => navigate("/resumemakerui/tech-stacks")}*/}
+          {/*  className={isActive("/resumemakerui/tech-stacks") ? "active" : ""}*/}
+          {/*>*/}
+          {/*  <ListItemIcon>*/}
+          {/*  <SchoolIcon />*/}
+          {/*  </ListItemIcon>*/}
+          {/*  <ListItemText primary="Tech Stack" />*/}
+          {/*</ListItemButton>*/}
         </List>
       </div>
       )}
