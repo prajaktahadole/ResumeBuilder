@@ -35,17 +35,20 @@ import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 
 const schema = yup.object().shape({
-  fullName: yup.string().required("Name is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  mainDesignation: yup.string().required("Title is required"),
+  fullName: yup.string().required('Full name is required')
+  .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, 'Invalid Full name')
+  .min(2, 'Full name must be at least 2 characters')
+  .max(50, 'Full name must not exceed 50 characters'),
+  email: yup.string().matches(/^(?!\s+$).+$/, 'Only spaces are not allowed.').email("Invalid email").required("Email is required"),
+  mainDesignation: yup.string().matches(/^(?!^\s+$)[a-zA-Z.\- ]*$/, 'Enter valid Title').required("Title is required"),
   mobileNo: yup.string()
   .matches(/^\d{10}$/, 'Mobile number must be exactly 10 digits')
   .required('Mobile number is required'),
-  address: yup.string().required("Address is required"),
+  address: yup.string().matches(/^(?!\s*$).+/, 'Only spaces are not allowed.').required("Address is required"),
   gender: yup.string().required("Gender is required"),
   maritalStatus: yup.string().ensure().required("Marital Status is required"),
-  degree: yup.string().required("Higher qualification is required"),
-  university: yup.string().required("University name is required"),
+  degree: yup.string().matches(/^(?!\s*$).+/, 'Only spaces are not allowed.').required("Higher qualification is required"),
+  university: yup.string().matches(/^(?!\s*$).+/, 'Only spaces are not allowed.').required("University name is required"),
   passingYear: yup
     .number()
     .typeError("Please enter a valid year")
@@ -87,8 +90,8 @@ function Resume({ item, isEdit = false, id }) {
     const trimmedsummary = summary.trim();
 
     if (trimmedsummary !== "") {
-      if (summaryList.length === 0 && trimmedsummary.split(/\s+/).length < 40) {
-        setSummaryError("The first summary must be at least 40 words long.");
+      if (summaryList.length === 0 && trimmedsummary.length < 100) {
+        setSummaryError("The first summary must be at least 100 characters long.");
         return;
       }
       setSummaryList([...summaryList, trimmedsummary]);
@@ -162,7 +165,6 @@ function Resume({ item, isEdit = false, id }) {
       str.push(ele);
     });
 
-    console.log("form", form)
     const personalDetails = {
       personalDetails: {
         empName: form.elements.fullName.value,
@@ -557,7 +559,8 @@ function Resume({ item, isEdit = false, id }) {
                   )}
                 </div>
               ))}
-              <div>
+              <Grid container spacing={1}>
+                <Grid  item xs={9} sm={11} lg={11}>
                 <TextField
                   type="text"
                   label="Professional Summary"
@@ -568,22 +571,25 @@ function Resume({ item, isEdit = false, id }) {
                   autoFocus
                   required
                   style={{
-                    width: "90%",
+                    width: "100%",
                     height: "auto",
                     marginBottom: "20px",
                     marginRight: "10px",
                   }}
                 />
+                </Grid>
+                <Grid item xs={1} sm={1} lg={1}>
                 <Button
-                  style={{ border: "1px solid blue", height: "55px" }}
+                  style={{ border: "1px solid blue", }}
                   onClick={handleAddSummaryClick}
                 >
                   <IconButton>
                     <AddIcon color="primary" />
                   </IconButton>
                 </Button>
+              </Grid>
                 {summaryError && <p style={{ color: "red" }}>{summaryError}</p>}
-              </div>
+              </Grid>
             </div>
 
             <SkillSets fields={fields} setFields={handleFieldsChange} item={item} isEdit={isEdit} />
@@ -615,14 +621,22 @@ function Resume({ item, isEdit = false, id }) {
             />
 
             {isEdit ? (
+              <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "20px",
+              }}>
               <Button
+                xs={{width : '50%'}}
                 style={{
                   width: "25%",
                   padding: "10px",
                   fontSize: "15px",
                   fontWeight: "bolder",
-                  left: "38%",
-                  margin: "25px 0px 25px 0px",
+                  margin: "25px auto",
                   backgroundColor: "rgb(33, 80, 162)",
                 }}
                 variant="contained"
@@ -631,15 +645,24 @@ function Resume({ item, isEdit = false, id }) {
               >
                 Update Data
               </Button>
+              </Grid>
             ) : (
+              <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                paddingTop: "20px",
+              }}>
+
               <Button
                 style={{
                   width: "25%",
                   padding: "10px",
                   fontSize: "15px",
                   fontWeight: "bolder",
-                  left: "38%",
-                  margin: "25px 0px 25px 0px",
+                  margin: "25px auto",
                   backgroundColor: "rgb(33, 80, 162)",
                 }}
                 variant="contained"
@@ -647,6 +670,8 @@ function Resume({ item, isEdit = false, id }) {
               >
                 Submit Data
               </Button>
+              </Grid>
+
             )}
           </div>
         </div>

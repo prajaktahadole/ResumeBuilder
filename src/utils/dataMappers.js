@@ -1,14 +1,13 @@
 import { format, parseISO } from "date-fns";
-
-export const resumedatamapper = (data) => {
+export const resumedatamapper =  (data) => {
   let temparray = data.map((ele) => {
     let obj = {};
     obj["name"] = ele.personalDetails.empName;
     obj["resumeUUID"] = ele.id;
-    obj["email"] = ele.personalDetails.email;
    // obj["designation"] = ele.workExperience[0].jobRole;
     obj["designation"] = ele.personalDetails.designation;
     obj["skills"] = ele.skillSet.languages;
+    obj["createdBy"] =  ele.createdBy;
     return obj;
   });
   return temparray;
@@ -32,7 +31,7 @@ export const feedbackdatamapper = (userData) => {
     let obj = {};
     obj["candidateId"] = ele.candidateId;
     obj["candidate"] = ele.candidateName;
-    obj["interviewType"] = ele.interviewType;
+    obj["interviewType"] = ele.interviewType === "Humancloud_Internal" ? "Internal" : "Converge" ;
     obj["interviewRound"] = ele.interviewRound === 'L1' ? "Level 1" : ele.interviewRound === 'L2' ? "Level 2" : "Level 3" ;
     obj["interviewer"] = ele.interviewerName;
     obj["status"] = ele.result;
@@ -42,28 +41,6 @@ export const feedbackdatamapper = (userData) => {
   });
   return temparray;
 };
-
-// export const feedbackKpidatamapper = (inData) => {
-//   let temparray = inData.map((ele) => {
-//     let obj = {};
-//     console.log("ele-->",ele)
-//     obj["interviewer"] = ele.interviewerName;
-//     obj["internalSe"] = ele.interviewType === "Humancloud_Internal" ? ele.Selected : 0;
-//     obj["convergeSe"] = ele.interviewType === "The_Converge" ? ele.Selected : 0;
-//     obj["internalRe"] = ele.interviewType === "Humancloud_Internal" ? ele.Rejected : 0;
-//     obj["convergeRe"] = ele.interviewType === "The_Converge" ? ele.Rejected : 0;
-//     obj["internalHo"] = ele.interviewType === "Humancloud_Internal" ? ele.Hold : 0;
-//     obj["convergeHo"] = ele.interviewType === "The_Converge" ? ele.Hold : 0;
-//     obj["internalTo"] = ele.interviewType === "Humancloud_Internal" ? ele.Total : 0;
-//     obj["convergeTo"] = ele.interviewType === "The_Converge" ? ele.Total : 0;
-//     // obj["rejected"] = ele.Rejected;
-//     // obj["hold"] = ele.Hold;
-//     // obj["total"] = ele.Total;
-//     return obj;
-//   });
-//
-//   return temparray;
-// };
 
 export const feedbackKpidatamapper = (inData) => {
   let temparray = [];

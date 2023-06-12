@@ -7,6 +7,7 @@ const initialState = {
   multiNotificationVariant: "error",
   horizontalPosition: "right",
   verticalPosition: "top",
+  notificationCount : 0
 };
 
 export const notificationSlice = createSlice({
@@ -36,6 +37,9 @@ export const notificationSlice = createSlice({
     setVerticalPosition: (state, action) => {
       state.verticalPosition = action.payload;
     },
+    setNotificationCount: (state, action) => {
+      state.notificationCount = action.payload;
+    },
   },
 });
 // Action creators are generated for each case reducer function
@@ -47,6 +51,7 @@ export const {
   setMultiNotificationVariant,
   closeSnackbar,
   setMultiNotificationData,
+  setNotificationCount
 } = notificationSlice.actions;
 
 export default notificationSlice.reducer;

@@ -46,21 +46,24 @@ const schema = yup.object().shape({
   //     })
   //   )
   //   .required('At least one technology rating is required'),
-  candidateName: yup.string().required("Candidate name is required"),
-  candidateId: yup.string().required("Candidate id is required"),
+  candidateName: yup.string().required('Candidate name is required')
+  .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, 'Invalid Candidate name')
+  .min(2, 'Full name must be at least 2 characters')
+  .max(50, 'Full name must not exceed 50 characters'),
+  candidateId: yup.string().matches(/^(?!\s*$).+/, 'Only spaces are not allowed.').required("Candidate id is required"),
   experience: yup.string().required("Total experience is required"),
   interviewRound: yup.string().required("Please select interview round"),
   interviewType: yup.string().required("Please select interview type"),
   result: yup.string().required("Need to mention result"),
-  goodAt: yup.string().required("Need to specify good at technologies"),
-  improvmentAreas: yup.string().required("Need to specify improvement areas"),
-  comments: yup.string().required("Remarks are compulsory"),
+  goodAt: yup.string().matches(/^(?!\s*$).+/, 'Only spaces are not allowed.').required("Need to specify good at technologies"),
+  improvmentAreas: yup.string().matches(/^(?!\s*$).+/, 'Only spaces are not allowed.').required("Need to specify improvement areas"),
+  comments: yup.string().matches(/^(?!\s*$).+/, 'Only spaces are not allowed.').required("Remarks are compulsory"),
   softSkillRatings: yup
     .array()
     .of(
       yup.object().shape({
         skillName: yup.string().required(),
-        rating: yup.number().integer().min(0).max(4).required(),
+        rating: yup.number().integer().min(0).max(5).required(),
       })
     )
     .required("At least one soft skill rating is required"),
@@ -308,7 +311,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
               <Card style={{ maxWidth: "95%", margin: "10px auto" }}>
                 <CardContent>
                   <Grid container spacing={1}>
-                    <Grid xs={12} sm={6} lg={6} item>
+                    <Grid xs={12} sm={4} lg={4} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                           Interview Type *
@@ -335,7 +338,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         )}
                       </FormControl>
                     </Grid>
-                    <Grid xs={12} sm={6} lg={6} item>
+                    <Grid xs={12} sm={4} lg={4} item>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                           Interview Round *
@@ -359,7 +362,7 @@ const Feedback = ({ feedbackform, id, isFeedbackEdit }) => {
                         )}
                       </FormControl>
                     </Grid>
-                    <Grid xs={12} sm={6} lg={6} item>
+                    <Grid xs={12} sm={4} lg={4} item>
                       <FormControl fullWidth>
                         <TextField
                           style={{ width: "100%" }}

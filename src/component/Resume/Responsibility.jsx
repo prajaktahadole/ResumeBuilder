@@ -51,9 +51,18 @@ function Responsibility(props) {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={4}></Grid>
-        <Grid item xs={8}>
+      <Grid container 
+            xs={{display: "flex"}}
+            sm={{
+                  '@media (max-width: 600px)': {
+                       display: "flex",
+                       flexDirection : 'column' ,
+                       width : "100%",
+                  },
+                }} 
+            spacing={2}>
+        <Grid item  xs={0} sm={4} md={4} lg={4}></Grid>
+        <Grid item xs={12} sm={8} md={8} lg={8}>
           {Array.isArray(responsibilityList) && responsibilityList.length ? (
             <ul className="ultag">
               {responsibilityList.map((ele, index) => (
@@ -68,9 +77,18 @@ function Responsibility(props) {
           )}
         </Grid>
       </Grid>
-      <Grid container spacing={2} sx={{ paddingBottom: "20px" }}>
-        <Grid item xs={4.1}></Grid>
-        <Grid item lg={6.9} sx={6.9}>
+      <Grid container 
+            xs={{display: "flex"}}
+            sm={{
+                  '@media (max-width: 600px)': {
+                       display: "flex",
+                       flexDirection : 'column' ,
+                       width : "100%",
+                  },
+                }} 
+            spacing={2}>
+        <Grid item  xs={0} sm={4.1} md={4.1} lg={4.1}></Grid>
+        <Grid item  xs={9} sm={6.9} md={6.9} lg={6.9}>
           <TextField
             style={{ width: "100%" }}
             Responsibilities
@@ -85,7 +103,7 @@ function Responsibility(props) {
             helperText={responsibilityError}
           />
         </Grid>
-        <Grid item lg={1} sx={1}>
+        <Grid  item  xs={0.5} sm={1} md={1} lg={1}>
           <Button
             variant="contained"
             onClick={handleOpenResponsibilities}

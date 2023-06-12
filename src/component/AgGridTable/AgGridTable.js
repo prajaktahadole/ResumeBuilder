@@ -11,6 +11,7 @@ import {
 } from "../../utils/dataMappers";
 import {Button, IconButton} from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import DownloadIcon from '@mui/icons-material/Download';
 
 const AgGridTable = ({
   data = [],
@@ -74,21 +75,18 @@ const AgGridTable = ({
                   fontWeight: "bolder",
                   backgroundColor: "rgb(33, 80, 162)",
                   textTransform: "none",
-                  //marginLeft: "10px",
                 }}
                 variant="contained"
                 onClick={exportData}
             >
-              Export CSV
-              {/*<IconButton color="primary" size="medium">*/}
-              {/*  <CloudDownloadIcon />*/}
-              {/*</IconButton>*/}
+                <DownloadIcon style={{color: "white" ,marginRight: "10px"}} />
+                Export CSV
             </Button>
         )}
       </div>
       <div
         className="ag-theme-alpine"
-        style={{ height: "102%", width: "100%", overflowX: 'hidden', margin: "auto" }}
+        style={{ height: "101.3%", overflowX: "hidden", width: "100%" }}
       >
     {rowData.length === 0 ? (
       <AgGridReact

@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useState } from "react";
 
-const ImageUploadPreviewComponent = ({ handleFiles }) => {
+const ImageUploadPreviewComponent = ({handleFiles }) => {
   const [files, setFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
   const [selectedPreview, setSelectedPreview] = useState(null);
@@ -77,9 +77,9 @@ const ImageUploadPreviewComponent = ({ handleFiles }) => {
     <>
       <div>
         <label>Upload Image : </label>
-       
+
         <Button variant="contained"
-         component="label" 
+         component="label"
          style={{backgroundColor: "rgb(33, 80, 162)"}}
          onChange={handleFile}>
           Upload
@@ -106,7 +106,7 @@ const ImageUploadPreviewComponent = ({ handleFiles }) => {
             <button
               onClick={() => handleDelete(preview.file)}
               style={{
-               border: "1px solid black",
+
                 top: "5px",
                 right: "5px",
                 backgroundColor: "red",
@@ -122,7 +122,7 @@ const ImageUploadPreviewComponent = ({ handleFiles }) => {
               Delete
             </button>
           </div>
-        
+
           ))}
         </div>
         {selectedPreview && (
@@ -156,3 +156,10 @@ const ImageUploadPreviewComponent = ({ handleFiles }) => {
 }
 
 export default ImageUploadPreviewComponent;
+
+
+
+
+
+
+

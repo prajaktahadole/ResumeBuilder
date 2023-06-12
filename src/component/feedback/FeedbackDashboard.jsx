@@ -112,7 +112,17 @@ const FeedbackDashboard = () => {
         dispatch(setMultiNotificationData(errorArray));
       });
   };
-
+  var rowClassRules = {
+    'row-green': function(params) {
+      return params.data.status === 'SELECTED';
+    },
+    'row-red': function(params) {
+      return params.data.status === 'REJECTED';
+    },
+    'row-orange': function(params) {
+      return params.data.status === 'HOLD';
+    }
+  };
   const gridOptionsfeedback = {
     headerHeight: 36,
     columnDefs: columnDefsFeedback,
@@ -121,6 +131,7 @@ const FeedbackDashboard = () => {
       buttonRendererShareResume: buttonRendereShare,
       buttonRendererDeleteResume: buttonRendererDelete,
       customNoRowsOverlay: CustomNoRowsOverlay,
+
     },
   };
   function CustomNoRowsOverlay() {
@@ -173,7 +184,7 @@ const FeedbackDashboard = () => {
 
   return (
     <>
-    <Paper style={{padding: '20px', marginTop: '20px', height: '635px', backgroundColor: "#F0F0F0"}}>
+      <Paper style={{padding: '20px', marginTop: '20px' , height: '635px', backgroundColor: '#F0F0F0'}}>
       <div>
         <Grid
           item
@@ -210,15 +221,13 @@ const FeedbackDashboard = () => {
           </Button>
         </Grid>
       </div>
-
       <AgGridTable
         searchData={searchValue}
         gridOptions={gridOptionsfeedback}
         data={feedbackData}
         type="feedback"
       />
-
-    </Paper>
+      </Paper>
     </>
   );
 };

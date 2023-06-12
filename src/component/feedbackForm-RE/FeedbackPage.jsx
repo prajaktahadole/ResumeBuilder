@@ -62,7 +62,10 @@ const FeedbackPage = ({ feedbackform, isFeedbackEdit = false }) => {
   };
 
   const schema = yup.object().shape({
-    candidateName: yup.string().required("Candidate name is required"),
+    candidateName: yup.string().required('Candidate name is required')
+  .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, 'Invalid Candidate name')
+  .min(2, 'Full name must be at least 2 characters')
+  .max(50, 'Full name must not exceed 50 characters'),
     candidateId: yup.string().required("Candidate id is required"),
     experience: yup.string().required("Total experience is required"),
     interviewRound: yup.string().required("Please select interview round"),
@@ -130,7 +133,7 @@ const FeedbackPage = ({ feedbackform, isFeedbackEdit = false }) => {
     let formData = new FormData();
 
     formData.append("form", JSON.stringify(feedbackForm));
-    if (files.length > 0) {
+    if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
         formData.append("file", files[i]);
       }
@@ -299,7 +302,7 @@ const FeedbackPage = ({ feedbackform, isFeedbackEdit = false }) => {
                   </Card>
                   <Card style={{ maxWidth: "95%", margin: "20px auto" }}>
                     <CardContent>
-                      <UploadImage files={files} handleFiles={handleFiles} />
+                      <UploadImage files={isFeedbackEdit ? feedbackform.attachments : []} handleFiles={handleFiles} />
                     </CardContent>
                   </Card>
                   <Card style={{ maxWidth: "95%", margin: "20px auto" }}>

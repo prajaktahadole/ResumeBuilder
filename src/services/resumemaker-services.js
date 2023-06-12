@@ -117,3 +117,21 @@ export const updateUser = async (id,data,config) => {
 export const getInterviewers = async (config) => {
   return await axiosMethod.get(`/account/interviewers`, config)
 }
+
+export const downloadResumeByIdWord = async (resumeUUID, config) => {
+  try {
+    const response = await axiosMethod.get(`/resume/downloadword/${resumeUUID}`, config);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to download resume.');
+  }
+}
+
+export const findUserNameByEmail =  async (email, config) => {
+   return await axiosMethod.get(`/account/finduserbyemail/${email}`,config)
+       .then((response)=>response.data)
+       .catch(error=>{
+         console.log("error-->",error)
+       })
+}

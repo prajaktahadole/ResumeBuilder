@@ -9,6 +9,7 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import SchoolIcon from '@mui/icons-material/School';
 import LaptopMacIcon from '@mui/icons-material/LaptopMac';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import '../../styles/sidebar.css'
 
 
@@ -157,6 +158,17 @@ const SideBarlist = () => {
         </List>
       )}
 
+
+      <List className={`inside-content filter ${isActive("/resumemakerui/filter")}`}>
+          <ListItemButton
+            onClick={() => navigate("/resumemakerui/filter")}
+          >
+            <ListItemIcon>
+              <FilterAltIcon />
+            </ListItemIcon>
+            <ListItemText primary="Filter" />
+          </ListItemButton>
+        </List>
     
     </React.Fragment>
   );

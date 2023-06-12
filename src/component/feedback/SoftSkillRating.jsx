@@ -6,8 +6,9 @@ function SoftSkillRating({ feedbackform }) {
 
     return (
         <div>
-            <Card style={{ maxWidth: "110%", paddingTop: "1px",   }}>
-                <CardContent style={{  display : 'grid', gridTemplateColumns : 'repeat(2, 1fr)'                   }}>                    {feedbackform.softSkillRatings && Array.isArray(feedbackform.softSkillRatings) && feedbackform.softSkillRatings.map((softSkill) => (
+            <Card style={{ maxWidth: "110%", paddingTop: "1px", }}>
+                <CardContent style={{  display : 'grid', gridTemplateColumns : 'repeat(2, 1fr)'  }}>
+                    {feedbackform.softSkillRatings && Array.isArray(feedbackform.softSkillRatings) && feedbackform.softSkillRatings.map((softSkill) => (
                         <Box key={softSkill.softSkillId} sx={{ mb: 2 }}>
                             <Typography sx={{ display: 'flex', alignItems: 'center', width : '70%' }}>
                                 <div style={{width : '70%'}}>{softSkill.skillName}</div>

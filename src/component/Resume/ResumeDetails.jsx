@@ -125,78 +125,70 @@ function ResumeDetails() {
         </>
       ) : (
         <Grid>
-          <Grid style={{ margin: "7px" }}>
-            <Button
-              style={{
-                margin: "5px",
-                width: "2%",
-                height: "40px",
-                fontSize: "15px",
-                fontWeight: "bolder",
-                left: "89%",
-              }}
-              variant="contained"
-              onClick={() => {
-                navigate("/resumemakerui/dashboard");
-              }}
-            >
-              <IconButton
-                type="button"
-                sx={{ p: "30px", color: "white" }}
-                aria-label="search"
-              >
-                <ArrowBackOutlinedIcon />
-              </IconButton>
-            </Button>
-
-            <Button
-              style={{
-                margin: "5px",
-                width: "2%",
-                height: "40px",
-                fontSize: "15px",
-                fontWeight: "bolder",
-                left: "76%",
-              }}
-              variant="contained"
-              onClick={() => {
-                downloadResume(id);
-              }}
-            >
-              <IconButton
-                type="button"
-                sx={{ p: "30px", color: "white" }}
-                aria-label="search"
-              >
-                <FileDownloadOutlinedIcon />
-              </IconButton>
-            </Button>
-
-            {item.createdBy === localStorage.getItem("email") || localStorage.getItem("role") === 'ADMIN'  || localStorage.getItem("role") === 'INTERNAL' ? (
+          <Grid xs={12} sm={12} lg={12} container justifyContent="flex-end" sx={{ marginTop: "10px", marginBottom: "5px" }}>
+            <Grid item>
               <Button
-                style={{
-                  margin: "5px",
-                  width: "2%",
-                  height: "40px",
-                  fontSize: "15px",
-                  fontWeight: "bolder",
-                  left: "63%",
-                }}
-                variant="contained"
-                onClick={() => {
-                  setEditMode(!editMode);
-                }}
+                  style={{
+                    margin: '5px',
+                    width: '40px',
+                    height: '40px',
+                    fontSize: '15px',
+                    fontWeight: 'bolder',
+                  }}
+                  variant="contained"
+                  onClick={() => {
+                    navigate('/resumemakerui/dashboard');
+                  }}
               >
-                <IconButton
-                  type="button"
-                  sx={{ p: "30px", color: "white" }}
-                  aria-label="edit"
-                >
-                  <EditOutlinedIcon />
+                <IconButton type="button" sx={{ p: '30px', color: 'white' }} aria-label="search">
+                  <ArrowBackOutlinedIcon />
                 </IconButton>
               </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                  style={{
+                    margin: '5px',
+                    width: '40px',
+                    height: '40px',
+                    fontSize: '15px',
+                    fontWeight: 'bolder',
+                  }}
+                  variant="contained"
+                  onClick={() => {
+                    downloadResume(id);
+                  }}
+              >
+                <IconButton type="button" sx={{ p: '30px', color: 'white' }} aria-label="search">
+                  <FileDownloadOutlinedIcon />
+                </IconButton>
+              </Button>
+            </Grid>
+            {item.createdBy === localStorage.getItem('email') ||
+            localStorage.getItem('role') === 'ADMIN' ||
+            localStorage.getItem('role') === 'INTERNAL' ? (
+                <Grid item>
+                  <Button
+                      style={{
+                        margin: '5px',
+                        width: '40px',
+                        height: '40px',
+                        fontSize: '15px',
+                        fontWeight: 'bolder',
+                      }}
+                      variant="contained"
+                      onClick={() => {
+                        setEditMode(!editMode);
+                      }}
+                  >
+                    <IconButton type="button" sx={{ p: '30px', color: 'white' }} aria-label="edit">
+                      <EditOutlinedIcon />
+                    </IconButton>
+                  </Button>
+                </Grid>
             ) : null}
           </Grid>
+          
           <Grid className="Previewmain">
             {item.personalDetails ? (
               <Grid>
@@ -218,7 +210,7 @@ function ResumeDetails() {
                       <div className="Pname pleft">
                         <p> Email : {item.personalDetails.email}</p>
                         <p> Mobile No :{item.personalDetails.mobileNo}</p>
-                       {item.personalDetails.linkedinUR === "" ? "" :  <p>Linkedin : {item.personalDetails.linkedinURL}</p>}
+                       {item.personalDetails.linkedinURL === "" ? "" :  <p>LinkedIn: {item.personalDetails.linkedinURL}</p>}
                   
                       </div>
                     </div>

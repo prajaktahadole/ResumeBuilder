@@ -6,18 +6,26 @@ function Education({ item, isEdit = false, register, errors, validationSchema })
     return (
         <>
             <Grid container>
-                <Grid item lg={12} sx={12}>
+                <Grid item xs={12} lg={12} sx={12}>
                     <h2 style={{ border: "0.1px solid #239ce2", backgroundColor: 'rgb(33, 80, 162)', textAlign: 'center', color: '#fff' }}>Education Details</h2>
                 </Grid>
             </Grid>
             <div className='subContainer'>
-                <Grid container spacing={2}>
-                    <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
-                        <h3>Higher Qualification:</h3>
+                <Grid container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                        },
+                        }}>
+                    <Grid item xs={12} sm={4} md={4} lg={4}>
+                        <h3 style={{margin : '5px'}}>Higher Qualification:</h3>
                     </Grid>
-                    <Grid item xs={8} >
+                    <Grid item xs={12} sm={8} md={8} lg={8}>
                         <TextField
-                            style={{ width: '100%' }}
+                            style={{width:'100%' , marginBottom: '7px'}}
                             Degree
                             id="outlined-required"
                             label="Higher Qualification"
@@ -32,13 +40,21 @@ function Education({ item, isEdit = false, register, errors, validationSchema })
                     </Grid>
                 </Grid>
 
-                <Grid container spacing={2}>
-                    <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
-                        <h3>University:</h3>
+                <Grid container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                        },
+                        }}>
+                    <Grid item xs={12} sm={4} md={4} lg={4}>
+                        <h3  style={{margin : '5px'}}>University:</h3>
                     </Grid>
-                    <Grid item xs={8} >
+                    <Grid item xs={12} sm={8} md={8} lg={8} >
                         <TextField
-                            style={{ width: '100%' }}
+                            style={{width:'100%' , marginBottom: '7px'}}
                             university
                             id="outlined-required"
                             label="University"
@@ -54,13 +70,21 @@ function Education({ item, isEdit = false, register, errors, validationSchema })
 
                 </Grid>
 
-                <Grid container spacing={2}>
-                    <Grid item xs={4} style={{ display: 'flex', alignItems: 'start' }}>
-                        <h3>Passing Year :</h3>
+                <Grid container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                        },
+                        }}>
+                    <Grid item xs={12} sm={4} md={4} lg={4}>
+                        <h3  style={{margin : '5px'}}>Passing Year :</h3>
                     </Grid>
-                    <Grid item xs={8} >
+                    <Grid item xs={12} sm={8} md={8} lg={8} >
                         <TextField
-                            style={{ width: '100%' }}
+                            style={{width:'100%' , marginBottom: '7px'}}
                             passing Year
                             id="outlined-required"
                             label="Passing Year"

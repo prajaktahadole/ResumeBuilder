@@ -22,6 +22,8 @@ import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import { useNavigate } from "react-router-dom";
 import '../../styles/interview.css'
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+
 
 function InterviewDetails() {
   const dispatch = useDispatch();
@@ -31,18 +33,18 @@ function InterviewDetails() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const navigate = useNavigate();
-    const [selected, setSelected] = useState(0);
-    const [rejected, setRejected] = useState(0);
-    const [hold, setHold] = useState(0);
-    const [total, setTotal] = useState(0);
-    const [selectedInternal, setSelectedInternal] = useState(0);
-    const [selectedConverge, setSelectedConverge] = useState(0);
-    const [rejectedInternal,setRejectedIntenal] = useState(0);
-    const [rejectedConverge, setRejectedConverge] = useState(0);
-    const [holdInternal, setHoldInternal] = useState(0);
-    const [holdConverge, setHoldConverge] = useState(0);
-    const [totalInternal, setTotalInternal] = useState(0);
-    const [totalConverge, setTotalConverge] = useState(0);
+  const [selected, setSelected] = useState(0);
+  const [rejected, setRejected] = useState(0);
+  const [hold, setHold] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [selectedInternal, setSelectedInternal] = useState(0);
+  const [selectedConverge, setSelectedConverge] = useState(0);
+  const [rejectedInternal,setRejectedInternal] = useState(0);
+  const [rejectedConverge, setRejectedConverge] = useState(0);
+  const [holdInternal, setHoldInternal] = useState(0);
+  const [holdConverge, setHoldConverge] = useState(0);
+  const [totalInternal, setTotalInternal] = useState(0);
+  const [totalConverge, setTotalConverge] = useState(0);
 
   const handleSelectInterviewer = (selectedInterviewer) => {
     setInterviewerName(selectedInterviewer);
@@ -91,7 +93,7 @@ function InterviewDetails() {
         setTotal(totalSum);
         setSelectedInternal(selectedInternalSum);
         setSelectedConverge(selectedConvergeSum)
-        setRejectedIntenal(rejectedInternalSum);
+        setRejectedInternal(rejectedInternalSum);
         setRejectedConverge(rejectedConvergeSum)
         setHoldInternal(holdInternalSum);
         setHoldConverge(holdConvergeSum)
@@ -143,7 +145,7 @@ function InterviewDetails() {
       setTotal(totalSum);
       setSelectedInternal(selectedInternalSum);
       setSelectedConverge(selectedConvergeSum)
-      setRejectedIntenal(rejectedInternalSum);
+      setRejectedInternal(rejectedInternalSum);
       setRejectedConverge(rejectedConvergeSum)
       setHoldInternal(holdInternalSum);
       setHoldConverge(holdConvergeSum)
@@ -193,7 +195,7 @@ function InterviewDetails() {
       setTotal(totalSum);
       setSelectedInternal(selectedInternalSum);
       setSelectedConverge(selectedConvergeSum)
-      setRejectedIntenal(rejectedInternalSum);
+      setRejectedInternal(rejectedInternalSum);
       setRejectedConverge(rejectedConvergeSum)
       setHoldInternal(holdInternalSum);
       setHoldConverge(holdConvergeSum)
@@ -243,7 +245,7 @@ function InterviewDetails() {
       setTotal(totalSum);
       setSelectedInternal(selectedInternalSum);
       setSelectedConverge(selectedConvergeSum)
-      setRejectedIntenal(rejectedInternalSum);
+      setRejectedInternal(rejectedInternalSum);
       setRejectedConverge(rejectedConvergeSum)
       setHoldInternal(holdInternalSum);
       setHoldConverge(holdConvergeSum)
@@ -336,11 +338,10 @@ function InterviewDetails() {
   const handleReset = () => {
     window.location.reload(false);
   }
-
   return (
     <>
-        <Paper style={{padding: '15px', marginTop: '30px', height: '850px', backgroundColor: "#F0F0F0"}}>
-      <div>
+        <Paper style={{padding: '10px', marginTop: '20px', height: '850px' ,backgroundColor: "#F0F0F0"}}>
+        <div>
         <Grid
           item
           xs={12}
@@ -368,20 +369,21 @@ function InterviewDetails() {
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
                 />
-            <TextField
-              style={{ width: "45%", marginRight: "50px" }}
-              type="date"
-              label="End Date"
-              InputLabelProps={{ shrink: true }}
-              id="outlined-required"
-              inputProps={{
-                max: currentDate,
-                required: true,
-              }}
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-            <SelectOption onSelectInterviewer={handleSelectInterviewer} />
+              <TextField
+                  style={{ width: "45%", marginRight: "50px" }}
+                  type="date"
+                  label="End Date"
+                  InputLabelProps={{ shrink: true }}
+                  id="outlined-required"
+                  inputProps={{
+                      max: currentDate,
+                      required: true,
+                  }}
+                  value={endDate === "" ? setEndDate(currentDate) : endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+              />
+
+              <SelectOption onSelectInterviewer={handleSelectInterviewer} />
             <Button
               style={{
                 width: "15%",
@@ -398,23 +400,6 @@ function InterviewDetails() {
                 <ScreenSearchDesktopIcon />
               </IconButton>
             </Button>
-            {/*<Button*/}
-            {/*  style={{*/}
-            {/*    width: "15%",*/}
-            {/*    padding: "10px",*/}
-            {/*    fontSize: "15px",*/}
-            {/*    fontWeight: "bolder",*/}
-            {/*    backgroundColor: "white",*/}
-            {/*    textTransform: "none",*/}
-            {/*    marginLeft: "10px",*/}
-            {/*  }}*/}
-            {/*  variant="contained"*/}
-            {/*  onClick={handleExportToExcel}*/}
-            {/*>*/}
-            {/*   <IconButton  color="primary" size="medium">*/}
-            {/*    <CloudDownloadIcon />*/}
-            {/*  </IconButton>*/}
-            {/*</Button>*/}
             <Button
               style={{
                 width: "15%",
@@ -429,7 +414,7 @@ function InterviewDetails() {
               onClick={handleReset}
             >
                <IconButton  color="primary" size="medium">
-                <CleaningServicesIcon />
+                <RestartAltIcon/>
               </IconButton>
             </Button>
           </Paper>

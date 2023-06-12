@@ -7,17 +7,7 @@ export const columnDefsResume = [
     filter: true,
     width: 150,
     unSortIcon: true,
-    flex: 1.5
-  },
-  {
-    headerName: "Email",
-    field: "email",
-    sortingOrder: ["asc", "desc"],
-    sortable: true,
-    filter: true,
-    flex: 2.5,
-    unSortIcon: true,
-    width: 110,
+    flex: 2
   },
   {
     headerName: "Designation",
@@ -27,15 +17,27 @@ export const columnDefsResume = [
     filter: true,
     unSortIcon: true,
     width: 110,
-    flex:1.5
+    flex:2
   },
   {
     headerName: "Skills",
     field: "skills",
-    sortable: false,
+    sortingOrder: ["asc", "desc"],
+    sortable: true,
     filter: true,
+    unSortIcon: true,
     width: 110,
     flex:2
+  },
+  {
+    headerName: "Created By",
+    field: "createdBy",
+    sortingOrder: ["asc", "desc"],
+    sortable: true,
+    filter: true,
+    unSortIcon: true,
+    width: 110,
+    flex: 1.6,
   },
   {
     headerName: "View",
@@ -53,7 +55,7 @@ export const columnDefsResume = [
     headerName: "Share",
     cellRenderer: "buttonRendererShareResume",
     cellStyle: {textAlign: "center"},
-    flex: 0.7
+    flex: 0.9
   },
   {
     headerName: "Delete",
@@ -177,17 +179,28 @@ export const columnDefsFeedback = [
     filter: true,
     unSortIcon: true,
     width: 150,
-    flex: 1.2
+    flex: 1.2,
+    cellStyle: function(params) {
+      var status = params.value;
+      if (status === 'SELECTED') {
+        return { color: 'green'};
+      } else if (status === 'REJECTED') {
+        return { color: 'red' };
+      } else if (status === 'HOLD') {
+        return { color: 'orange' };
+      }
+      return null;
+    }
   },
   {
     headerName: "Submitted Date",
     field: "submittedDate",
     sortable: true,
-    sortingOrder: ["asc", "desc"],
+    sortingOrder: ["desc","asc"],
     filter: true,
     unSortIcon: true,
     width: 150,
-    sort: "desc",
+    //sort: "desc",
     flex: 1.5,
     cellStyle: {textAlign: "center"}
   }, 
@@ -195,19 +208,19 @@ export const columnDefsFeedback = [
     headerName: "View",
     cellRenderer: "buttonRendererViewResume",
     cellStyle: {textAlign: "center"},
-    flex : 0.7
+    flex : 0.8
   },
   {
     headerName: "Share",
     cellRenderer: "buttonRendererShareResume",
     cellStyle: {textAlign: "center"},
-    flex : 0.7
+    flex : 0.8
   },
   {
     headerName: "Delete",
     cellRenderer: "buttonRendererDeleteResume",
     cellStyle: {textAlign: "center"},
-    flex : 0.7
+    flex : 0.8
   },
 ];
 export const columnDefsFeedbackKpi = [
@@ -219,23 +232,15 @@ export const columnDefsFeedbackKpi = [
         headerName: "Name",
         field: "interviewer",
         sortingOrder: ["asc", "desc"],
-        sortable: false,
-        unSortIcon: false,
+        sortable: true,
+        unSortIcon: true,
         filter: true,
         width: 110,
+        flex: 1.5
       }
     ]
   },
-  // {
-  //   headerName: "Selected",
-  //   field: "selected",
-  //   sortingOrder: ["asc", "desc"],
-  //   sortable: true,
-  //   unSortIcon: true,
-  //   filter: true,
-  //   width: 110,
-  //   cellStyle: { color: "green", fontWeight: "bold", fontSize: "16px",textAlign: "center" },
-  // },
+
   {
     headerName: "Selected",
     headerClass: "ag-header-center",
@@ -244,9 +249,9 @@ export const columnDefsFeedbackKpi = [
         headerName: "Internal",
         field: "internalSe",
         sortingOrder: ["asc", "desc"],
-        sortable: false,
-        unSortIcon: false,
-        filter: true,
+        sortable: true,
+        unSortIcon: true,
+        filter: false,
         width: 110,
         cellStyle: { color: "green", fontWeight: "bold", fontSize: "16px", textAlign: "center" },
       },
@@ -254,24 +259,15 @@ export const columnDefsFeedbackKpi = [
         headerName: "Converge",
         field: "convergeSe",
         sortingOrder: ["asc", "desc"],
-        sortable: false,
-        unSortIcon: false,
-        filter: true,
+        sortable: true,
+        unSortIcon: true,
+        filter: false,
         width: 110,
         cellStyle: { color: "green", fontWeight: "bold", fontSize: "16px", textAlign: "center" },
       },
     ],
   },
-  // {
-  //   headerName: "Rejected",
-  //   field: "rejected",
-  //   sortingOrder: ["asc", "desc"],
-  //   sortable: true,
-  //   unSortIcon: true,
-  //   filter: true,
-  //   width: 110,
-  //   cellStyle: { color: "red", fontWeight: "bold", fontSize: "16px",textAlign: "center" },
-  // },
+
   {
     headerName: "Rejected",
     headerClass: "ag-header-center",
@@ -280,9 +276,9 @@ export const columnDefsFeedbackKpi = [
         headerName: "Internal",
         field: "internalRe",
         sortingOrder: ["asc", "desc"],
-        sortable: false,
-        unSortIcon: false,
-        filter: true,
+        sortable: true,
+        unSortIcon: true,
+        filter: false,
         width: 110,
         cellStyle: { color: "red", fontWeight: "bold", fontSize: "16px", textAlign: "center" },
       },
@@ -290,24 +286,15 @@ export const columnDefsFeedbackKpi = [
         headerName: "Converge",
         field: "convergeRe",
         sortingOrder: ["asc", "desc"],
-        sortable: false,
-        unSortIcon: false,
-        filter: true,
+        sortable: true,
+        unSortIcon: true,
+        filter: false,
         width: 110,
         cellStyle: { color: "red", fontWeight: "bold", fontSize: "16px", textAlign: "center" },
       },
     ],
   },
-  // {
-  //   headerName: "Hold",
-  //   field: "hold",
-  //   sortable: true,
-  //   sortingOrder: ["asc", "desc"],
-  //   filter: true,
-  //   unSortIcon: true,
-  //   width: 150,
-  //   cellStyle: { color: "orange", fontWeight: "bold", fontSize: "16px",textAlign: "center" },
-  // },
+
   {
     headerName: "Hold",
     headerClass: "ag-header-center",
@@ -316,9 +303,9 @@ export const columnDefsFeedbackKpi = [
         headerName: "Internal",
         field: "internalHo",
         sortingOrder: ["asc", "desc"],
-        sortable: false,
-        unSortIcon: false,
-        filter: true,
+        sortable: true,
+        unSortIcon: true,
+        filter: false,
         width: 110,
         cellStyle: { color: "orange", fontWeight: "bold", fontSize: "16px", textAlign: "center" },
       },
@@ -326,24 +313,15 @@ export const columnDefsFeedbackKpi = [
         headerName: "Converge",
         field: "convergeHo",
         sortingOrder: ["asc", "desc"],
-        sortable: false,
-        unSortIcon: false,
-        filter: true,
+        sortable: true,
+        unSortIcon: true,
+        filter: false,
         width: 110,
         cellStyle: { color: "orange", fontWeight: "bold", fontSize: "16px", textAlign: "center" },
       },
     ],
   },
-  // {
-  //   headerName: "Total",
-  //   field: "total",
-  //   sortable: true,
-  //   sortingOrder: ["asc", "desc"],
-  //   filter: true,
-  //   unSortIcon: true,
-  //   width: 150,
-  //   cellStyle: {fontWeight: "bold", fontSize: "16px",textAlign: "center"}
-  // },
+
   {
     headerName: "Total",
     headerClass: "ag-header-center",
@@ -352,9 +330,9 @@ export const columnDefsFeedbackKpi = [
         headerName: "Internal",
         field: "internalTo",
         sortingOrder: ["asc", "desc"],
-        sortable: false,
-        unSortIcon: false,
-        filter: true,
+        sortable: true,
+        unSortIcon: true,
+        filter: false,
         width: 110,
         cellStyle: {  fontWeight: "bold", fontSize: "16px", textAlign: "center" },
       },
@@ -362,9 +340,9 @@ export const columnDefsFeedbackKpi = [
         headerName: "Converge",
         field: "convergeTo",
         sortingOrder: ["asc", "desc"],
-        sortable: false,
-        unSortIcon: false,
-        filter: true,
+        sortable: true,
+        unSortIcon: true,
+        filter: false,
         width: 110,
         cellStyle: { fontWeight: "bold", fontSize: "16px", textAlign: "center" },
       },

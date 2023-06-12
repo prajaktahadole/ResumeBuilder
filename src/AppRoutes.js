@@ -21,6 +21,8 @@ import ChangePassword from "./component/changePass";
 import Feedback from "./component/feedback/Feedback";
 import TechStack from "./component/Master/TechStack";
 import Master from "./component/Master/Master";
+import Notification from "./component/Notifications/Notification";
+import Filter from "./component/Filter/Filter";
 
 const AppRoutes = () => {
   const { isLogin } = useSelector((state) => state.account);
@@ -86,7 +88,17 @@ const AppRoutes = () => {
      element: isUserAuthentic() ? <ScheduleInterview /> : <Redirect />  },
 
     { path: "/resumemakerui/interview-details", 
-    element: isUserAuthentic() ? <InterviewDetails />: <Redirect />  },
+    element: isUserAuthentic() ? <InterviewDetails />: <Redirect /> 
+    },
+    {
+      path: "/resumemakerui/notification",
+      element: isUserAuthentic() ? <Notification /> : <Redirect />,
+    },
+    {
+      path: "/resumemakerui/filter",
+      element: isUserAuthentic() ? <Filter /> : <Redirect />,
+    },
+
 
   ];
   const routes = useRoutes(testRoutes);

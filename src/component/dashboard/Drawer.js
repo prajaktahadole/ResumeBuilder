@@ -9,25 +9,21 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
+import Container from "@mui/material/Container"
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems, secondaryListItems } from "./TitleItems";
-// import Chart from './Chart';
 import HomeIcon from "@mui/icons-material/Home";
 import Profile from "./Profile";
-import Dashboard from "./Dashboard";
 import SideBarlist from "./SideBarlist";
 import AppRoutes from "../../AppRoutes";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import NotificationComp from "../Notifications/NotificationComp";
+import { getNotificationAllData } from "../../services/notification";
+import { setNotificationCount } from "../../reduxToolkit/Notification/notificationSlice";
 function Copyright(props) {
   return (
     <Typography
@@ -100,6 +96,26 @@ function DrawerCustome() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const dispatch=useDispatch()
+  React.useEffect(()=>{
+    fetchdata()
+  },[])
+  const fetchdata = async () => {
+    try {
+      const res = await getNotificationAllData(localStorage.getItem("email"),{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
+      dispatch(setNotificationCount(res.filter(item => item.email === localStorage.getItem("email")).length))
+    
+  } catch (error) {
+    console.error("Error fetching notification data:", error);
+
+  }
+  };
+
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -132,7 +148,12 @@ function DrawerCustome() {
             >
               {open ? `Welcome, ${localStorage.getItem('user')}` : 'Humancloud'}
             </Typography>
-      
+
+            {
+              localStorage.getItem("role") === "ADMIN" || localStorage.getItem("role") === "INTERNAL" ?
+                  (<NotificationComp></NotificationComp>) : ""
+            }
+
             <Profile />
           </Toolbar>
         </AppBar>

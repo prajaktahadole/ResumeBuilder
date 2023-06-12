@@ -33,6 +33,7 @@ function Profile() {
     localStorage.removeItem("role");
     localStorage.removeItem("email");
     localStorage.removeItem("redirect");
+    localStorage.removeItem("activeStatus");
     setAnchorEl(null);
     if(localStorage.getItem("internal") !== null && localStorage.getItem("internal") === "/resumemakerui/internal/login")
     {

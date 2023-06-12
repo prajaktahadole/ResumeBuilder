@@ -114,7 +114,7 @@ export const UserPreview = () => {
             <Card
               style={{
                 maxWidth: "65%",
-                margin: "145px auto",
+                margin: "50px auto",
                 padding: "25px",
                 boxShadow:
                   "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
@@ -126,15 +126,16 @@ export const UserPreview = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  margin: "10px auto",
-                  maxWidth: "80%",
+                  margin: "5px auto",
+                  maxWidth: "90%",
+
                 }}
               >
                 <Typography
                   variant="h5"
                   style={{
                     maxWidth: "95%",
-                    margin: "10px",
+                    margin: "5px",
                     padding: "5px 5x",
                     fontWeight: "bolder",
                     textAlign: "left",
@@ -142,7 +143,7 @@ export const UserPreview = () => {
                 >
                   {user.fullName}
                 </Typography>
-                <Grid style={{ width: "32%" }}>
+                <Grid style={{ width: "24%" }}>
                   <Button
                     style={{
                       margin: "5px",

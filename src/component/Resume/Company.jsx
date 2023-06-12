@@ -214,7 +214,7 @@
           companydata &&
           companydata.map((company, cindex) => (
             <div style={{ marginBottom: "20px" }} className="subContainer">
-              <Grid item xs={2}>
+              <Grid item  xs={12} sm={12} md={12} lg={12}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -240,8 +240,6 @@
                 sx={{
                   display: "flex",
                   justifyContent: "flex-end",
-                  gap: "15px",
-                  marginRight: "5px",
                 }}
               >
                 <button
@@ -257,40 +255,55 @@
                         </IconButton>
                 </button>
               </Grid>
-              <Grid container spacing={2}>
+              
+              <Grid container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                          },
+                        }}
+                        spacing={2}>
                 <Grid
-                  item
-                  xs={4}
-                  style={{ display: "flex", alignItems: "start" }}
-                >
-                  <h3>Company:</h3>
+                  item  xs={12} sm={4} md={4} lg={4}>
+                  <h3 style={{margin : '5px'}}>Company:</h3>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={12} sm={8} md={8} lg={8}>
                   <TextField
-                    style={{ width: "100%" }}
+                    style={{width:'100%' , marginBottom: '7px'}}
                     Company
                     id={cindex}
                     label="Company"
                     placeholder="Enter your Company Name"
                     name="company"
-                    required
+                    //required
                     value={company.company}
                     onChange={handleCompanyInputChange}
                     defaultValue={isEdit ? item.workExperience.company : ""}
                   />
                 </Grid>
               </Grid>
-              <Grid container spacing={2}>
+
+              <Grid container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                          },
+                        }}
+                        spacing={2}>
                 <Grid
-                  item
-                  xs={4}
-                  style={{ display: "flex", alignItems: "start" }}
+                  item  xs={12} sm={4} md={4} lg={4}
                 >
-                  <h3>Designation:</h3>
+                  <h3 style={{margin : '5px'}}>Designation:</h3>
                 </Grid>
-                <Grid item xs={3}>
+                <Grid  item  xs={12} sm={3} md={3} lg={3}>
                   <TextField
-                    style={{ width: "100%" }}
+                    style={{width:'100%' , marginBottom: '15px'}}
                     Designation
                     id={cindex}
                     label="Designation"
@@ -301,9 +314,12 @@
                     onChange={handleCompanyInputChange}
                   />
                 </Grid>
-                <Grid item xs={2.5}>
+                <Grid item  xs={6} sm={2.5} md={2.5} lg={2.5}>
                   <TextField
-                    style={{ width: "100%" }}
+                    style={{
+                    width:'100%' , 
+                    marginBottom: '7px',
+                    marginRight : '5px'}}
                     periodFrom
                     id={cindex}
                     type="month"
@@ -321,12 +337,12 @@
                     }}
                   />
                 </Grid>
-                <Grid item xs={2.5}>
+                <Grid item  xs={6} sm={2.5} md={2.5} lg={2.5}>
                   {company.isCurrentCompany ||
                   (isEdit &&
                     item.workExperience?.[cindex]?.periodTo === "Present") ? (
                     <TextField
-                      style={{ width: "100%" }}
+                      style={{width:'100%' , marginBottom: '7px'}}
                       periodFrom
                       id={cindex}
                       //type="month"
@@ -342,7 +358,7 @@
                     />
                   ) : (
                     <TextField
-                      style={{ width: "100%" }}
+                      style={{width:'100%' , marginBottom: '7px'}}
                       periodFrom
                       id={cindex}
                       type="month"
@@ -392,69 +408,63 @@
                         </IconButton>
                       </button>
                     </Grid>
-                    <Grid container spacing={2} className="subprojectcls">
+                    <Grid container 
+                      xs={{display: "flex"}}
+                      sm={{
+                          '@media (max-width: 600px)': {
+                              display: "flex",
+                              flexDirection : 'column' ,
+                              width : "100%",
+                            },
+                          }}
+                          spacing={2}
+                          className="subprojectcls">
                       <Grid
-                        item
-                        xs={4}
-                        style={{ display: "flex", alignItems: "start" }}
+                          item
+                          xs={4}
+                          style={{ display: "flex", alignItems: "start", marginBottom: "10px" }}
                       >
-                        <h3>Projects: </h3>
+                        <h3 style={{ margin: "5px" }}>Projects:</h3>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={12} sm={4} md={4} lg={4}>
                         <TextField
-                          style={{ width: "100%" }}
-                          Project
-                          Name
-                          id={`${cindex}/${pindex}`}
-                          label="Project Name"
-                          placeholder="Enter Your Project Name"
-                          defaultValue={
-                            isEdit ? item.workExperience.projectName : ""
-                          }
-                          onChange={handleProjectInputChange}
-                          value={project.projectName}
-                          name="projectName"
+                            style={{ width: "100%", marginBottom: "10px" }}
+                            id={`${cindex}/${pindex}`}
+                            label="Project Name"
+                            placeholder="Enter Your Project Name"
+                            defaultValue={isEdit ? item.workExperience.projectName : ""}
+                            onChange={handleProjectInputChange}
+                            value={project.projectName}
+                            name="projectName"
                         />
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={12} sm={4} md={4} lg={4}>
                         <TextField
-                          style={{ width: "100%" }}
-                          Project
-                          Technology
-                          id={`${cindex}/${pindex}`}
-                          label="Project Technology"
-                          placeholder="Enter your Project Technology"
-                          onChange={handleProjectInputChange}
-                          value={project.technologies}
-                          name="technologies"
-                          defaultValue={
-                            isEdit ? item.workExperience.technologies : ""
-                          }
+                            style={{ width: "100%", marginBottom: "10px" }}
+                            id={`${cindex}/${pindex}`}
+                            label="Project Technology"
+                            placeholder="Enter your Project Technology"
+                            onChange={handleProjectInputChange}
+                            value={project.technologies}
+                            name="technologies"
+                            defaultValue={isEdit ? item.workExperience.technologies : ""}
                         />
                       </Grid>
-                      <Grid item xs={4} style={{ display: "flex" }}></Grid>
-
-                      <Grid item xs={8}>
+                      <Grid item xs={12} sm={4} md={4} lg={4}></Grid>
+                      <Grid item xs={12} sm={8} md={8} lg={8}>
                         <TextField
-                          style={{ width: "100%" }}
-                          Description
-                          id={`${cindex}/${pindex}`}
-                          label="Project Description"
-                          placeholder="Enter your project description"
-                          onChange={handleProjectInputChange}
-                          value={project.description}
-                          name="description"
-                          defaultValue={
-                            isEdit ? item.workExperience.description : ""
-                          }
+                            style={{ width: "100%", marginBottom: "10px" }}
+                            id={`${cindex}/${pindex}`}
+                            label="Project Description"
+                            placeholder="Enter your project description"
+                            onChange={handleProjectInputChange}
+                            value={project.description}
+                            name="description"
+                            defaultValue={isEdit ? item.workExperience.description : ""}
                         />
                       </Grid>
 
-                      <Grid
-                        item
-                        xs={4}
-                        style={{ display: "flex", alignItems: "start" }}
-                      ></Grid>
+
                       <Responsibility
                         pindex={pindex}
                         cindex={cindex}

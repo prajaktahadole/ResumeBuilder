@@ -16,8 +16,7 @@ export default function ImageListComponent(props) {
     setShowPreview(false);
   }
   return (
-    <div >
-       <h4 style={{marginLeft : '10px', marginBottom : "-7px"}}>Attachments</h4>
+    <div>
      <div  style={{display:'flex', flexDirection:'row'}}>
       {attachments && Array.isArray(attachments) && attachments.map((imageUrl, index) => (
         <div key={index}  onClick={() => handleClick(imageUrl)}>

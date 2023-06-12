@@ -4,7 +4,13 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/resume.css";
-import { deleteResumeById, downloadResumeById, getResumeAllData, getResumeAllDataByEmail } from "../../services/resumemaker-services";
+import {
+  deleteResumeById,
+  downloadResumeById,
+  downloadResumeByIdWord, findUserNameByEmail,
+  getResumeAllData,
+  getResumeAllDataByEmail
+} from "../../services/resumemaker-services";
 import AgGridTable from "../AgGridTable/AgGridTable";
 import { columnDefsResume } from "../../utils/AgGridTableColumns";
 import { Button, Grid, IconButton, InputBase } from "@mui/material";
@@ -21,6 +27,7 @@ export default function CustomizedTables() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
+
   const buttonRendererView = (props) => {
     return (
       <IconButton
@@ -185,6 +192,8 @@ export default function CustomizedTables() {
       </div>
     );
   }
+
+
   useEffect(() => {
     fetchdata();
   }, []);
@@ -198,7 +207,14 @@ export default function CustomizedTables() {
           "Content-Type": "application/json",
         },
       });
-      setData(res);
+      const updatedData = await Promise.all(
+          res.map(async (item) => {
+            const fullName = await findFullName(item.createdBy);
+            return { ...item, createdBy: fullName };
+          })
+      );
+
+      setData(updatedData);
     }
     else
     {
@@ -208,16 +224,32 @@ export default function CustomizedTables() {
           "Content-Type": "application/json",
         },
       });
+      const updatedData = await Promise.all(
+          res.map(async (item) => {
+            const fullName = await findFullName(item.createdBy);
+            return { ...item, createdBy: fullName };
+          })
+      );
 
-      setData(res);
-
+      setData(updatedData);
     }
-    
   }
+
+  const findFullName= async (email)=>{
+    const res = await findUserNameByEmail(email, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    })
+    return res
+    //console.log("fullname-->",res)
+  }
+
 
   return (
     <>
-      <Paper style={{padding: '20px', marginTop: '10px', height: '635px', backgroundColor: "#F0F0F0"}}>
+      <Paper style={{padding: '20px', marginTop: '10px' , height: '635px', backgroundColor: '#F0F0F0'}}>
       <Grid container width={'100%'} marginBottom={"25px"}  >
 
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>

@@ -1,0 +1,53 @@
+
+.filtermain{
+   width: 100%;
+   padding: 20px; 
+   margin-top: 20px;
+   margin-bottom: 25px;
+   background-color:rgb(218, 216, 216);
+}
+
+.filterMenu{
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border: '1px solid gray';
+}
+
+
+.filterContainer{
+   width: 100%;
+   padding: 20px; 
+   margin-top: 30px;
+}
+
+.filterGridContainer{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+
+.filtercard :hover{
+    background-color: rgb(149, 152, 152);
+}
+
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.Filtersubheader{
+    display: flex;
+    justify-content: space-between;
+}
+
+.Filterbutt{
+    display: flex;
+    justify-content: end;
+    margin: 0;
+    padding: 0;
+}

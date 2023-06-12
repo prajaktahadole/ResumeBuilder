@@ -42,24 +42,31 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
       return (
         <>
             <Grid container>
-                <Grid item lg={12} sx={12}>
+                <Grid item  xs={12} sx={12} sm={12} md={12} lg={12}>
                     <h2 style={{ border: "0.1px solid #239ce2", backgroundColor: 'rgb(33, 80, 162)', textAlign: 'center', color: '#fff' }}>Skill Set</h2>
                 </Grid>
             </Grid>
             <div className='subContainer'>
 
-             <Grid container spacing={2}>
-                <Grid item xs={3}style={{display:'flex',alignItems:'start'}}>
-                    <h3>Technologies:</h3>
+             <Grid container 
+             xs={{display: "flex"}}
+             sm={{
+                '@media (max-width: 600px)': {
+                    display: "flex",
+                    flexDirection : 'column' ,
+                    width : "100%",
+                  },
+                }} >
+                <Grid item  xs={12} sm={3} md={3} lg={3}>
+                    <h3 style={{margin : '5px'}}>Technologies:</h3>
                 </Grid>
-                <Grid item xs={9} >
+                <Grid item  xs={12} sm={9} md={9} lg={9} >
                     <TextField
-                        style={{width:'100%'}}
+                        style={{width:'100%' , marginBottom: '7px'}}
                         Technology Name
                         id="outlined-required"
                         label=" Technology Name"
                         placeholder="Springboot, Microservices, Hibernate, REST Webservices... etc"
-                        //required
                         name='technologies'
                         defaultValue={isEdit ? item.skillSet.technologies:''}
                         onKeyPress={handleKeyPress}
@@ -68,15 +75,23 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
                     />
                 </Grid>
 
-                </Grid>
+            </Grid>
 
-                <Grid container spacing={2}>
-                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
-                        <h3>Languages:</h3>
+                <Grid  container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                        },
+                        }}>
+                    <Grid item  xs={12} sm={3} md={3} lg={3}>
+                        <h3 style={{margin : '5px'}}>Languages:</h3>
                     </Grid>
-                    <Grid item xs={9} >
+                    <Grid item  xs={12} sm={9} md={9} lg={9}>
                         <TextField
-                            style={{ width: '100%' }}
+                            style={{width:'100%' , marginBottom: '7px'}}
                             languages Name
                             id="outlined-required"
                             label="Languages Name"
@@ -93,18 +108,25 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
 
                 </Grid>
 
-                <Grid container spacing={2}>
-                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
-                        <h3>Tools:</h3>
+                <Grid  container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                        },
+                        }}>
+                    <Grid item  xs={12} sm={3} md={3} lg={3}>
+                        <h3 style={{margin : '5px'}}>Tools:</h3>
                     </Grid>
-                    <Grid item xs={9} >
+                    <Grid item  xs={12} sm={9} md={9} lg={9} >
                         <TextField
-                            style={{ width: '100%' }}
+                            style={{width:'100%' , marginBottom: '7px'}}
                             Tools Name
                             id="outlined-required"
                             label=" Tools Name"
                             placeholder="GitHub, JIRA, Maven, Play Framework, AWS, Confluence...etc"
-                            //required
                             name='tools'
                             defaultValue={isEdit ? item.skillSet.tools : ''}
                             onKeyPress={handleKeyPress}
@@ -114,13 +136,21 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
                     </Grid>
 
                 </Grid>
-                <Grid container spacing={2}>
-                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
-                        <h3>Database:</h3>
+                <Grid  container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                        },
+                        }}>
+                    <Grid item  xs={12} sm={3} md={3} lg={3}>
+                        <h3 style={{margin : '5px'}}>Database:</h3>
                     </Grid>
-                    <Grid item xs={9} >
+                    <Grid item  xs={12} sm={9} md={9} lg={9} >
                         <TextField
-                            style={{ width: '100%' }}
+                            style={{width:'100%' , marginBottom: '7px'}}
                             databaseUsed Name
                             id="outlined-required"
                             label=" Database Name"
@@ -132,15 +162,23 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
                             inputRef={(ref) => (textFieldsRef.current[3] = ref)}
                         />
                     </Grid>
-
                 </Grid>
-                <Grid container spacing={2}>
-                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
-                        <h3>Operating System:</h3>
+
+                <Grid  container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                        },
+                        }}>
+                    <Grid item  xs={12} sm={3} md={3} lg={3}>
+                        <h3 style={{margin : '5px'}}>Operating System:</h3>
                     </Grid>
-                    <Grid item xs={9} >
+                    <Grid item  xs={12} sm={9} md={9} lg={9} >
                         <TextField
-                            style={{ width: '100%' }}
+                            style={{width:'100%' , marginBottom: '7px'}}
                             operating Systems
                             id="outlined-required"
                             label=" Operating System"
@@ -154,13 +192,21 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
                     </Grid>
 
                 </Grid>
-                <Grid container spacing={2}>
-                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
-                        <h3>IDE Used:</h3>
+                <Grid  container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                        },
+                        }}>
+                    <Grid item  xs={12} sm={3} md={3} lg={3}>
+                        <h3 style={{margin : '5px'}}>IDE Used:</h3>
                     </Grid>
-                    <Grid item xs={9} >
+                    <Grid item  xs={12} sm={9} md={9} lg={9} >
                         <TextField
-                            style={{ width: '100%' }}
+                            style={{width:'100%' , marginBottom: '7px'}}
                             IDE Used Name
                             id="outlined-required"
                             label=" IDE Used "
@@ -174,13 +220,21 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
                     </Grid>
 
                 </Grid>
-                <Grid container spacing={2}>
-                    <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
-                        <h3>Web Server:</h3>
+                <Grid  container 
+                    xs={{display: "flex"}}
+                    sm={{
+                        '@media (max-width: 600px)': {
+                            display: "flex",
+                            flexDirection : 'column' ,
+                            width : "100%",
+                        },
+                        }}>
+                    <Grid item  xs={12} sm={3} md={3} lg={3}>
+                        <h3 style={{margin : '5px'}}>Web Server:</h3>
                     </Grid>
-                    <Grid item xs={9} >
+                    <Grid item  xs={12} sm={9} md={9} lg={9} >
                         <TextField
-                            style={{ width: '100%' }}
+                            style={{width:'100%' , marginBottom: '7px'}}
                             Web Server
                             id="outlined-required"
                             label=" Web Server"
@@ -195,55 +249,23 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
 
                 </Grid>
 
-        {/* {fields.map((field, index) => (*/}
-        {/*  <Grid container*/}
-        {/*        spacing={2}*/}
-        {/*        key={index}*/}
-        {/*        style={{marginBottom : '10px'}}>*/}
-        {/*    <Grid item xs={3}*/}
-        {/*        style={{*/}
-        {/*            display: 'flex',*/}
-        {/*            alignItems: 'start' }}>*/}
-        {/*        <TextField*/}
-        {/*            style={{ width: '100%' }}*/}
-        {/*            id={`SkillName-${index}`}*/}
-        {/*            label={`Skill Name ${index + 1}`}*/}
-        {/*            placeholder={`Skill Name ${index + 1}`}*/}
-        {/*            name={`Skill Name-${index}`}*/}
-        {/*            defaultValue={field.name}*/}
-        {/*            onChange={(e) => handleChange(index, 'name', e.target.value)}*/}
-        {/*        />*/}
-        {/*    </Grid>*/}
-        {/*    <Grid item xs={8.4}>*/}
-        {/*        <TextField*/}
-        {/*            style={{ width: '100%' }}*/}
-        {/*            id={`Description-${index}`}*/}
-        {/*            label={`Description ${index + 1}`}*/}
-        {/*            placeholder={`Description ${index + 1}`}*/}
-        {/*            name={`Description-${index}`}*/}
-        {/*            defaultValue={field.description}*/}
-        {/*            onChange={(e) => handleChange(index, 'description', e.target.value)}*/}
-        {/*        />*/}
-        {/*    </Grid>*/}
-        {/*    <Grid item xs={0.6}>*/}
-        {/*    <Button*/}
-        {/*            style={{*/}
-        {/*                marginTop: '3px',*/}
-        {/*                marginLeft: '-10px',*/}
-        {/*                minWidth: '25px',*/}
-        {/*                }}*/}
-        {/*                onClick={() => handleDeleteField(index)}*/}
-        {/*                >*/}
-        {/*                  <IconButton size="small" color="error">*/}
-        {/*                    <DeleteRoundedIcon />*/}
-        {/*                  </IconButton>*/}
-        {/*    </Button>*/}
-        {/*    </Grid>*/}
-        {/*  </Grid>*/}
-        {/*))}*/}
+    
                 {fields.map((field, index) => (
-                    <Grid container spacing={2} key={index} style={{ marginBottom: '10px' }}>
-                        <Grid item xs={3} style={{ display: 'flex', alignItems: 'start' }}>
+                    <Grid
+                      container 
+                      xs={{display: "flex"}}
+                      sm={{
+                          '@media (max-width: 600px)': {
+                              display: "flex",
+                              flexDirection : 'column' ,
+                              width : "100%",
+                            },
+                          }}
+                          spacing={2}
+                          key={index} 
+                          style={{ marginBottom: '10px' }}>
+                        <Grid 
+                        item  xs={12} sm={3} md={3} lg={3}>
                             <TextField
                                 style={{ width: '100%' }}
                                 id={`SkillName-${index}`}
@@ -260,7 +282,7 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
                                 onChange={(e) => handleChange(index, 'name', e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={8.4}>
+                        <Grid  item  xs={10} sm={8} md={8} lg={8}>
                             <TextField
                                 style={{ width: '100%' }}
                                 id={`Description-${index}`}
@@ -277,7 +299,7 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
                                 onChange={(e) => handleChange(index, 'description', e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={0.6}>
+                        <Grid item  xs={1} sm={0.6} md={0.6} lg={0.6}>
                             <Button
                                 style={{
                                     marginTop: '3px',
@@ -296,13 +318,13 @@ function SkillSets({ fields, setFields, item, isEdit = false}) {
 
 
                 <Grid
-             item
-             xs={12}
-             sx={{
-               display: "flex",
-               justifyContent: "flex-end",
-               paddingTop: "20px",
-             }}>
+                    item
+                    xs={12}
+                    sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    paddingTop: "20px",
+                    }}>
                 <Button
                   variant="contained"
                   style={{ backgroundColor: "rgb(33, 80, 162)" }}
